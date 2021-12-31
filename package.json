@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "octopath-notebook",
+  "version": "1.0.0",
+  "author": "Clay Dunston <dunstontc@gmail.com>",
+  "homepage": "https://github.com/tcd/octopath-notebook#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tcd/octopath-notebook.git"
+  },
+  "scripts": {},
+  "dependencies": {
+    "@mdi/font": "^6.5.95"
+  }
+}
