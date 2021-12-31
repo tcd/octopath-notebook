@@ -1,0 +1,13 @@
+<div class="nested-fields card">
+    <div class="card-body">
+        <%= link_to_remove_association(icon("fa fa-close"), f, class: "btn btn-default btn-sm") %>
+        <div class="row">
+            <div class="col">
+                <%= f.text_field(:title, label: false, placeholder: "Title (required)", class: "required") %>
+                <%= f.text_field(:url, label: false, placeholder: "URL (required)") %>
+                <%= f.text_field(:website_name, label: false, placeholder: "Website Name") %>
+                <%= f.text_field(:description, label: false, placeholder: "Description") %>
+            </div>
+        </div>
+    </div>
+</div>

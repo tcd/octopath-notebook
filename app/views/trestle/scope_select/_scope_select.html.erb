@@ -1,0 +1,41 @@
+<div class="scope-select ml-auto" id="scope_select">
+  <%= form_tag(admin.path, method: :get) do %>
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="scope_select_element">Scope</label>
+      </div>
+      <select id="scope_select_element" class="custom-select">
+        <% admin.scopes.each do |name, scope| %>
+          <% if name == "all" %>
+            <option selected value="<%= name.to_s %>">
+          <% else %>
+            <option value="<%= name.to_s %>">
+          <% end %>
+            <%= scope&.label || scope.to_s %>
+            <%# (<%= number_with_delimiter(scope.count(admin.collection(params))) %> )
+          </option>
+        <% end %>
+      </select>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  $(function() {
+    // Select the appropreate option when the page loads.
+    var url    = new URL(window.location.href)
+    var params = new URLSearchParams(url.search)
+    var scope  = params.get("scope")
+    if (scope) {
+      $(`#scope_select option[value="${scope}"]`).prop("selected", true)
+    } else {
+      $('#scope_select option[value="all"]').prop("selected", true)
+    }
+
+    $("#scope_select").on("change", function(e) {
+      let href = window.location.href
+      let new_url = href.includes("scope=") ? href.replace(/scope=\S+/g, `scope=${e.target.value}`) : `${href}?scope=${e.target.value}`
+      window.location.replace(new_url)
+    })
+  })
+</script>

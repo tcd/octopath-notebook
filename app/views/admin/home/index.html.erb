@@ -1,0 +1,74 @@
+<style>
+    .app-link-table {
+        max-width: 50%;
+        /* padding-left:  200px; */
+        /* padding-right: 200px; */
+    }
+    .app-link-table * {
+        /* text-align: center; */
+    }
+    .app-link-table td {
+        cursor: pointer;
+    }
+</style>
+
+<% content_for(:title, "Home") %>
+
+<%= render(layout: "layout", locals: { wrapper: true, sidebar: false, hide_breadcrumbs: false }) do %>
+
+    <h2 class="pb-3">Models</h2>
+
+    <table class="trestle-table app-link-table">
+        <thead>
+            <tr>
+                <!-- <th scope="col"></th> -->
+                <!-- <th scope="col">Source</th> -->
+                <th scope="col">Model</th>
+                <th scope="col" class="text-right">Records</th>
+                <!-- <th scope="col" class="text-center">Changes Tracked</th> -->
+            </tr>
+        </thead>
+        <tbody>
+
+            <% @models.each do |model| %>
+                <tr onclick="location.href='<%= model[:link] %>'">
+                    <td>
+                        <!-- <span class="<%= model[:icon_classes] %>"></span> -->
+                    <!-- </td>
+                    <td> -->
+                        <!-- <%= link_to(model[:title], model[:link]) %> -->
+                        <a href="<%= model[:link] %>">
+                            <span class="<%= model[:icon_classes] %>"></span>
+                            <span><%= model[:title] %></span>
+                        </a>
+                    </td>
+                    <td class="text-right">
+                        <span class="badge badge-primary"><%= model[:count]  %></span>
+                    </td>
+                    <!-- <td class="text-center">
+                        <% if model[:has_paper_trail] %>
+                            <span class="mdi mdi-history">
+                        <% end %>
+                    </td> -->
+                </tr>
+            <% end %>
+
+        </tbody>
+    </table>
+
+    <br class="my-5"/>
+
+
+    <h2 class="mt-5">Handy Resources</h2>
+
+    <ul>
+        <% @links.each do |l| %>
+            <li>
+                <a href="<%= l[:url] %>" target="_blank" rel="noopener noreferrer">
+                    <%= l[:title] %>
+                </a>
+            </li>
+        <% end %>
+    </ul>
+
+<% end %>

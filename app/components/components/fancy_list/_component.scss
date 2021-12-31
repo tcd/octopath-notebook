@@ -1,0 +1,64 @@
+$custom-list-group-bg: inherit;
+$custom-list-group-fg: inherit;
+
+$custom-list-group-hover-bg: lightgray; // $secondary;
+$custom-list-group-hover-fg: white;
+
+ul.details {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  // display: flex;
+  // flex-flow: row;
+  // flex-wrap: nowrap;
+  list-style: none;
+  padding:    0px;
+  margin:     0px;
+  li {
+    list-style: none;
+    padding:    0px;
+    margin:     0px
+  }
+
+  li > a,
+  li > span {
+    display:   flex;
+    flex-flow: row;
+    flex-wrap: nowrap;
+    padding: 0.75rem 1rem;
+    color:            $custom-list-group-fg;
+    background-color: $custom-list-group-bg;
+
+    i {
+      align-self:    center;
+      padding-right: 1rem;
+      font-size:     1.25em !important;
+    }
+
+    .detail {
+      display:   flex;
+      flex-flow: column;
+      flex-wrap: nowrap;
+      h5 {
+        border-bottom: none !important;
+      }
+    }
+  }
+
+  li > a:hover {
+    cursor: pointer;
+    color:            $custom-list-group-hover-fg;
+    background-color: $custom-list-group-hover-bg;
+    text-decoration: none;
+    a,
+    small {
+      color: $custom-list-group-hover-fg !important;
+    }
+    * {
+      text-decoration: none;
+    }
+  }
+
+}

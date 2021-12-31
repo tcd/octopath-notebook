@@ -1,0 +1,13 @@
+<h2>Links</h2>
+
+<% if @hyperlinks&.blank? %>
+    <span class="blank">None</span>
+<% else %>
+    <ul>
+        <% @hyperlinks.each do |hyperlink| %>
+            <li>
+                <%= link_to(hyperlink.alt_display_name, hyperlink.url, target: "_blank") %>
+            </li>
+        <% end %>
+    </ul>
+<% end %>

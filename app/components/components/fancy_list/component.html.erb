@@ -1,0 +1,43 @@
+<% unless @items&.blank? %>
+
+    <ul class="details">
+        <% @items.each do |item| %>
+            <li>
+                <% if item[:url] %>
+                    <% if item[:external_url] %>
+                        <a href="<%= item[:url] %>" target="_blank">
+                    <% else %>
+                        <a href="<%= item[:url] %>">
+                    <% end %>
+                        <% if item[:icon] %>
+                            <i class="<%= item[:icon] %>"></i>
+                        <% end %>
+                        <div class="detail">
+                            <h5 class="mb-0">
+                                <%= item[:title] %>
+                            </h5>
+                            <small class="text-muted">
+                                <%= item[:subtitle] %>
+                            </small>
+                        </div>
+                    </a>
+                <% else %>
+                    <span>
+                        <% if item[:icon] %>
+                            <i class="<%= item[:icon] %>"></i>
+                        <% end %>
+                        <div class="detail">
+                            <h5 class="mb-0">
+                                <%= item[:title] %>
+                            </h5>
+                            <small class="text-muted">
+                                <%= item[:subtitle] %>
+                            </small>
+                        </div>
+                    </span>
+                <% end %>
+            </li>
+        <% end %>
+    </ul>
+
+<% end %>

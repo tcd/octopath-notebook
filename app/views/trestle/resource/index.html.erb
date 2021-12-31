@@ -1,0 +1,34 @@
+<%= Gon::Base.render_data %>
+
+<% content_for(:title, admin.t("titles.index", default: "Listing %{pluralized_model_name}")) %>
+
+<% toolbar(:primary) do |t| %>
+    <%= t.new %>
+    <% if admin.actions.include?(:bulk_upload) %>
+        <button id="bulk-upload-button" class="btn btn-info has-icon" onclick="startBulkUpload()">
+            <%= icon("mdi mdi-file-upload-outline") %>
+        </button>
+        <input hidden id="bulk-upload-file-input" type="file" onchange="readText(event)" data-clays-endpoint="<%= admin.path(:bulk_upload) %>"/>
+        <div id="output"></div>
+    <% end %>
+<% end %>
+
+<% content_for(:utilities) do %>
+    <%= render "scopes" %>
+<% end if admin.scopes.any? %>
+
+<%= render layout: "layout" do %>
+    <% if hook?("resource.index.header") %>
+        <header class="main-content-header">
+            <%= hook("resource.index.header") %>
+        </header>
+    <% end %>
+
+    <%= render "trestle/table/table", table: admin.table, collection: collection %>
+
+    <footer class="main-content-footer">
+        <%= hook("resource.index.footer") %>
+
+        <%= pagination collection: collection, entry_name: admin.model_name, remote: admin.pagination_options[:ajax] %>
+    </footer>
+<% end %>

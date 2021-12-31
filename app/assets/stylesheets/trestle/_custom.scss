@@ -1,0 +1,81 @@
+// This file may be used for providing additional customizations to the Trestle
+// admin. It will be automatically included within all admin pages.
+//
+// For organizational purposes, you may wish to define your customizations
+// within individual partials and `import` them here, e.g.
+//
+//    @import "trestle/custom/my_custom_css";
+//
+@import "./vendor/material-design-icons-bootstrap-helper.scss";
+@import "./vendor/materialdesignicons.scss";
+@import "./../../../components/components/component_styles.scss";
+
+div.app-sidebar-inner nav.app-nav ul li.nav-header a {
+    color: #919191;
+
+    &:hover {
+        color: #fff;
+    }
+}
+
+.badge.bg-pink {
+    background-color: #efadce !important;
+}
+
+.badge.bg-blue {
+    background-color: #6ea8fe !important;
+}
+
+.was-validated .form-control:valid,
+.form-control.is-valid {
+    background-image: none;
+    background-repeat: no-repeat;
+    background-size: 0%;
+}
+
+.form-group.required .control-label:after {
+    content:"*";
+    color:FireBrick;
+}
+
+p.form-text {
+    color: #6c757d !important;
+    font-size: 80%;
+    font-weight: 400;
+}
+
+.nested-fields {
+    border-left: 10px solid #dbdbdb;
+    margin-bottom: 10px;
+    padding-right: 35px;
+
+    position: relative;
+
+    &:first-child {
+        margin-top: 0;
+    }
+}
+
+.remove_fields {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 0;
+}
+
+.table-link * {
+    white-space: normal !important; // To consider whitespace.
+}
+
+button#bulk-upload-button.loading {
+    opacity: 0.5;
+}
+
+// Customized Trestle tags
+$green-tag-color: #28a745;
+$green-tag-bg: lighten($green-tag-color, 10%);
+.tag.green-tag {
+    border-left: 4px solid $green-tag-color;
+    color: black;
+    background-color: $green-tag-bg;
+}

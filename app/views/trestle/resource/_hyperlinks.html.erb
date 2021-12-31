@@ -1,0 +1,10 @@
+<div class="nested-fields-container">
+        <%= content_tag(:strong, "Links") %>
+        <%= content_tag(:br) %>
+    <%= form.fields_for :hyperlinks  do |hyperlink| %>
+        <%= render("hyperlink_fields", f: hyperlink) %>
+    <% end %>
+    <div class="nested-field-links">
+        <%= link_to_add_association("Add Link", form, :hyperlinks, class: "btn btn-success") %>
+    </div>
+</div>
