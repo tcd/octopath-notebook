@@ -38,7 +38,7 @@ class Region < ApplicationRecord
 
   # @return [String]
   def self.icon_css_class()
-    return "mdi mdi-link-variant"
+    return "mdi mdi-map"
   end
 
   # =====================================================================

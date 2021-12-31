@@ -18,6 +18,8 @@ module Lib
         invalid = {}
         invalid["jobs"] = self.jobs()
         invalid["regions"] = self.regions()
+        invalid["damage_types"] = self.damage_types()
+        invalid["job_support_skills"] = self.job_support_skills()
         return invalid
       end
 
@@ -96,7 +98,37 @@ module Lib
             name:       fx["name"],
             primary:    fx["primary"],
             secret:     fx["secret"],
-            game_order: fx["secret"],
+            game_order: fx["game_order"],
+          }
+        end
+        return nil
+      end
+
+      # @return [void]
+      def self.damage_types()
+        self.from_tsv("damage_types.tsv", DamageType) do |fx|
+          _args = {
+            id:         fx["id"],
+            name:       fx["name"],
+            physical:   fx["physical"],
+            elemental:  fx["elemental"],
+            game_order: fx["game_order"],
+          }
+        end
+        return nil
+      end
+
+      # @return [void]
+      def self.job_support_skills()
+        self.from_tsv("job_support_skills.tsv", JobSupportSkill) do |fx|
+          _args = {
+            id:                  fx["id"],
+            name:                fx["name"],
+            unlock_order:        fx["unlock_order"],
+            one_per_party:       fx["one_per_party"],
+            short_description:   fx["short_description"],
+            in_game_description: fx["in_game_description"],
+            notes:               fx["notes"],
           }
         end
         return nil
