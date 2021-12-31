@@ -30,18 +30,6 @@ module Lib
       return path.to_s
     end
 
-    # Attempt to convert a string to a media timestamp (ex: `"hh:mm:ss"``)
-    #
-    # @param string [String] The string to convert.
-    # @return [String]
-    def self.to_media_timestamp(string)
-      if (matches = string.match(MINUTES_PATTERN))
-        min = matches[:minuges].rjust(2, "0")  # => '05'
-        return "#{min}:00"
-      end
-      return string
-    end
-
     # @param code_object [YARD::CodeObjects::Base]
     # @param tag_name [String]
     # @return [Yard::Tags::Tag]
