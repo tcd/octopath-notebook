@@ -1,0 +1,8 @@
+Cliftlands: { "id": 1, "name": "Cliftlands" }
+Coastlands: { "id": 2, "name": "Coastlands" }
+Flatlands:  { "id": 3, "name": "Flatlands"  }
+Frostlands: { "id": 4, "name": "Frostlands" }
+Highlands:  { "id": 5, "name": "Highlands"  }
+Riverlands: { "id": 6, "name": "Riverlands" }
+Sunlands:   { "id": 7, "name": "Sunlands"   }
+Woodlands:  { "id": 8, "name": "Woodlands"  }

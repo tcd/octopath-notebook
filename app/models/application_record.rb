@@ -1,8 +1,7 @@
 # @abstract
 #   Subclasses should override/implement the following methods:
 #
-#   - {.icon_css_class_mdi}
-#   - {.icon_css_class_fa}
+#   - {.icon_css_class}
 #   - {#display_name}
 class ApplicationRecord < ActiveRecord::Base
 
