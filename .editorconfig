@@ -19,13 +19,15 @@ indent_size = 2
 [*.html.erb]
 indent_size = 4
 
-[*.{md,csv,tsv}]
+[*.json]
+indent_size = 4
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.{csv,tsv}]
 trim_trailing_whitespace = false
 insert_final_newline = false
 
 [*.tsv]
 indent_style = tab
-
-
-[openapi.json]
-indent_size = 4
