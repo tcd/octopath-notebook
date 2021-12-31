@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_31_173022) do
+ActiveRecord::Schema.define(version: 2021_12_31_210217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,17 @@ ActiveRecord::Schema.define(version: 2021_12_31_173022) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "damage_types", force: :cascade do |t|
+    t.string "name", null: false
+    t.boolean "physical", null: false
+    t.boolean "elemental", null: false
+    t.integer "game_order", null: false
+    t.jsonb "metadata", default: {}
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_damage_types_on_name", unique: true
   end
 
   create_table "hyperlinks", force: :cascade do |t|
