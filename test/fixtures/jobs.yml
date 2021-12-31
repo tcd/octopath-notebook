@@ -1,0 +1,12 @@
+Hunter:     { "id":  1, "name": "Hunter",     "primary": true,  "secret": false, "game_order":  1 }
+Thief:      { "id":  2, "name": "Thief",      "primary": true,  "secret": false, "game_order":  2 }
+Apothecary: { "id":  3, "name": "Apothecary", "primary": true,  "secret": false, "game_order":  3 }
+Dancer:     { "id":  4, "name": "Dancer",     "primary": true,  "secret": false, "game_order":  4 }
+Warrior:    { "id":  5, "name": "Warrior",    "primary": true,  "secret": false, "game_order":  5 }
+Merchant:   { "id":  6, "name": "Merchant",   "primary": true,  "secret": false, "game_order":  6 }
+Scholar:    { "id":  7, "name": "Scholar",    "primary": true,  "secret": false, "game_order":  7 }
+Cleric:     { "id":  8, "name": "Cleric",     "primary": true,  "secret": false, "game_order":  8 }
+Starseer:   { "id":  9, "name": "Starseer",   "primary": false, "secret": true,  "game_order": 10 }
+Runelord:   { "id": 10, "name": "Runelord",   "primary": false, "secret": true,  "game_order": 10 }
+Warmaster:  { "id": 11, "name": "Warmaster",  "primary": false, "secret": true,  "game_order": 10 }
+Sorcerer:   { "id": 12, "name": "Sorcerer",   "primary": false, "secret": true,  "game_order": 10 }

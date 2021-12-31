@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_31_171233) do
+ActiveRecord::Schema.define(version: 2021_12_31_173022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,17 @@ ActiveRecord::Schema.define(version: 2021_12_31_171233) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["linkable_type", "linkable_id"], name: "index_hyperlinks_on_linkable_type_and_linkable_id"
     t.index ["url"], name: "index_hyperlinks_on_url", unique: true
+  end
+
+  create_table "jobs", force: :cascade do |t|
+    t.string "name", null: false
+    t.boolean "primary", null: false
+    t.boolean "secret", null: false
+    t.integer "game_order", null: false
+    t.jsonb "metadata", default: {}
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_jobs_on_name", unique: true
   end
 
   create_table "regions", force: :cascade do |t|

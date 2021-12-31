@@ -38,17 +38,17 @@ class ApplicationRecord < ActiveRecord::Base
 
   # @!attribute hyperlinks
   #   @return [Array<Hyperlink>]
-  # has_many(
-  #   :hyperlinks,
-  #   as: :linkable,
-  #   inverse_of: :linkable,
-  #   class_name: "Hyperlink",
-  #   dependent: :destroy,
-  # )
-  # accepts_nested_attributes_for(
-  #   :hyperlinks,
-  #   allow_destroy: true,
-  # )
+  has_many(
+    :hyperlinks,
+    as: :linkable,
+    inverse_of: :linkable,
+    class_name: "Hyperlink",
+    dependent: :destroy,
+  )
+  accepts_nested_attributes_for(
+    :hyperlinks,
+    allow_destroy: true,
+  )
 
   # @!endgroup Associations
 

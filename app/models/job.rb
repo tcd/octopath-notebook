@@ -1,4 +1,4 @@
-class Region < ApplicationRecord
+class Job < ApplicationRecord
   # =====================================================================
   # Attributes
   # =====================================================================
@@ -9,6 +9,18 @@ class Region < ApplicationRecord
   #   @required
   #   @return [String]
   validates(:name, presence: true, uniqueness: true)
+
+  # @!attribute primary
+  #   @required
+  #   @return [Boolean]
+
+  # @!attribute secret
+  #   @required
+  #   @return [Boolean]
+
+  # @!attribute game_order
+  #   @required
+  #   @return [Integer]
 
   # @!endgroup Attributes
 
@@ -27,7 +39,7 @@ class Region < ApplicationRecord
   # @!group Scopes
 
   # @!method self.scope_for_trestle()
-  #   @return [Region::ActiveRecord_Relation]
+  #   @return [Job::ActiveRecord_Relation]
   # scope(:scope_for_trestle, -> { includes(:linkable) })
 
   # @!endgroup Scopes
