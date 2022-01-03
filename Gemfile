@@ -32,7 +32,7 @@ gem "view_component", "~> 2.40", require: "view_component/engine" # https://gith
 # Trestle (Admin)
 # gem "trestle", "~> 0.9.5" # Admin dashboard
 # gem "trestle-active_storage", "~> 3.0" # ActiveStorage integration for Trestle
-gem "trestle-auth", "~> 0.4.3" # Authentication plugin for Trestle
+# gem "trestle-auth", "~> 0.4.3" # Authentication plugin for Trestle
 gem "trestle-jsoneditor", "~> 0.1.0" # Not officially supported by Trestle...
 # gem "trestle-search", "~> 0.4.3" # Search plugin for Trestle
 

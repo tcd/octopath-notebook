@@ -57,6 +57,11 @@ class ApplicationRecord < ActiveRecord::Base
   # ============================================================================
 
   # @return [String]
+  def self.display_name()
+    return self.name.pluralize.gsub(/\B(?=[A-Z])/, " ")
+  end
+
+  # @return [String]
   def self.kind()
     return self.name
   end

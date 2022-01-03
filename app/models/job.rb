@@ -40,7 +40,7 @@ class Job < ApplicationRecord
 
   # @!method self.scope_for_trestle()
   #   @return [Job::ActiveRecord_Relation]
-  # scope(:scope_for_trestle, -> { all() })
+  scope(:scope_for_trestle, -> { all() })
 
   # @!endgroup Scopes
 
