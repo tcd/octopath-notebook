@@ -24,7 +24,7 @@ class JobSupportSkill < ApplicationRecord
   # @!attribute one_per_party
   #   @required
   #   @return [Boolean]
-  validates(:one_per_party, presence: true)
+  validates(:one_per_party, inclusion: { in: [true, false], message: "%{value} must be 'true' or 'false'" })
 
   # @!attribute short_description
   #   @required
@@ -53,6 +53,7 @@ class JobSupportSkill < ApplicationRecord
     :job,
     class_name: "Job",
     foreign_key: "job_name",
+    primary_key: "name",
     required: true,
   )
 

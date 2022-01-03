@@ -5,8 +5,8 @@ default: &default
   port: 5432
   host:     <%= Rails.application.credentials[Rails.env.to_sym][:db][:hostname] %>
   database: <%= Rails.application.credentials[Rails.env.to_sym][:db][:database] %>
-  username: <%= Rails.application.credentials[Rails.env.to_sym][:db][:username] %>
-  password: <%= Rails.application.credentials[Rails.env.to_sym][:db][:password] %>
+  # username: <%= Rails.application.credentials[Rails.env.to_sym][:db][:username] %>
+  # password: <%= Rails.application.credentials[Rails.env.to_sym][:db][:password] %>
 
 test:
   <<: *default
@@ -16,3 +16,5 @@ development:
 
 production:
   <<: *default
+  username: <%= Rails.application.credentials[Rails.env.to_sym][:db][:username] %>
+  password: <%= Rails.application.credentials[Rails.env.to_sym][:db][:password] %>

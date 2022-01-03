@@ -30,6 +30,15 @@ class Job < ApplicationRecord
 
   # @!group Associations
 
+  # @!attribute job_support_skills [rw]
+  #   @return [Array<JobSupportSkill>]
+  has_many(
+    :job_support_skills,
+    class_name: "JobSupportSkill",
+    primary_key: "name",
+    foreign_key: "job_name",
+  )
+
   # @!endgroup Associations
 
   # ==========================================================================

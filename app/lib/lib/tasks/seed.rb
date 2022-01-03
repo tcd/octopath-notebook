@@ -16,9 +16,9 @@ module Lib
       # @return [Hash]
       def self.all()
         invalid = {}
-        invalid["jobs"] = self.jobs()
-        invalid["regions"] = self.regions()
         invalid["damage_types"] = self.damage_types()
+        invalid["regions"] = self.regions()
+        invalid["jobs"] = self.jobs()
         invalid["job_support_skills"] = self.job_support_skills()
         return invalid
       end
@@ -128,6 +128,7 @@ module Lib
         invalid = self.from_fixture("job_support_skills.yml", JobSupportSkill) do |fx|
           _args = {
             id:                  fx["id"],
+            job_name:            fx["job_name"],
             name:                fx["name"],
             unlock_order:        fx["unlock_order"],
             one_per_party:       fx["one_per_party"],
