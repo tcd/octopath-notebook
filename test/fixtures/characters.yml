@@ -1,0 +1,8 @@
+Ophilia:  { "id": 1, "name": "Ophilia",   "full_name": "Ophilia Clement",    "primary_job_name": "Cleric",     "starting_town_name": "Flamesgrace", "native_town_name": "Flamesgrace" }
+Cyrus:    { "id": 2, "name": "Cyrus",     "full_name": "Cyrus Albright",     "primary_job_name": "Scholar",    "starting_town_name": "Atlasdam",    "native_town_name": null          }
+Tressa:   { "id": 3, "name": "Tressa",    "full_name": "Tressa Colzione",    "primary_job_name": "Merchant",   "starting_town_name": "Rippletide",  "native_town_name": "Rippletide"  }
+Olberic:  { "id": 4, "name": "Olberic",   "full_name": "Olberic Eisenberg",  "primary_job_name": "Warrior",    "starting_town_name": "Cobbleston",  "native_town_name": null          }
+Primrose: { "id": 5, "name": "Primrose",  "full_name": "Primrose Azelhart",  "primary_job_name": "Dancer",     "starting_town_name": "Sunshade",    "native_town_name": null          }
+Alfyn:    { "id": 6, "name": "Alfyn",     "full_name": "Alfyn Greengrass",   "primary_job_name": "Apothecary", "starting_town_name": "Clearbrook",  "native_town_name": "Clearbrook"  }
+Therion:  { "id": 7, "name": "Therion",   "full_name": "Therion",            "primary_job_name": "Thief",      "starting_town_name": "Bolderfall",  "native_town_name": null          }
+Haanit:   { "id": 8, "name": "H'aanit",   "full_name": "H'aanit",            "primary_job_name": "Hunter",     "starting_town_name": "S'warkii",    "native_town_name": "S'warkii"    }

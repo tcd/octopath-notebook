@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_03_170555) do
+ActiveRecord::Schema.define(version: 2022_01_03_172730) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,21 @@ ActiveRecord::Schema.define(version: 2022_01_03_170555) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "characters", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "full_name", null: false
+    t.string "primary_job_name", null: false
+    t.string "starting_town_name", null: false
+    t.string "native_town_name"
+    t.jsonb "metadata", default: {}
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["full_name"], name: "index_characters_on_full_name", unique: true
+    t.index ["name"], name: "index_characters_on_name", unique: true
+    t.index ["primary_job_name"], name: "index_characters_on_primary_job_name"
+    t.index ["starting_town_name"], name: "index_characters_on_starting_town_name"
   end
 
   create_table "damage_types", force: :cascade do |t|
@@ -134,6 +149,9 @@ ActiveRecord::Schema.define(version: 2022_01_03_170555) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "characters", "jobs", column: "primary_job_name", primary_key: "name"
+  add_foreign_key "characters", "towns", column: "native_town_name", primary_key: "name"
+  add_foreign_key "characters", "towns", column: "starting_town_name", primary_key: "name"
   add_foreign_key "job_support_skills", "jobs", column: "job_name", primary_key: "name"
   add_foreign_key "taggings", "tags"
   add_foreign_key "towns", "regions", column: "region_name", primary_key: "name"

@@ -1,4 +1,4 @@
-class Job < ApplicationRecord
+class Character < ApplicationRecord
 
   # =====================================================================
   # Attributes
@@ -11,17 +11,23 @@ class Job < ApplicationRecord
   #   @return [String]
   validates(:name, presence: true, uniqueness: true)
 
-  # @!attribute primary
+  # @!attribute full_name
   #   @required
-  #   @return [Boolean]
+  #   @return [String]
+  validates(:full_name, presence: true, uniqueness: true)
 
-  # @!attribute secret
+  # @!attribute primary_job_name
   #   @required
-  #   @return [Boolean]
+  #   @return [String]
+  validates(:primary_job_name, presence: true)
 
-  # @!attribute game_order
+  # @!attribute starting_town_name
   #   @required
-  #   @return [Integer]
+  #   @return [String]
+  validates(:starting_town_name, presence: true)
+
+  # @!attribute native_town_name
+  #   @return [String]
 
   # @!endgroup Attributes
 
@@ -31,22 +37,36 @@ class Job < ApplicationRecord
 
   # @!group Associations
 
-  # @!attribute primary_character [rw]
-  #   @return [Character]
-  has_one(
-    :primary_character,
-    class_name: "Character",
-    primary_key: "name",
+  # @!attribute primary_job
+  #   @return [Region]
+  belongs_to(
+    :primary_job,
+    class_name: "Job",
     foreign_key: "primary_job_name",
+    primary_key: "name",
+    required: true,
   )
 
-  # @!attribute job_support_skills [rw]
-  #   @return [Array<JobSupportSkill>]
-  has_many(
-    :job_support_skills,
-    class_name: "JobSupportSkill",
+  # ---------------------------------------------------------------------
+
+  # @!attribute starting_town
+  #   @return [Town]
+  belongs_to(
+    :starting_town,
+    class_name: "Town",
+    foreign_key: "starting_town_name",
     primary_key: "name",
-    foreign_key: "job_name",
+    required: true,
+  )
+
+  # @!attribute native_town
+  #   @return [Town]
+  belongs_to(
+    :native_town,
+    class_name: "Town",
+    foreign_key: "native_town_name",
+    primary_key: "name",
+    optional: true,
   )
 
   # @!endgroup Associations
@@ -58,7 +78,7 @@ class Job < ApplicationRecord
   # @!group Scopes
 
   # @!method self.scope_for_trestle()
-  #   @return [Job::ActiveRecord_Relation]
+  #   @return [Character::ActiveRecord_Relation]
   scope(:scope_for_trestle, -> { all() })
 
   # @!endgroup Scopes
@@ -69,7 +89,7 @@ class Job < ApplicationRecord
 
   # @return [String]
   def self.icon_css_class()
-    return "mdi mdi-hard-hat"
+    return "mdi mdi-account-star"
   end
 
   # =====================================================================

@@ -21,6 +21,7 @@ module Lib
         invalid["damage_types"] = self.damage_types()
         invalid["jobs"] = self.jobs()
         invalid["job_support_skills"] = self.job_support_skills()
+        invalid["characters"] = self.characters()
         return invalid
       end
 
@@ -148,6 +149,21 @@ module Lib
             short_description:   fx["short_description"],
             in_game_description: fx["in_game_description"],
             notes:               fx["notes"],
+          }
+        end
+        return invalid
+      end
+
+      # @return [void]
+      def self.characters()
+        invalid = self.from_fixture("characters.yml", Character) do |fx|
+          _args = {
+            id:                 fx["id"],
+            name:               fx["name"],
+            full_name:          fx["full_name"],
+            primary_job_name:   fx["primary_job_name"],
+            starting_town_name: fx["starting_town_name"],
+            native_town_name:   fx["native_town_name"],
           }
         end
         return invalid

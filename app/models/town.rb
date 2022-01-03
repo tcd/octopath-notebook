@@ -34,6 +34,26 @@ class Town < ApplicationRecord
     required: true,
   )
 
+  # ---------------------------------------------------------------------
+
+  # @!attribute starting_characters [rw]
+  #   @return [Array<Character>]
+  has_many(
+    :starting_characters,
+    class_name: "Character",
+    primary_key: "name",
+    foreign_key: "starting_town_name",
+  )
+
+  # @!attribute native_characters [rw]
+  #   @return [Array<Character>]
+  has_many(
+    :native_characters,
+    class_name: "Character",
+    primary_key: "name",
+    foreign_key: "native_town_name",
+  )
+
   # @!endgroup Associations
 
   # ==========================================================================
