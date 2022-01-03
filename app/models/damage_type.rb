@@ -40,7 +40,7 @@ class DamageType < ApplicationRecord
 
   # @!method self.scope_for_trestle()
   #   @return [DamageType::ActiveRecord_Relation]
-  # scope(:scope_for_trestle, -> { all() })
+  scope(:scope_for_trestle, -> { all() })
 
   # @!endgroup Scopes
 
