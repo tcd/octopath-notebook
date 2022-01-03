@@ -58,6 +58,7 @@ module Lib
       #
       # @return [Array<Hash>]
       def self.from_fixture(file_name, model_class)
+        invalid = []
         path = self.fixtures_folder.join(file_name)
         yaml_data = ERB.new(path.read).result
         fixture_data = YAML.load(yaml_data)
@@ -70,29 +71,33 @@ module Lib
           model.save!()
           pb.increment()
         rescue StandardError => e
+          invalid << {
+            args:  args,
+            error: e,
+          }
           pb.increment()
           pb.newline()
           pp(args)
           puts(e)
           pb.newline()
         end
-        return nil
+        return invalid
       end
 
       # @return [void]
       def self.regions()
-        self.from_tsv("regions.tsv", Region) do |fx|
+        invalid = self.from_fixture("regions.yml", Region) do |fx|
           _args = {
             id:   fx["id"],
             name: fx["name"],
           }
         end
-        return nil
+        return invalud
       end
 
       # @return [void]
       def self.jobs()
-        self.from_tsv("jobs.tsv", Job) do |fx|
+        invalid = self.from_fixture("jobs.yml", Job) do |fx|
           _args = {
             id:         fx["id"],
             name:       fx["name"],
@@ -101,12 +106,12 @@ module Lib
             game_order: fx["game_order"],
           }
         end
-        return nil
+        return invalid
       end
 
       # @return [void]
       def self.damage_types()
-        self.from_tsv("damage_types.tsv", DamageType) do |fx|
+        invalid = self.from_fixture("damage_types.yml", DamageType) do |fx|
           _args = {
             id:         fx["id"],
             name:       fx["name"],
@@ -115,12 +120,12 @@ module Lib
             game_order: fx["game_order"],
           }
         end
-        return nil
+        return invalid
       end
 
       # @return [void]
       def self.job_support_skills()
-        self.from_tsv("job_support_skills.tsv", JobSupportSkill) do |fx|
+        invalid = self.from_fixture("job_support_skills.yml", JobSupportSkill) do |fx|
           _args = {
             id:                  fx["id"],
             name:                fx["name"],
@@ -131,7 +136,7 @@ module Lib
             notes:               fx["notes"],
           }
         end
-        return nil
+        return invalid
       end
 
     end
