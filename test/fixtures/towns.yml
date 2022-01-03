@@ -1,0 +1,24 @@
+Atlasdam:      { "id":  1, "name": "Atlasdam",       "region_name": "Flatlands"  }
+Bolderfall:    { "id":  2, "name": "Bolderfall",     "region_name": "Cliftlands" }
+Clearbrook:    { "id":  3, "name": "Clearbrook",     "region_name": "Riverlands" }
+Cobbleston:    { "id":  4, "name": "Cobbleston",     "region_name": "Highlands"  }
+Duskbarrow:    { "id":  5, "name": "Duskbarrow",     "region_name": "Woodlands"  }
+Everhold:      { "id":  6, "name": "Everhold",       "region_name": "Highlands"  }
+Flamesgrace:   { "id":  7, "name": "Flamesgrace",    "region_name": "Frostlands" }
+Goldshore:     { "id":  8, "name": "Goldshore",      "region_name": "Coastlands" }
+Grandport:     { "id":  9, "name": "Grandport",      "region_name": "Coastlands" }
+Marsalim:      { "id": 10, "name": "Marsalim",       "region_name": "Sunlands"   }
+Noblecourt:    { "id": 11, "name": "Noblecourt",     "region_name": "Flatlands"  }
+Northreach:    { "id": 12, "name": "Northreach",     "region_name": "Frostlands" }
+Orewell:       { "id": 13, "name": "Orewell",        "region_name": "Cliftlands" }
+Quarrycrest:   { "id": 14, "name": "Quarrycrest",    "region_name": "Cliftlands" }
+Rippletide:    { "id": 15, "name": "Rippletide",     "region_name": "Coastlands" }
+Riverford:     { "id": 16, "name": "Riverford",      "region_name": "Riverlands" }
+Swarkii:       { "id": 17, "name": "S'warkii",       "region_name": "Woodlands"  }
+Saintsbridge:  { "id": 18, "name": "Saintsbridge",   "region_name": "Riverlands" }
+Stillsnow:     { "id": 19, "name": "Stillsnow",      "region_name": "Frostlands" }
+Stonegard:     { "id": 20, "name": "Stonegard",      "region_name": "Highlands"  }
+Sunshade:      { "id": 21, "name": "Sunshade",       "region_name": "Sunlands"   }
+VictorsHollow: { "id": 22, "name": "Victors Hollow", "region_name": "Woodlands"  }
+Wellspring:    { "id": 23, "name": "Wellspring",     "region_name": "Sunlands"   }
+Wispermill:    { "id": 24, "name": "Wispermill",     "region_name": "Flatlands"  }

@@ -1,4 +1,4 @@
-class Region < ApplicationRecord
+class Town < ApplicationRecord
   # =====================================================================
   # Attributes
   # =====================================================================
@@ -10,6 +10,11 @@ class Region < ApplicationRecord
   #   @return [String]
   validates(:name, presence: true, uniqueness: true)
 
+  # @!attribute region_name
+  #   @required
+  #   @return [String]
+  validates(:region_name, presence: true)
+
   # @!endgroup Attributes
 
   # =====================================================================
@@ -18,13 +23,14 @@ class Region < ApplicationRecord
 
   # @!group Associations
 
-  # @!attribute towns [rw]
-  #   @return [Array<Town>]
-  has_many(
-    :towns,
-    class_name: "Town",
-    primary_key: "name",
+  # @!attribute region
+  #   @return [Region]
+  belongs_to(
+    :region,
+    class_name: "Region",
     foreign_key: "region_name",
+    primary_key: "name",
+    required: true,
   )
 
   # @!endgroup Associations
@@ -36,7 +42,7 @@ class Region < ApplicationRecord
   # @!group Scopes
 
   # @!method self.scope_for_trestle()
-  #   @return [Region::ActiveRecord_Relation]
+  #   @return [Town::ActiveRecord_Relation]
   scope(:scope_for_trestle, -> { all() })
 
   # @!endgroup Scopes
@@ -47,7 +53,7 @@ class Region < ApplicationRecord
 
   # @return [String]
   def self.icon_css_class()
-    return "mdi mdi-map"
+    return "mdi mdi-map-search"
   end
 
   # =====================================================================

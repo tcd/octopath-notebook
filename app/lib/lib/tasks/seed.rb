@@ -16,8 +16,9 @@ module Lib
       # @return [Hash]
       def self.all()
         invalid = {}
-        invalid["damage_types"] = self.damage_types()
         invalid["regions"] = self.regions()
+        invalid["towns"] = self.towns()
+        invalid["damage_types"] = self.damage_types()
         invalid["jobs"] = self.jobs()
         invalid["job_support_skills"] = self.job_support_skills()
         return invalid
@@ -92,7 +93,19 @@ module Lib
             name: fx["name"],
           }
         end
-        return invalud
+        return invalid
+      end
+
+      # @return [void]
+      def self.towns()
+        invalid = self.from_fixture("towns.yml", Town) do |fx|
+          _args = {
+            id:          fx["id"],
+            name:        fx["name"],
+            region_name: fx["region_name"],
+          }
+        end
+        return invalid
       end
 
       # @return [void]
