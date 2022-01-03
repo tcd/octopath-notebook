@@ -1,0 +1,15 @@
+{
+  "name": "octopathtravelmap",
+  "version": "0.0.1",
+  "description": "",
+  "main": "script-1.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Clay Dunston <dunstontc@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "pkg-dir": "^6.0.1"
+  }
+}

@@ -1,0 +1,1063 @@
+<html>
+<head>
+	<title>Octopath Traveler Interactive Map</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="robots" content="index, follow">
+	<meta name="keywords" content="Octopath, octopath traveler interactive map, octopath interactive map, interactive map, map, Octopath Treaveller, Octopath Traveler, Nintendo Switch Maps, octopath map, octopath traveler map, octopath guide" />
+	<meta name='owner' content='Wess Bechard'>
+	<meta property="og:locale:alternate" content="en_US" />
+	<meta property="og:type" content="activity" />
+	<meta property="og:url" content="http://www.octopathtravelmap.com" />
+	<meta property="og:site_name" content="Octopath Traveler Interactive Map" />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:title" content="Octopath Traveler Interactive Map" />
+	<meta property="og:description" content="Octopath Traveler Map provides an interactive map of Orsterra from Octopath Traveler with waypoints, treasure, interesting townspeople, and much more."/>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css" />
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+</head>
+<body>
+
+<div id="sideNavigation" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="#dialog_about" rel="modal:open">About</a>
+  <a href="#dialog_contributors" rel="modal:open">Contributors</a>
+  <a href="https://old.reddit.com/r/octopathtraveler/" target="_blank">Octopath Traveler Subreddit</a>
+  <a href="https://www.reddit.com/user/bechard" target="_blank">PM me on Reddit!</a>
+  <a href="mailto:bechard@gmail.com">Send me an E-Mail!</a>
+  <span><p><b>Map Notes</b><br /><br />Hover to see details, click for additional information on towns and zones!</p><br />
+  		<p>Please get in touch if you have any additional details, or find any incorrect waypoints.  I'd also love to hear what you think!</p></span>
+  		<span ><p>If you like this map, feel free to <br/><a href="https://paypal.me/WessBechard" target="_blank">Buy me a beer!</a></p></span>
+</div>
+
+<nav class="topnav">
+  <a href="#" onclick="openNav()">
+    <svg width="20" height="20" id="icoOpen">
+        <path d="M0,3 20,3" stroke="#000" stroke-width="3"/>
+        <path d="M0,10 20,10" stroke="#000" stroke-width="3"/>
+        <path d="M0,17 20,17" stroke="#000" stroke-width="3"/>
+    </svg>
+  </a>
+  <div class="topnav_title">
+  	<span>Octopath Traveler Map</span>
+  </div>
+</nav>
+
+<div id="main">
+	<div id='map'></div>
+</div>
+
+<div id="dialog_about" title="About This Map" style="display:none;">
+  <p>Hi, my name is Wess, and this map was created for the <a href="https://old.reddit.com/r/octopathtraveler" target="_blank">/r/octopathtraveler</a> community, with information gathered by the community!<br/><br />We all share a unique love for this game, and this map serves as a love letter to the enjoyment of playing.<br /><br />Cheers.</p>
+</div>
+
+<div id="dialog_contributors" title="Contributors" style="display:none;">
+  <p>I can't thank these contributors enough, this wouldn't have been possible without your help!<br />
+  <br />
+  <br/><b>relator_fabula</b> -- Map Icons, so many awesome icons!
+  <br/><b>captain_merrrica</b> -- Detailed dungeon levels, zone levels, story areas, etc.
+  <br/><b>junpei</b> -- Thanks for catching my CSS mistakes!
+  <br/><b>Remgine</b> -- Full map with notes everywhere!  Useful Villagers, Beasts, Cities, etc.
+  <br/><b>miss_claymore (Mod)</b> -- Thanks for your support!
+
+  </p>
+</div>
+
+<script>
+
+	// $(document).ready(function($) {
+
+
+
+	// });
+
+    const assetRoot = "http://www.octopathtravelmap.com/"
+
+	function openNav() {
+	    document.getElementById("sideNavigation").style.width = "250px";
+	    document.getElementById("main").style.marginLeft = "250px";
+	}
+
+	function closeNav() {
+	    document.getElementById("sideNavigation").style.width = "0";
+	    document.getElementById("main").style.marginLeft = "0";
+	}
+
+	var yx = L.latLng;
+
+	var xy = function(x, y) {
+		if (L.Util.isArray(x)) {    // When doing xy([x, y]);
+			return yx(x[1], x[0]);
+		}
+		return yx(y, x);  // When doing xy(x, y);
+	};
+
+	var CharacterIcon = L.Icon.extend({
+		options: {
+			iconSize:     [49, 75],
+			iconAnchor:   [24, 38],
+			popupAnchor:  [-3, -3]
+		}
+	});
+
+	var cityIcon = L.icon({
+		iconUrl: 'images/icons/town.png',
+		shadowUrl: 'images/icons/town_b.png',
+		iconSize:     [41, 37],
+		shadowSize:     [41, 37],
+		iconAnchor:   [20, 18],
+		shadowAnchor:   [18, 18],
+		popupAnchor:  [-3, -3]
+	});
+
+	var caveIcon = L.icon({
+		iconUrl: 'images/icons/cave.png',
+		shadowUrl: 'images/icons/cave_b.png',
+		iconSize:     [41, 37],
+		shadowSize:     [41, 37],
+		iconAnchor:   [20, 18],
+		shadowAnchor:   [19, 19],
+		popupAnchor:  [-3, -3]
+	});
+
+	var forestIcon = L.icon({
+		iconUrl: 'images/icons/forest.png',
+		shadowUrl: 'images/icons/forest_b.png',
+		iconSize:     [41, 37],
+		shadowSize:     [41, 37],
+		iconAnchor:   [20, 18],
+		shadowAnchor:   [18, 18],
+		popupAnchor:  [-3, -3]
+	});
+
+	var mansionIcon = L.icon({
+		iconUrl: 'images/icons/mansion.png',
+		shadowUrl: 'images/icons/mansion_b.png',
+		iconSize:     [41, 37],
+		shadowSize:     [41, 37],
+		iconAnchor:   [20, 18],
+		shadowAnchor:   [18, 18],
+		popupAnchor:  [-3, -3]
+	});
+
+	var ruinsIcon = L.icon({
+		iconUrl: 'images/icons/ruins.png',
+		shadowUrl: 'images/icons/ruins_b.png',
+		iconSize:     [32, 37],
+		shadowSize:     [32, 37],
+		iconAnchor:   [20, 18],
+		shadowAnchor:   [18, 18],
+		popupAnchor:  [-3, -3]
+	});
+
+	var catacombIcon = L.icon({
+		iconUrl: 'images/icons/catacomb.png',
+		shadowUrl: 'images/icons/catacomb_b.png',
+		iconSize:     [41, 37],
+		shadowSize:     [41, 37],
+		iconAnchor:   [20, 18],
+		shadowAnchor:   [18, 18],
+		popupAnchor:  [-3, -3]
+	});
+
+	var shrineIcon = L.icon({
+		iconUrl: 'images/icons/shrine.png',
+		shadowUrl: 'images/icons/shrine_b.png',
+		iconSize:     [22, 24],
+		shadowSize:     [22, 24],
+		iconAnchor:   [14, 13],
+		shadowAnchor:   [13, 11],
+		popupAnchor:  [-3, -3]
+	});
+
+	var advancedShrineIcon = L.icon({
+		iconUrl: 'images/icons/advanced_shrine.png',
+		shadowUrl: 'images/icons/shrine_b.png',
+		iconSize:     [24, 26],
+		shadowSize:     [22, 24],
+		iconAnchor:   [14, 13],
+		shadowAnchor:   [13, 9],
+		popupAnchor:  [-3, -3]
+	});
+
+	var zoneIcon = L.icon({
+		iconUrl: 'images/icons/zone.png',
+		iconSize:     [26, 29],
+		iconAnchor:   [13, 14],
+		popupAnchor:  [-3, -3]
+	});
+
+	var cityGreenIcon = L.icon({
+		iconUrl: 'images/icons/town_g.png',
+		shadowUrl: 'images/icons/town_b.png',
+		iconSize:     [41, 37],
+		shadowSize:     [41, 37],
+		iconAnchor:   [20, 18],
+		shadowAnchor:   [18, 18],
+		popupAnchor:  [-3, -3]
+	});
+
+	var caveGreenIcon = L.icon({
+		iconUrl: 'images/icons/cave_g.png',
+		shadowUrl: 'images/icons/cave_b.png',
+		iconSize:     [41, 37],
+		shadowSize:     [41, 37],
+		iconAnchor:   [20, 18],
+		shadowAnchor:   [19, 19],
+		popupAnchor:  [-3, -3]
+	});
+
+	var forestGreenIcon = L.icon({
+		iconUrl: 'images/icons/forest_g.png',
+		shadowUrl: 'images/icons/forest_b.png',
+		iconSize:     [41, 37],
+		shadowSize:     [41, 37],
+		iconAnchor:   [20, 18],
+		shadowAnchor:   [18, 18],
+		popupAnchor:  [-3, -3]
+	});
+
+	var mansionGreenIcon = L.icon({
+		iconUrl: 'images/icons/mansion_g.png',
+		shadowUrl: 'images/icons/mansion_b.png',
+		iconSize:     [41, 37],
+		shadowSize:     [41, 37],
+		iconAnchor:   [20, 18],
+		shadowAnchor:   [18, 18],
+		popupAnchor:  [-3, -3]
+	});
+
+	var ruinsGreenIcon = L.icon({
+		iconUrl: 'images/icons/ruins_g.png',
+		shadowUrl: 'images/icons/ruins_b.png',
+		iconSize:     [32, 37],
+		shadowSize:     [32, 37],
+		iconAnchor:   [20, 18],
+		shadowAnchor:   [18, 18],
+		popupAnchor:  [-3, -3]
+	});
+
+	var catacombGreenIcon = L.icon({
+		iconUrl: 'images/icons/catacomb_g.png',
+		shadowUrl: 'images/icons/catacomb_b.png',
+		iconSize:     [41, 37],
+		shadowSize:     [41, 37],
+		iconAnchor:   [20, 18],
+		shadowAnchor:   [18, 18],
+		popupAnchor:  [-3, -3]
+	});
+
+	var alfynIcon = new CharacterIcon({iconUrl: 'images/alfyn.png'}),
+		cyrusIcon = new CharacterIcon({iconUrl: 'images/cyrus.png'}),
+		haanitIcon = new CharacterIcon({iconUrl: 'images/haanit.png'}),
+		olbericIcon = new CharacterIcon({iconUrl: 'images/olberic.png'}),
+		opheliaIcon = new CharacterIcon({iconUrl: 'images/ophelia.png'}),
+		primroseIcon = new CharacterIcon({iconUrl: 'images/primrose.png'}),
+		therioncon = new CharacterIcon({iconUrl: 'images/therion.png'}),
+		tressaIcon = new CharacterIcon({iconUrl: 'images/tressa.png'});
+
+	// Quests Chapter 1 Towns
+
+	var flamesgraceSideQuests = "<br><br><b>Side Quests</b><br><br><b>The Innocent Inmate</b><br>Character: Accused Man<br>Steal/Purchase Dungeon Key from Guard<br>Alternate: Inquire/Scrutinize Eyewitness Account near weapon shop<br><b>Reward</b>: 1,500 Leaves, Tough Nut<br><br><b>The Slumbering Giant</b><br>Character: Diligent Student<br>Inquire/Scrutinize Muttering Coder then defeat Jotunn in Hoarfrost Grotto<br><b>Reward</b>: 4,500 Leaves, Calamity Spear<br><br><b>Sir Miles, Servant of the Flame</b><br>Character: Miles<br>Inquire/Scrutinize Former Knight Ardante in Cathedral<br><b>Reward</b>: 1,500 Leaves, Nourishing Nut";
+	var atlasdamSideQuests = "<br><br><b>Side Quests</b><br><br><b>Theracio's Tutelage</b><br>Character: Theracio<br>Challenge/Provoke Moneylender<br><b>Reward</b>: 1,500 Leaves, Invigorating Nut<br><br><b>Fit for a King</b><br>Character: Capable Culinarian<br>Steal/Purchase Ambrosia Milk, Roc Egg, Emperor Cran in Atlasdam<br><b>Reward</b>: 1,500 Leaves, Healing Grape (M) x2<br><br><b>City of Gold</b><br>Character: Passionate Reader<br>Guide/Allure Best-selling Author from West Grandport Coast<br>Alternate: Inquire/Scrutinize City of Gold from Scholarly Youth in Marsalim<br><b>Reward</b>: 9,000 Leaves, Alluring Ribbon<br><br><b>The Prodigious Painting</b><br>Character: Art Lover<br>Steal/Purchase Final Masterpiece from Landscape Artist at East Saintsbridge Traverse<br>Alternate: Guide/Allure Landscape Artist from East Saintsbridge Traverse to quest giver<br><b>Reward</b>: 13,000 Leaves";
+	var rippletideSideQuests = "<br><br><b>Side Quests</b><br><br><b>Love Unrequited</b><br>Character: Mathilda<br>Challenge/Provoke Tony nearby and lose<br>Alternate: Guide/Allure Tony's Mom and talk to him<br><b>Reward</b>: 1,500 Leaves, Critical Nut (M)<br><br><b>Le Mann, Explorer Extraordinaire</b><br>Character: Le Mann<br>Steal/Purchase Adventurer's Attire from Rippletide Antique Dealer<br><b>Reward</b>: 1,500 Leaves, Fortifying Nut";
+	var cobblestonSideQuests = "<br><br><b>Side Quests</b><br><br><b>Fertile Fields</b><br>Character: Kindly Farmer<br>Steal/Purchase Cow Dung from nearby Courageous Cowherd in Cobbleston<br><b>Reward</b>: 1,500 Leaves, Inspiriting Plum (M) x3<br><br><b>Never Forget</b><br>Character: Melancholy Youth<br>Steal/Purchase Lorie's Diary from Affable Antiquarian in Noblecourt<br>Alternate: Guide/Allure quest giver to grave in Noblecourt<br><b>Reward</b>: 9,000 Leaves, Sharp Nut (M)<br><br><b>Noelle, Seeker of Knowledge</b><br>Character: Noelle<br>Guide/Allure Noelle to the monument in Untouched Sanctum<br><b>Reward</b>: 4,800 Leaves, Tough Nut";
+	var sunshadeSideQuests = "<br><br><b>Side Quests</b><br><br><b>Her Time to Shine</b><br>Character: Blue Dancer<br>Steal/Purchase Diva's Dress from Star Dancer in Sunshade<br>Alternate: Guide/Allure Blue Dancer to Sickly Girl/Pensive Mother<br><b>Reward</b>: 1,500 Leaves, Wind Amulet<br><br><b>Ria, Born to Roam</b><br>Character: Wayfaring Girl<br>Challenge/Provoke the guy harassing her<br><b>Reward</b>: 1,500 Leaves, Magic Nut<br><br><b>The Bouncer</b><br>Character: Hired Barkeep<br>Challenge/Provoke Bouncer outside of Tavern with Olberic<br><b>Reward</b>: 1,500 Leaves, Fortifying Nut";
+	var southClearbrookTraverseSideQuests = "<br><br><b>Side Quests</b><br><br><b>A Sweet Reunion</b><br>Character: Lost Grandfather<br>Guide/Allure to Lonely Grandchild in Clearbrook<br><b>Reward</b>: 2,000 Leaves, 2,000 Leaves";
+	var clearbrookSideQuests = "<br><br><b>Side Quests</b><br><br><b>Meryl, Lost then Found</b><br>Character: Meryl<br>Inquire/Scrutinize Meryl's father in Clearbrook<br><b>Reward</b>: 1,500 Leaves, Resistant Nut<br><br><b>For Want of Fish</b><br>Character: Angler<br>Steal/Purchase Saucy Prawns from Magg the Cook in Clearbrook Tavern<br><b>Reward</b>: 1,500 Leaves, Mighty Belt";
+	var bolderfallSideQuests = "<br><br><b>Side Quests</b><br><br><b>Kaia, Mother of Dragons</b><br>Character: Egg-seeking Girl<br>Inquire/Scrutinize Friendly Farmer in West Clearbrook Traverse, Giant Egg from treasure spot<br><b>Reward</b>: 1,500 Leaves, Light Nut<br><br><b>Daughter of the Dark God</b><br>Character: Alphas<br>Challenge/Provoke Alphas<br><b>Reward</b>: 5,000 Leaves<br><br><b>The Bandits' Code</b><br>Character: Veteran Brigand<br>Allure/Guide Faltering Youth from Sunshade Tavern<br>Alternate: Inquire/Scrutinize Marta's Gang at Victor's Hollow<br><b>Reward</b>: 2,400 Leaves, Blazon of Protection<br><br><b>Sparks of Revolution</b><br>Character: Stern Guardsman<br>Steal/Purchase Revolutionary Sword, Spear of Justice, Rebel Axe from Lower Bolderfall<br>Alternate: Inquire/Scrutinize Project Plans from Enlightened Aristocrat, talk to Pauper Revolutionary<br><b>Reward</b>: 2,000 Leaves";
+	var swarkiiSideQuests = "<br><br><b>Side Quests</b><br><br><b>Ashlan the Beastmaster</b><br>Character: Ashlan<br>Inquire/Scrutinize about beast masters at S'warkii tavern<br><b>Reward</b>: 1,500 Leaves, Slippery Nut<br><br><b>Rite of Passage</b><br>Character: Aspiring Hunter<br>Steal/Purchase Giant Tusk from Nomadic Hunter in forest north of S'warkii<br>Alternate: Inquire/Scrutiize Where the Giant Boar Roams from Roving Naturalist on North S'warkii Trail<br><b>Reward</b>: 1,500 Leaves, Refreshing Jam<br><br><b>Way Through the Woods</b><br>Character: Genteel Madamn<br>Guide/Allure quest giver, speak with Industrious Husband in Bolderfall<br><b>Reward</b>: 1,500 Leaves, Magic Nut, Critical Nut";
+
+	// Quests Chapter 2-3 Towns
+	var stillsnowSideQuests = "<br><br><b>Side Quests</b><br><br><b>Let There Be Warmth</b><br>Character: Ingenious Inventor<br>Steal/Purchase Adequate Flax, Satisfactory Coal, Portable Pot from Villagers<br><b>Reward</b>: 4,800 Leaves, Nourishing Nut, Sharp Nut<br><br><b>Setting Out</b><br>Character: Pensive Girl<br>Challenge/Provoke Pathetic Father<br>Alternate: Guide/Allure Tavern Proprieter from Quarrycrest to quest giver<br><b>Reward</b>: 3,300 Leaves, Alluring Ribbon<br><br><b>Sir Miles, Servant of the Flame #2</b><br>Character: Miles<br>Challenge/Provoke Miles<br><b>Reward</b>: 6,600 Leaves, Nourishing Nut";
+	var noblecourtSideQuests = "<br><br><b>Side Quests</b><br><br><b>In Search of Father</b><br>Character: Kit<br>Allure/Guide Aspiring Actor from Noblecourt<br><b>Reward</b>: 4,500 Leaves<br><br><b>The Gravekeeper's Grief</b><br>Character: Old Gravekeeper<br>Steal/Purchase Codger-friendly bow from Accomplished Greybeard in Noblecourt<br><b>Reward</b>: 4,500 Leaves, Gravekeeper's Mark<br><br><b>The Price of Vengeance</b><br>Character: Luckless Sellsword<br>Challenge/Provoke Drunk in Atlasdam, Ruffian in Goldshore, Swindler in Duskbarrow<br><b>Reward</b>: 6,500 Leaves, Veteran's Helm<br><br><b>Thelacio's Tutelage #2</b><br>Character: Theracio<br>Steal/Purchase Tools of Learning from Junk Collector in Noblecourt<br><b>Reward</b>: 6,600 Leaves, Invigorating Nut (M)";
+	var moonstruckCoastSideQuests = "<br><br><b>Side Quests</b><br><br><b>In Search of Father #2</b><br>Character: Kit<br>Steal/Purchase Lapis Lazuli from Traveling Merchant in Grandport<br><b>Reward</b>: 9,500 Leaves";
+	var goldshoreSideQuests = "<br><br><b>Side Quests</b><br><br><b>Le Mann, Explorer Extraordinaire</b><br>Character: Le Mann<br>Guide/Allure Harris from Rippletide<br><b>Reward</b>: 6,600 Leaves, Fortifying Nut (M)<br><br><b>Left Behind</b><br>Character: Former Sailor<br>Guide/Allure Amnesiac from Victors Hollow<br><b>Reward</b>: 4,500 Leaves, Elemental Ward<br><br><b>Scourge of the Seas</b><br>Character: Fledgling Fisherman<br>Steal/Purchase Leviathan Egg from Quest Giver, defeat boss of Captains' Bane<br><b>Reward</b>: 7,000 Leaves, Leviathan Shield<br><br><b>The Merchant's Path</b><br>Character: Merchantry Master<br>Inquire/Scrutinize Safe Route from Knowledgeable Traveler on Goldshore Coast<br><b>Reward</b>: 11,000 Leaves, Slippery Nut, Light Nut";
+	var stonegardSideQuests = "<br><br><b>Side Quests</b><br><br><b>A Royal Secret</b><br>Character: Inquiring Youth<br>Inquire/Scrutinize Gravekeeper's Information from Nameless Gravepeeker in Tomb of Kings<br><b>Reward</b>: 5,000 Leaves, Royal Crest<br><br><b>Lost in Translation</b><br>Character: Bookbinder<br>Guide/Allure Exotic Grandma from Rippletide<br><b>Reward</b>: 6,500 Leaves, Exotic Garb<br><br><b>Up to No Good</b><br>Character: Elder Shopowner<br>Guide/Allure Amnesiac Girl from Sunshade to the Ruffian nearby<br>Alternate: Challenge/Provoke Tobias<br><b>Reward</b>: 5,000 Leaves, Guardian Amulet<br><br><b>Noelle, Seeker of Knowledge #2</b><br>Character: Noelle<br>Inquire/Scrutinize Fortress of Everhold from Wandering Minstrel in Stonegard<br><b>Reward</b>: 6,600 Leaves, Tough Nut (M)";
+	var wellspringSideQuests = "<br><br><b>Side Quests</b><br><br><b>Shadow Over the Sands</b><br>Character: Staid Soldier<br>Inquire/Scrutinize Giant Serpent's Master in Northern Wellspring Sands, clear Quicksand Caves<br><b>Reward</b>: 8,000 Leaves, Transcendent Bow of Shadows<br><br><b>In Search of Sweets</b><br>Character: Sweet Tooth<br>Steal/Purchase Beetroot from Frostland Farmer in Stillsnow<br><b>Reward</b>: 4,500 Leaves, Gourmet's Charm<br><br><b>Ria, Born to Roam #2</b><br>Character: Ria<br>Steal/Purchase Tightly Sealed Envelope from Traveling Merchant in Wellspring<br><b>Reward</b>: 6,600 Leaves, Magic Nut (M)";
+	var eastSaintsbridgeTraverseSideQuests = "<br><br><b>Side Quests</b><br><br><b>A Corpse With No Name</b><br>Character: River Dweller<br>Guide/Allure Restless Woman from Victors Hollow<br>Alternate: Stela/Purchase Hugo's Journal from Unsavory Man in Farshore<br><b>Reward</b>: 5,000 Leaves, Gentleman's Charm";
+	var saintsbridgeSideQuests = "<br><br><b>Side Quests</b><br><br><b>Meryl, Lost then Found #2</b><br>Character: Meryl<br>Challenge/Provoke Erstwhile Sellsword<br><b>Reward</b>: 6,600 Leaves, Resistant Nut (M)<br><br><b>The Worrywart</b><br>Character: Worrywart<br>Inquire/Scrutinize Early Ice Thawing from Assiduous Scholar at East Saintsbridge Traverse<br><b>Reward</b>: 6,600 Leaves, Invigorating Nut, Resistant Nut<br><br><b>Daughter of the Dark God #2</b><br>Character: Alphas<br>Inquire/Scrutinize Alphas's Poem, talk to Fiora outside Saintsbridge Cathedral<br><b>Reward</b>: 10,000 Leaves<br><br><b>The Pilgrims' Plight</b><br>Character: Kindly Cleric<br>Challenge/Provoke Ruffian outside Saintsbridge<br><b>Reward</b>: 6,500 Leaves, Refreshing Jam";
+	var quarrycrestSideQuests = "<br><br><b>Side Quests</b><br><br><b>The Weaver's Predicament</b><br>Character: Gendy<br>Inquire/Scrutinize A Use for Textiles from Fashionable Traveler in Noblecourt<br>Alternate: Steal/Purchase Gendy's Footcloth, give to Shivering Townsperson in Flamesgrace<br><b>Reward</b>: 6,500 Leaves, Weaver's Charm<br><br><b>A Miner Dilemma</b><br>Character: Miner<br>Steal/Purchase Orewell Whetstone from Stonemonger in Goldshore<br><b>Reward</b>: 9,000 Leaves, Sharp Nut, Critical Nut<br><br><b>Kaia, Mother of Dragons #2</b><br>Character: Kaia<br>Guide/Allure The Egg Man from Quarrycrest<br><b>Reward</b>: 6,600 Leaves, Light Nut (M)";
+	var victorsHollowSideQuests = "<br><br><b>Side Quests</b><br><br><b>Arena Aspirations</b><br>Character: Listless Gladiator<br>Inquire/Scrutinize Father and Fighter from nearby Doting Aunt<br><b>Reward</b>: 4,800 Leaves, Refreshing Jam<br><br><b>Into Thin Air</b><br>Character: Laconic Father<br>Defeat boss of Forest of No Return, Guide/Allure Ellie<br><b>Reward</b>: 9,000 Leaves, Deathly Blade<br><br><b>Ashlan the Beastmaster #2</b><br>Character: Ashlan<br>Steal Snakesbane from Monster Hunter in front of Arena<br><b>Reward</b>: 6,600 Leaves, Slippery Nut (M)<br><br><b>A Promising Venture</b><br>Character: Gambler<br>Inquire/Scrutinize Estadas and Mont d'Or nearby<br><b>Reward</b>: 4,800 Leaves, Healing Grape Bunch x3";
+
+	// Quests Chapter 4
+
+	var northreachSideQuests = "<br><br><b>Side Quests</b><br><br><b>Sir Miles, Servant of the Flame #3</b><br>Character: Miles<br>Steal/Purchase Memorial Sword from nearby Refined Merchant<br><b>Reward</b>: 11,000 Leaves, Ardante Attire, Nourishing Nut (L)<br><br><b>Heirloom of a High House</b><br>Character: Byron the Noble<br>Steal/Purchase Byron's Ring from Master Jeweler in Grandport<br>Alternate: Inquire/Scrutinize Byron Family Lineage from Highbrow Historian in S'warkii<br><b>Reward</b>: 9,000 Leaves, Sharp Nut (L)<br><br><b>Here Be Dragons</b><br>Character: Traveling Author<br>Inquire/Scrutinize Dragons in Stillsnow, Orewell, Cobbleston<br><b>Reward</b>: 11,000 Leaves, Dragon's Scarf";
+	var wispermillSideQuests = "<br><br><b>Side Quests</b><br><br><b>Theracio's Tutelage #3</b><br>Character: Theracio<br>Guide/Allure Professor Bastete from Clearbrook<br><b>Reward</b>: 11,000 Leaves, Teacher's Hat, Invigorating Nut (L)";
+	var grandportSideQuests = "<br><br><b>Side Quests</b><br><br><b>An Exotic Aroma</b><br>Character: Woman from Quaragosa<br>	Steal/Purchase Quatrait Bloom from Sunshade<br><b>Reward</b>: 11,000 Leaves, Revitalizing Jam<br><br><b>Le Mann, Explorer Extraordinaire</b><br>Character: Le Mann<br>Challenge/Provoke Wharf Thug<br><b>Reward</b>: 11,000 Leaves, Adventurer's Hat, Fortifying Nut (L)";
+	var everholdSideQuests = "<br><br><b>Side Quests</b><br><br><b>Performance Art</b><br>Character: Ardent Actor<br>Steal/Purchase Sword of Sokrath from Creepy Antiquarian in Grandport<br>Alternate: Inquire/Scrutinize Song of Sokrath from Handsome Minstrel in Atlasdam<br><b>Reward</b>: 22,000 Leaves<br><br><b>Noelle, Seeker of Knowledge #3</b><br>Character: Noelle<br>Steal/Purchase Timeworn Tapestry from Stage Carpenter in Everhold<br><b>Reward</b>: 11,000 Leaves, Historian's Hat, Tough Nut (L)<br><br><b>Star of the Stage</b><br>Character: Impresario<br>Challenge/Provoke Impresario<br><b>Reward</b>: 15,000 Leaves, Revitalizing Jam";
+	var marsalimSideQuests = "<br><br><b>Side Quests</b><br><br><b>In Search of the Unknown</b><br>Character: Old Aristocat<br>Steal/Purchase Tales from a Faraway Land from Passionate Peddler in Grandport<br><b>Reward</b>: 11,000 Leaves, Alluring Ribbon<br><br><b>Ria, Born to Roam #3</b><br>Character: Ria<br>Inquire/Scrutinize Chieftain's Schedule from Chieftain in Marsalim<br><b>Reward</b>: 11,000 Leaves, Princess's Coat, Magic Nut (L)<br><br><b>The Prisoner's Plea</b><br>Character: Kevin<br>Inquire/Scrutinize Lara's New Life from Lara in Grandport<br><b>Reward</b>: 300 Leaves, Revitalizing Jam";
+	var riverfordSideQuests = "<br><br><b>Side Quests</b><br><br><b>The Adventuring Life</b><br>Character: Servant<br>Guide/Allure Enthusiastic Youth from Atlasdam to Mysterious Knight at South Orewell Pass<br>Alternate: Challenge/Provoke Mysterious Knight at South Orewell Pass<br><b>Reward</b>: 11,000 Leaves, Critical Nut (L)<br><br><b>Meryl, Lost then Found #3</b><br>Character: Meryl<br>Guide/Allure Meryl to the Sickly Woman in the house nearby<br><b>Reward</b>: 11,000 Leaves, High House's Armor, Resistant Nut (L)<br><br><b>The Hidden Hoard</b><br>Character: Passionate Youth<br>Inquire/Scrutinize The Fall of House Landard from Erstwhile Bodyguard in Stonegard<br>Alternate: House Landard Records from Erstwhiile Retainer in Stonegard<br><b>Reward</b>: 15,000 Leaves, Revitalizing Jam";
+	var orewellSideQuests = "<br><br><b>Side Quests</b><br><br><b>Kaia, Mother of Dragons #3</b><br>Character: Kaia<br>Challenge/Provoke Curious Cleric in Dragonsong Fane<br><b>Reward</b>: 11,000 Leaves, Robe of the Dragon Princess, Light Nut (L)<br><br><b>On the Precipice</b><br>Character: Struggling Merchant<br>Guide/Allure Stern Knight from Marsalim<br>Alternate: Challenge/Provoke the quest giver<br><b>Reward</b>: 11,000 Leaves, Refreshing Jam<br><br><b>The Wayward Son</b><br>Character: Miserable Mother<br>Guide/Allure Stern Knight from Marsalim<br><b>Reward</b>: 9,000 Leaves, Olive of Life (L)";
+	var duskbarrowSideQuests = "<br><br><b>Side Quests</b><br><br><b>Looting Grave Robber</b><br>Character: Obliging Merchant<br>Challenge/Provoke Grave Robber at Moldering Ruins<br><b>Reward</b>: 4,000 Leaves, Energizing Pomegranate (L)<br><br><b>Ashlan the Beastmaster #3</b><br>Character: Ashlan<br>	Guide/Allure to his father in Moldering Ruins<br><b>Reward</b>: 11,000 Leaves, Monster Trainer's Hat, Slippery Nut (L)<br><br><b>A Cub with No Name</b><br>Character: Fearful Mother<br>Guide/Allure Beastmaster from Bolderfall<br>Alternate: Inquire/Scrutinize How to Train a Tiger from Scholar of Beasts in S'warkii<br><b>Reward</b>: 7,000 Leaves, Beastly Scarf";
+
+	// Quests - Requires Chapter 4 Completion
+
+	var saintsbridge_c4_SideQuests = "<br><br><b>Side Quests - Requires Chapter 4 Completed</b><br><br><b>Friends Again</b><br>Character: Nate<br>Ophilia: Steal/Purchase River Blossom from Bully in Saintsbridge and give to Nate<br><b>Reward</b>: Badge of Friendship";
+	var wispermill_c4_SideQuests = "<br><br><b>Side Quests - Requires Chapter 4 Completed</b><br><br><b>Tilting at Windmills</b><br>Character: Slender Farmer<br>Ophilia: Guide/Allure Dan from Atlasdam<br>Alternate: Challenge/Provoke Bryan in Sunshade<br><b>Reward</b>: 22,000 Leaves";
+	var westernWispermillFlats_c4_SideQuests = "<br><br><b>Side Quests - Requires Chapter 4 Completed</b><br><br><b>Scaredy Sheep</b><br>Character: Carefree Shepherd<br>Ophilia: Inquire/Scrutinize nearby Trembling Merchant Where the Direwolf Prowls. Kill in Forest of Purgation<br><b>Reward</b>: 12,000 Leaves, Elemental Augmentor";
+	var stonegard_c4_SideQuests = "<br><br><b>Side Quests - Requires Chapter 4 Completed</b><br><br><b>Russell's Repentance</b><br>Character: Russell<br>Cyrus: Inquire/Scrutinize Know-it-alls in Duskbarrow, Bolderfall, and Stillsnow<br><b>Reward</b>: 9,000 Leaves, Confessional Armor";
+	var rippletide_c4_SideQuests = "<br><br><b>Side Quests - Requires Chapter 4 Completed</b><br><br><b>Princess Mary, Redux</b><br>Character: Princess Mary<br>Cyrus: Guide/Allure Professor Paul from Undertow Cove<br><b>Reward</b>: 9,000 Leaves, Absolute Zero Staff";
+	var grandport_c4_SideQuests = "<br><br><b>Side Quests - Requires Chapter 4 Completed</b><br><br><b>The Diarist's Desire</b><br>Character: Ing the Diarist<br>Tressa: Marvelous Memento: Duskbarrow, Astonishing Object: Bolderfall, Incredible Item: Wellspring<br><b>Reward</b>: 6,500 Leaves, Alluring Ribbon<br><br><b>Keeping Up with the Wyndhams</b><br>Character: Cordelia<br>Tressa + Therion. Challenge/Provoke Brigand at West Grandport Coast for Letter<br><b>Reward</b>: 12,000 Leaves, Blessed Blazon";
+	var sunshade_c4_SideQuests = "<br><br><b>Side Quests - Requires Chapter 4 Completed</b><br><br><b>The Adventures of Ali</b><br>Character: Ali<br>Tressa: Guide/Allure Maruf from Marsalim<br><b>Reward</b>: 9,000 Leaves, Tradewinds Spear";
+	var riverford_c4_SideQuests = "<br><br><b>Side Quests - Requires Chapter 4 Completed</b><br><br><b>Hello Again, Harald</b><br>Character: Reggie<br>Olberic: Steal/Purchase Memorial Necklace from Merchant in Wellspring<br><b>Reward</b>: 8,000 Leaves, Harald's Sword";
+	var northreach_c4_SideQuests = "<br><br><b>Side Quests - Requires Chapter 4 Completed</b><br><br><b>Ogen's Epilogue</b><br>Character: Ogen<br>Alfyn: Steal/Purchase Mind-me-always from Flower Girl in Victors Hollow<br><b>Reward</b>: 9,000 Leaves, Double Tomahawk";
+	var boldefall_c4_SideQuests = "<br><br><b>Side Quests - Requires Chapter 4 Completed</b><br><br><b>Heathcote's Hijinks</b><br>Character: Heathcote<br>Therion: Guide/Allure the Old Man in Wispermill<br><b>Reward</b>: 12,000 Leaves, Heathcote's Dagger";
+	var victorsHollow_c4_SideQuests = "<br><br><b>Side Quests - Requires Chapter 4 Completed</b><br><br><b>Again with Alaic</b><br>Character: Alaic<br>H'aanit: Guide/Allure Alaic to Forest of No Return, defeat Bandit Leader<br><b>Reward</b>: 9,000 Leaves, Primeval Bow of Storms";
+	var flamesgrace_c4_SideQuests = "<br><br><b>Side Quests - Requires Chapter 4 Completed</b><br><br><b>Lianna and Eliza	</b><br>Character: Lianna<br>Ophilia + H'aanit: Speak in Wispermill. Challenge Remnant Leader in Forest of Purgation<br><b>Reward</b>: 11,000 Leaves, Bishop's Staff";
+	var wellspring_c4_SideQuests = "<br><br><b>Side Quests - Requires Chapter 4 Completed</b><br><br><b>Back with Bale</b><br>Character: Bale<br>Ophilia + Olberic: Inquire/Scrutinize Bishop Donovan in Goldshore, return to Bale<br><b>Reward</b>: 9,000 Leaves, Captain's Badge";
+	var quarrycrest_c4_SideQuests = "<br><br><b>Side Quests - Requires Chapter 4 Completed</b><br><br><b>Revello and Odette</b><br>Character: Revello<br>Cyrus + Primrose: Inquire/Scrutinize Why from Odette. Give to Revello in Noblecourt<br><b>Reward</b>: 9,000 Leaves, Revello's Helm";
+	var clearbrook_c4_SideQuests = "<br><br><b>Side Quests - Requires Chapter 4 Completed</b><br><br><b>Zeph and Mercedes #1</b><br>Character: Nina<br>Cyrus + Alfyn: Steal/Purchase Letter from Zeph, Deliver to Mercedes in Atlasdam<br><b>Reward</b>: None";
+	var atlasdam_c4_SideQuests = "<br><br><b>Side Quests - Requires Chapter 4 Completed</b><br><br><b>Zeph and Mercedes #2</b><br>Character: Mercedes<br>Steal/Purchase Letter from Mercedes. Deliver to Zeph in Clearbrook<br><b>Reward</b>: 11,000 Leaves, Memorial Axe";
+	var noblecourt_c4_SideQuests = "<br><br><b>Side Quests - Requires Chapter 4 Completed</b><br><br><b>Mikk and Makk Make Good</b><br>Character: Orlick or Barham<br>Tressa + Therion: Challenge/Provoke Leon Bastralle at Noblecourt<br><b>Reward</b>: 11,000 Leaves, Mikk and Makk's Shield";
+	var stillsnow_c4_SideQuests = "<br><br><b>Side Quests - Requires Chapter 4 Completed</b><br><br><b>Arianna Again #1</b><br>Character: Arianna<br>H'aanit + Primrose: Guide/Allure Arianna to Natalia in Stonegard<br><b>Reward</b>: None<br><br><b>Arianna Again #2</b><br>Character: Oren<br>Guide/Allure Oren to Natalia in Stonegard<br><b>Reward</b>: 11,000 Leaves, Adamantine Dagger";
+	var marsalim_c4_SideQuests = "<br><br><b>Side Quests - Requires All Chapters Completed</b><br><br><b>King Khalim's Conundrum</b><br>Character: King Khalim<br>Guide/Allure Theater Manager from Everhold<br><b>Reward</b>: 30,000 Leaves";
+	var westSwarkiiTrail_c4_SideQuests = "<br><br><b>Side Quests - Requires All Chapters, Daughter of the Dark God #2 and In Search of Father #2 Completed</b><br><br><b>Alphas and the Impresario</b><br>Character: Impresario<br>Boss battle<br><b>Reward</b>: 10,000 Leaves<br><br><b>At Journey's End</b><br>Character: Impresario<br>Fast Travel to the now unlocked final dungeon<br><b>Reward</b>: 100,000 Leaves, Spurning Ribbon";
+
+
+	// Character Start Positions
+
+	var alfynPos = xy(912, 705);
+	var alfyn = L.marker(alfynPos, {icon: alfynIcon}).bindTooltip("<b>Alfyn</b>").openTooltip();
+
+	var cyrusPos = xy(1430, 1020);
+	var cyrus = L.marker(cyrusPos, {icon: cyrusIcon}).bindTooltip("<b>Cyrus</b>").openTooltip();
+
+	var haanitPos = xy(1060, 1160);
+	var haanit = L.marker(haanitPos, {icon: haanitIcon}).bindTooltip("<b>H'aanit</b>").openTooltip();
+
+	var olbericPos = xy(1610, 590);
+	var olberic = L.marker(olbericPos, {icon: olbericIcon}).bindTooltip("<b>Olberic</b>").openTooltip();
+
+	var opheliaPos = xy(1290, 1110);
+	var ophelia = L.marker(opheliaPos, {icon: opheliaIcon}).bindTooltip("<b>Ophelia</b>").openTooltip();
+
+	var primrosePos = xy(1315, 615);
+	var primrose = L.marker(primrosePos, {icon: primroseIcon}).bindTooltip("<b>Primrose</b>").openTooltip();
+
+	var therionPos = xy(850, 850);
+	var therion = L.marker(therionPos, {icon: therioncon}).bindTooltip("<b>Therion</b>").openTooltip();
+
+	var tressaPos = xy(1640, 800);
+	var tressa = L.marker(tressaPos, {icon: tressaIcon}).bindTooltip("<b>Tressa</b>").openTooltip();
+
+	var characterGroup = L.layerGroup([alfyn, cyrus, haanit, olberic, ophelia, primrose, therion, tressa]);
+
+	// Caves
+
+	var caveOfOriginPos = xy(1380, 1120);
+	var caveOfOrigin = L.marker(caveOfOriginPos, {icon: caveIcon}).bindTooltip("<b>Cave of Origin</b><br>Danger Level: 11<br><b>Story</b>: Ophilia - Chapter 1").openTooltip();
+
+	var subterraneanStudyPos = xy(1470, 1040);
+	var subterraneanStudy = L.marker(subterraneanStudyPos, {icon: caveIcon}).bindTooltip("<b>Subterranean Study</b><br>Danger Level: 11<br><b>Story</b>: Cyrus - Chapter 1").openTooltip();
+
+	var undertowCovePos = xy(1560, 930);
+	var undertowCove = L.marker(undertowCovePos, {icon: caveIcon}).bindTooltip("<b>Undertow Cove</b><br>Danger Level: 45<br>Purple Chest Justice Breaker").openTooltip();
+
+	var ebonyGrottoPos = xy(1950, 1410);
+	var ebonyGrotto = L.marker(ebonyGrottoPos, {icon: caveIcon}).bindTooltip("<b>Ebony Grotto</b><br>Danger Level: 45<br><b>Story</b>: Ophilia - Chapter 4<br><b>Purple Chest</b>: Adamantine Hat").openTooltip();
+
+	var mawOfTheIceDragonPos = xy(1270, 1510);
+	var mawOfTheIceDragon = L.marker(mawOfTheIceDragonPos, {icon: caveIcon}).bindTooltip("<b>Maw of the Ice Dragon</b><br>Danger Level: 45<br><b>Purple Chest</b>: Adamantine Hat").openTooltip();
+
+	var hoarfrostGrottoPos = xy(1152, 1310);
+	var hoarfrostGrotto = L.marker(hoarfrostGrottoPos, {icon: caveIcon}).bindTooltip("<b>Hoarfrost Grotto</b><br>Danger Level: 25<br><b>Purple Chest</b>: Soul Hatchet").openTooltip();
+
+	var forgottenGrottoPos = xy(820, 1250);
+	var forgottenGrotto = L.marker(forgottenGrottoPos, {icon: caveIcon}).bindTooltip("<b>Forgotten Grotto</b><br>Danger Level: 34<br><b>Story</b>: Tressa - Chapter 3<br><b>Purple Chest</b>: Sledge Hammer").openTooltip();
+
+	var carrionCavesPos = xy(780, 820);
+	var carrionCaves = L.marker(carrionCavesPos, {icon: caveIcon}).bindTooltip("<b>Carrion Caves</b><br>Danger Level: 20<br><b>Purple Chest</b>: Physical Defense Nut").openTooltip();
+
+	var cavesOfRhiyoPos = xy(985, 710);
+	var cavesOfRhiyo = L.marker(cavesOfRhiyoPos, {icon: caveIcon}).bindTooltip("<b>Caves of Rhiyo</b><br>Danger Level: 11<br><b>Story</b>: Alfyn - Chapter 1").openTooltip();
+
+	var derelictMinePos = xy(520, 743);
+	var derelictMine = L.marker(derelictMinePos, {icon: caveIcon}).bindTooltip("<b>Derelict Mine</b><br>Danger Level: 30<br><b>Purple Chest</b>: Conscious Stone").openTooltip();
+
+	var refugeRuinsPos = xy(420, 370);
+	var refugeRuins = L.marker(refugeRuinsPos, {icon: caveIcon}).bindTooltip("<b>Refuge Ruins</b><br>Danger Level: 50<br><b>Purple Chest</b>: Forbidden Blade").openTooltip();
+
+	var twinFallsPos = xy(1038, 517);
+	var twinFalls = L.marker(twinFallsPos, {icon: caveIcon}).bindTooltip("<b>Twin Falls</b><br>Danger Level: 20<br><b>Purple Chest</b>: Psychic Staff").openTooltip();
+
+	var farshorePos = xy(955, 368);
+	var farshore = L.marker(farshorePos, {icon: caveIcon}).bindTooltip("<b>Farshore</b><br>Danger Level: 30<br><b>Purple Chest</b>: Clarity Stone, 30,000 Leaves").openTooltip();
+
+	var whistlingCavernsPos = xy(1418, 560);
+	var whistlingCaverns = L.marker(whistlingCavernsPos, {icon: caveIcon}).bindTooltip("<b>Whistling Caverns</b><br>Danger Level: 20<br><b>Purple Chest</b>: 6,000 Leaves").openTooltip();
+
+	var blackMarketPos = xy(1200, 310);
+	var blackMarket = L.marker(blackMarketPos, {icon: caveIcon}).bindTooltip("<b>Black Market</b><br>Danger Level: 36<br><b>Story</b>: Therion - Chapter 3<br><b>Purple Chest</b>: Calming Stone").openTooltip();
+
+	var lizardmansDenPos = xy(1205, 430);
+	var lizardmansDen = L.marker(lizardmansDenPos, {icon: caveIcon}).bindTooltip("<b>Lizardman's Den</b><br>Danger Level: 32<br><b>Story</b>: Olberic - Chapter 3<br><b>Purple Chest</b>: Silver-filled Pouch").openTooltip();
+
+	var quicksandCavesPos = xy(1433, 420);
+	var quicksandCaves = L.marker(quicksandCavesPos, {icon: caveIcon}).bindTooltip("<b>Quicksand Caves</b><br>Danger Level: 40<br><b>Purple Chest</b>: Inferno Axe").openTooltip();
+
+	var cavesOfMaiyaPos = xy(1560, 790);
+	var cavesOfMaiya = L.marker(cavesOfMaiyaPos, {icon: caveIcon}).bindTooltip("<b>Caves of Maiya</b><br>Danger Level: 11<br><b>Story</b>: Tressa - Chapter 1").openTooltip();
+
+	var brigandsDenPos = xy(1610, 650);
+	var brigandsDen = L.marker(brigandsDenPos, {icon: caveIcon}).bindTooltip("<b>Brigand's Den</b><br>Danger Level: 11<br><b>Story</b>: Olberic - Chapter 1").openTooltip();
+
+	var untouchedSanctumPos = xy(1740, 695);
+	var untouchedSanctum = L.marker(untouchedSanctumPos, {icon: caveIcon}).bindTooltip("<b>Untouched Sanctum</b><br>Danger Level: 15<br><b>Purple Chest</b>: Accuracy Nut").openTooltip();
+
+	var captainsBainPos = xy(2190, 830);
+	var captainsBain = L.marker(captainsBainPos, {icon: caveIcon}).bindTooltip("<b>Captains' Bain</b><br>Danger Level: 35<br><b>Purple Chest</b>: Hedgehog Spear").openTooltip();
+
+	var lochOfTheLostKingPos = xy(2333, 990);
+	var lochOfTheLostKing = L.marker(lochOfTheLostKingPos, {icon: caveIcon}).bindTooltip("<b>Loch of the Lost King</b><br>Danger Level: 50<br><b>Purple Chest</b>: Sturdy Sapphire Rod").openTooltip();
+
+	var seasideGrottoPos = xy(2394, 670);
+	var seasideGrotto = L.marker(seasideGrottoPos, {icon: caveIcon}).bindTooltip("<b>Seaside Grotto</b><br>Danger Level: 38<br><b>Story</b>: Ophilia - Chapter 3<br><b>Purple Chest</b>: Grand Helm").openTooltip();
+
+	var cavesOfAzurePos = xy(2593, 733);
+	var cavesOfAzure = L.marker(cavesOfAzurePos, {icon: caveIcon}).bindTooltip("<b>Caves of Azure</b><br>Danger Level: 24<br><b>Story</b>: Alfyn - Chapter 2<br><b>Purple Chest</b>: Spiked Vest, Falcon Garb").openTooltip();
+
+	var caveGroup = L.layerGroup([undertowCove, subterraneanStudy, caveOfOrigin, ebonyGrotto, mawOfTheIceDragon, hoarfrostGrotto, forgottenGrotto, carrionCaves, cavesOfRhiyo, derelictMine, refugeRuins, twinFalls, farshore, whistlingCaverns, blackMarket, lizardmansDen, quicksandCaves, cavesOfMaiya, brigandsDen, untouchedSanctum, captainsBain, lochOfTheLostKing, seasideGrotto, cavesOfAzure]);
+
+	// Forests
+
+	var theWhistlewoodPos = xy(1430, 1100);
+	var theWhistlewood = L.marker(theWhistlewoodPos, {icon: forestIcon}).bindTooltip("<b>The Whistlewood</b><br>Danger Level: 15<br><b>Purple Chest</b>: War Lance").openTooltip();
+
+	var forestOfPurgationPos = xy(1660, 1475);
+	var forestOfPurgation = L.marker(forestOfPurgationPos, {icon: forestIcon}).bindTooltip("<b>Forest of Purgation</b><br>Danger Level: 58<br><b>Purple Chest</b>: Forbidden Dagger").openTooltip();
+
+	var TheWhitewoodPos = xy(1355, 1480);
+	var TheWhitewood = L.marker(TheWhitewoodPos, {icon: forestIcon}).bindTooltip("<b>The Whitewood</b><br>Danger Level: 38<br><b>Story</b>: H'aanit - Chapter 3<br /><b>Purple Chest</b>: 15,000 Leaves").openTooltip();
+
+	var forestOfNoReturnPos = xy(895, 1408);
+	var forestOfNoReturn = L.marker(forestOfNoReturnPos, {icon: forestIcon}).bindTooltip("<b>Forest of No Return</b><br>Danger Level: 48<br /><b>Purple Chest</b>: Elemental Glaive").openTooltip();
+
+	var pathOfBeastsPos = xy(870, 1160);
+	var pathOfBeasts = L.marker(pathOfBeastsPos, {icon: forestIcon}).bindTooltip("<b>Path of Beasts</b><br>Danger Level: 15<br /><b>Purple Chest</b>: War Lance").openTooltip();
+
+	var theWhisperwoodPos = xy(974, 1114);
+	var theWhisperwood = L.marker(theWhisperwoodPos, {icon: forestIcon}).bindTooltip("<b>The Whisperwood</b><br>Danger Level: 11<br><b>Story</b>: H'aanit - Chapter 1").openTooltip();
+
+	var forestOfRubehPos = xy(215, 805);
+	var forestOfRubeh = L.marker(forestOfRubehPos, {icon: forestIcon}).bindTooltip("<b>Forest of Rubeh</b><br>Danger Level: 45<br><b>Story</b>: Alfyn - Chapter 4<br><b>Purple Chest</b>: Inferno Amulet").openTooltip();
+
+	var theMurkwoodPos = xy(650, 585);
+	var theMurkwood = L.marker(theMurkwoodPos, {icon: forestIcon}).bindTooltip("<b>The Murkwood</b><br>Danger Level: 23<br><b>Story</b>: Ophilia - Chapter 2<br><b>Purple Chest</b>: Clarity Stone").openTooltip();
+
+	var riviraWoodsPos = xy(677, 454);
+	var riviraWoods = L.marker(riviraWoodsPos, {icon: forestIcon}).bindTooltip("<b>Rivira Woods</b><br>Danger Level: 32<br><b>Story</b>: Alfyn - Chapter 3<br><b>Purple Chest</b>: Gaolbreaker, Ice Amulet").openTooltip();
+
+	var theSpectrewoodPos = xy(2140, 550);
+	var theSpectrewood = L.marker(theSpectrewoodPos, {icon: forestIcon}).bindTooltip("<b>The Spectrewood</b><br>Danger Level: 27<br><b>Story</b>: H'aanit - Chapter 2<br><b>Purple Chest</b>: Fire Amulet").openTooltip();
+
+	var forestGroup = L.layerGroup([theWhistlewood, forestOfPurgation, TheWhitewood, forestOfNoReturn, pathOfBeasts, theWhisperwood, forestOfRubeh, theMurkwood, riviraWoods, theSpectrewood]);
+
+	// Ruins
+
+	var theHollowThronePos = xy(1480, 1235);
+	var theHollowThrone = L.marker(theHollowThronePos, {icon: ruinsIcon}).bindTooltip("<b>The Hollow Throne</b><br>Danger Level: 25<br><b>Purple Chest</b>: Argent Axe").openTooltip();
+
+	var lornCathedralPos = xy(1230, 1680);
+	var lornCathedral = L.marker(lornCathedralPos, {icon: ruinsIcon}).bindTooltip("<b>Lorn Cathedral</b><br>Danger Level: 45<br><b>Story</b>: Therion - Chapter 4<br><b>Purple Chest</b>: Enchanted Sword").openTooltip();
+
+	var ruinsOfEldPos = xy(780, 1585);
+	var ruinsOfEld = L.marker(ruinsOfEldPos, {icon: ruinsIcon}).bindTooltip("<b>Ruins of Eld</b><br>Danger Level: 45<br><b>Story</b>: Cyrus - Chapter 4<br><b>Purple Chest</b>: Rune Bow, 50,000 Leaves").openTooltip();
+
+	var dragonsongFanePos = xy(340, 630);
+	var dragonsongFane = L.marker(dragonsongFanePos, {icon: ruinsIcon}).bindTooltip("<b>Dragonsong Fane</b><br>Danger Level: 50<br><b>Purple Chest</b>: Holy Longbow").openTooltip();
+
+	var grimsandRuinPos = xy(1130, 250);
+	var grimsandRuin = L.marker(grimsandRuinPos, {icon: ruinsIcon}).bindTooltip("<b>Grimsand Ruin</b><br>Danger Level: 45<br><b>Story</b>: H'aanit - Chapter 4<br><b>Purple Chest</b>: Unseen Saber, 50,000 Leaves").openTooltip();
+
+	var marsalimCatacombsPos = xy(1380, 185);
+	var marsalimCatacombs = L.marker(marsalimCatacombsPos, {icon: ruinsIcon}).bindTooltip("<b>Marsalim Catacombs</b><br>Danger Level: 50<br><b>Purple Chest</b>: Viper Dagger").openTooltip();
+
+	var tombOfKingsPos = xy(1620, 370);
+	var tombOfKings = L.marker(tombOfKingsPos, {icon: ruinsIcon}).bindTooltip("<b>Tomb of Kings</b><br>Danger Level: 25<br><b>Purple Chest</b>: Hasty Helm").openTooltip();
+
+	var everholdTunnelsPos = xy(1660, 200);
+	var everholdTunnels = L.marker(everholdTunnelsPos, {icon: ruinsIcon}).bindTooltip("<b>Everhold Tunnels</b><br>Danger Level: 55<br><b>Purple Chest</b>: Knowledge Staff").openTooltip();
+
+
+	var ruinsGroup = L.layerGroup([theHollowThrone, lornCathedral, ruinsOfEld, dragonsongFane, grimsandRuin, marsalimCatacombs, tombOfKings, everholdTunnels]);
+
+	// Catacombs
+
+	var tombOfTheImperatorPos = xy(1212, 1445);
+	var tombOfTheImperator = L.marker(tombOfTheImperatorPos, {icon: catacombIcon}).bindTooltip("<b>Tomb of the Imperator</b><br>Danger Level: 35<br><b>Purple Chest</b>: Wakeful Stone").openTooltip();
+
+	var molderingRuinsPos = xy(875, 1465);
+	var molderingRuins = L.marker(molderingRuinsPos, {icon: catacombIcon}).bindTooltip("<b>Moldering Ruins</b><br>Danger Level: 45<br><b>Purple Chest</b>: Hypnos Crown").openTooltip();
+
+	var theSewersPos = xy(500, 865);
+	var theSewers = L.marker(theSewersPos, {icon: catacombIcon}).bindTooltip("<b>The Sewers</b><br>Danger Level: 24<br><b>Story</b>: Cyrus - Chapter 2<br><b>Purple Chest</b>: Snipe Saber").openTooltip();
+
+	var hiddenPathPos = xy(430, 400);
+	var hiddenPath = L.marker(hiddenPathPos, {icon: catacombIcon}).bindTooltip("<b>Hidden Path</b><br>Danger Level: 45<br><b>Story</b>: Olberic - Chapter 4<br><b>Purple Chest</b>: Imperial Helm").openTooltip();
+
+	var sunshadeCatacombsPos = xy(1220, 590);
+	var sunshadeCatacombs = L.marker(sunshadeCatacombsPos, {icon: catacombIcon}).bindTooltip("<b>Sunshade Catacombs</b><br>Danger Level: 11<br><b>Story</b>: Primrose - Chapter 1").openTooltip();
+
+	var grandportSewersPos = xy(2440, 1060);
+	var grandportSewers = L.marker(grandportSewersPos, {icon: catacombIcon}).bindTooltip("<b>Grandport Sewers</b><br>Danger Level: 45<br><b>Story</b>: Tressa - Chapter 4<br><b>Purple Chest</b>: Legion Dagger").openTooltip();
+
+
+	var catacombsGroup = L.layerGroup([tombOfTheImperator, molderingRuins, theSewers, hiddenPath, sunshadeCatacombs, grandportSewers]);
+
+	// Mansions
+
+	var orlicksMansePos = xy(1640, 1293);
+	var orlicksManse = L.marker(orlicksMansePos, {icon: mansionIcon}).bindTooltip("<b>Orlick's Manse</b><br>Danger Level: 22<br><b>Story</b>: Therion - Chapter 2<br><b>Purple Chest</b>: Lightning Amulet").openTooltip();
+
+	var obsidianMansePos = xy(1723, 1260);
+	var obsidianManse = L.marker(obsidianMansePos, {icon: mansionIcon}).bindTooltip("<b>Obsidian Manse</b><br>Danger Level: 40<br><b>Story</b>: Primrose - Chapter 3<br><b>Purple Chest</b>: Elemental Hat").openTooltip();
+
+	var obsidianParlorPos = xy(1475, 1455);
+	var obsidianParlor = L.marker(obsidianParlorPos, {icon: mansionIcon}).bindTooltip("<b>Obsidian Parlor</b><br>Danger Level: 21<br><b>Story</b>: Primrose - Chapter 2<br><b>Purple Chest</b>: Spiked Vest").openTooltip();
+
+	var ravusManorPos = xy(900, 880);
+	var ravusManor = L.marker(ravusManorPos, {icon: mansionIcon}).bindTooltip("<b>Ravus Manor</b><br>Danger Level: 11<br><b>Story</b>: Therion - Chapter 1<br><b>Purple Chest</b>: Wind Attire, SP Nut").openTooltip();
+
+	var morlocksMansePos = xy(360, 910);
+	var morlocksManse = L.marker(morlocksMansePos, {icon: mansionIcon}).bindTooltip("<b>Morlock's Manse</b><br>Danger Level: 18<br><b>Story</b>: Tressa - Chapter 2<br><b>Purple Chest</b>: Hasty Helm").openTooltip();
+
+	var lordsMansePos = xy(458, 454);
+	var lordsManse = L.marker(lordsMansePos, {icon: mansionIcon}).bindTooltip("<b>Lord's Manse</b><br>Danger Level: 45<br><b>Story</b>: Olberic - Chapter 4<br><b>Purple Chest</b>: Imperial Helm, Rune Hatchet").openTooltip();
+
+	var amphitheatrePos = xy(1737, 296);
+	var amphitheatre = L.marker(amphitheatrePos, {icon: mansionIcon}).bindTooltip("<b>Amphitheatre</b><br>Danger Level: 45<br><b>Story</b>: Primrose - Chapter 4<br><b>Purple Chest</b>: Unseen Saber, Enchanted Rod, Ethereal Dancers Garb").openTooltip();
+
+	var yvonsBirthplacePos = xy(1966, 575);
+	var yvonsBirthplace = L.marker(yvonsBirthplacePos, {icon: mansionIcon}).bindTooltip("<b>Yvon's Birthplace</b><br>Danger Level: 40<br><b>Story</b>: Cyrus - Chapter 3<br><b>Purple Chest</b>: Sturdy Quartz Rod").openTooltip();
+
+
+	var mansionsGroup = L.layerGroup([orlicksManse, obsidianManse, obsidianParlor, ravusManor, morlocksManse, lordsManse, amphitheatre, yvonsBirthplace]);
+
+	// Zones (Group by area)
+
+	//Rippletide
+
+	var eastRippletideCoastPos = xy(1703, 772);
+	var eastRippletideCoast = L.marker(eastRippletideCoastPos, {icon: zoneIcon}).bindTooltip("<b>East Rippletide Coast</b><br>Danger Level: 11<br><b>North:</b> North Rippletide Coast | <b>West:</b> Rippletide | <b>South:</b> North Cobblestone Gap").openTooltip().bindPopup("<b>Items:</b><br>#1 	Inspiriting Plum<br>#2 Magic Nut<br>#3 Wind Soulstone").openPopup();
+
+	var northRippletideCoastPos = xy(1533, 902);
+	var northRippletideCoast = L.marker(northRippletideCoastPos, {icon: zoneIcon}).bindTooltip("<b>North Rippletide Coast</b><br>Danger Level: 11<br><b>North:</b> East Atlasdam Flats | <b>Cave:</b> Undertow Cove | <b>South:</b> East Rippletide Coast").openTooltip().bindPopup("<b>Items:</b><br>#1 Fortifying Nut<br>#2 Healing Grape<br>#3 Olive of Life").openPopup();
+
+	var pathToCavesOfMaiyaPos = xy(1610, 786);
+	var pathToCavesOfMaiya = L.marker(pathToCavesOfMaiyaPos, {icon: zoneIcon}).bindTooltip("<b>Path to the Caves of Maiya</b><br>Danger Level: 11<br><b>Southwest:</b> Caves of Maiya | <b>East:</b> Rippletide").openTooltip().bindPopup("<b>Items:</b><br>#1 Healing Grape<br>#2 Inspiriting Plum<br>#3 Herb of Clarity<br>#4 Healing Grape").openPopup();
+
+	// Atlasdam
+
+	var northAtlasdamFlatsPos = xy(1467, 1117);
+	var northAtlasdamFlats = L.marker(northAtlasdamFlatsPos, {icon: zoneIcon}).bindTooltip("<b>North Atlasdam Flats</b><br>Danger Level: 11<br><b>Northwest:</b> Northern Flamesgrace Wilds | <b>North:</b> Western Noblecourt Flats | <b>East:</b> Shrine of the Sage | <b>East:</b> The Whistlewood | <b>South:</b> East Atlasdam Flats").openTooltip().bindPopup("<b>Items:</b><br>#1 Thunder Soulstone<br>#2 Olive of Life (M)").openPopup();
+
+	var eastAtlasdamFlatsPos = xy(1500, 993);
+	var eastAtlasdamFlats = L.marker(eastAtlasdamFlatsPos, {icon: zoneIcon}).bindTooltip("<b>East Atlasdam Flats</b><br>Danger Level: 11<br><b>North:</b> North Atlasdam Flats | <b>East:</b> Atlasdam | <b>South:</b> North Rippletide Coast").openTooltip().bindPopup("<b>Items:</b><br>#1 Inspiriting Plum<br>#2 500 Leaves").openPopup();
+
+	// Flamesgrace
+
+	var northernFlamesgraceWildsPos = xy(1335, 1255);
+	var northernFlamesgraceWilds = L.marker(northernFlamesgraceWildsPos, {icon: zoneIcon}).bindTooltip("<b>Northern Flamesgrace Wilds</b><br>Danger Level: 11<br><b>West:</b> Western Flamesgrace Wilds | <b>Southeast:</b> Flamesgrace | <b>East:</b> Shrine of the Sage | <b>East:</b> North Atlasdam Flats").openTooltip().bindPopup("<b>Items:</b><br>#1 Herb of Clamor<br>#2 Olive of Life<br>#3 Inspiriting Plum").openPopup();
+
+	var westernFlamesgraceWildsPos = xy(1120, 1295);
+	var westernFlamesgraceWilds = L.marker(westernFlamesgraceWildsPos, {icon: zoneIcon}).bindTooltip("<b>Western Flamesgrace Wilds</b><br>Danger Level: 11<br><b>West:</b> North S'warkii Trail | <b>Cave:</b>  Hoarfrost Grotto | <b>East:</b> Northern Flamesgrace Wilds").openTooltip().bindPopup("<b>Items:</b><br>#1 Healing Grape<br>#2 Shadow Soul Stone<br>#3 800 Leaves<br>#4 Critical Nut").openPopup();
+
+	var pathToTheCaveOfOriginPos = xy(1365, 1105);
+	var pathToTheCaveOfOrigin = L.marker(pathToTheCaveOfOriginPos, {icon: zoneIcon}).bindTooltip("<b>Path to the Cave of Origin</b><br>Danger Level: 11<br><b>North:</b> Cave of Origin | <b>West:</b>  Flamesgrace").openTooltip().bindPopup("<b>Items:</b><br>#1 Healing Grape<br>#2 600 Leaves<br>#3 Herb of Clarity").openPopup();
+
+	// Noblecourt
+
+	var westernNoblecourtFlatsPos = xy(1515, 1195);
+	var westernNoblecourtFlats = L.marker(westernNoblecourtFlatsPos, {icon: zoneIcon}).bindTooltip("<b>Western Noblecourt Flats</b><br>Danger Level: 17<br><b>North:</b> Western Whispermill Flats | <b>Cave West:</b> The Hollow Throne | <b>Cave Southeast:</b> Shrine of the Sage | <b>East:</b> Noblecourt | <b>South:</b> North Atlasdam Flats").openTooltip().bindPopup("<b>Items:</b><br>#1 5,000 Leaves<br>#2 Healing Grape (M)<br>#3 Light Soulstone<br>#4 Energizing Pomegranate<br>#5 Wind Amulet").openPopup();
+
+	// Riverford
+
+	var northRiverfordTraversePos = xy(339, 415);
+	var northRiverfordTraverse = L.marker(northRiverfordTraversePos, {icon: zoneIcon}).bindTooltip("<b>North Riverford Traverse</b><br>Danger Level: 45<br><b>West:</b> Shrine of the Warbringer | <b>North:</b> South Orwell Pass | <b>East:</b> Riverford").openTooltip().bindPopup("<b>Items:</b><br>#1 Herb of Revival<br>#2 Silver-filled Pouch<br>#3 Wind Soulstone (L)").openPopup();
+
+	// Wispermill
+	var westernWispermillFlatsPos = xy(1692, 1433);
+	var westernWispermillFlats = L.marker(westernWispermillFlatsPos, {icon: zoneIcon}).bindTooltip("<b>Western Wispermill Flats</b><br>Danger Level: 45" + westernWispermillFlats_c4_SideQuests, {maxWidth : 700}).openTooltip();
+
+	// S'warkii
+
+	var northSwarkiiTrailPos = xy(960, 1220);
+	var northSwarkiiTrail = L.marker(northSwarkiiTrailPos, {icon: zoneIcon}).bindTooltip("<b>North S'warkii Trail</b><br>Danger Level: 11<br><b>West:</b> West S'warkii Trail | <b>South:</b> S'warkii | <b>East:</b> Western Flamesgrace Wilds").openTooltip().bindPopup("<b>Items:</b><br>#1 Healing Grape<br>#2 Olive of Life<br>#3 Herb of Awakening<br>#4 Slippery Nut").openPopup();
+
+	var westSwarkiiTrailPos = xy(868, 1177);
+	var westSwarkiiTrail = L.marker(westSwarkiiTrailPos, {icon: zoneIcon}).bindTooltip("<b>West S'warkii Trail</b><br>Danger Level: 11<br><b>South:</b> North Bolderfall Pass | <b>North:</b> East Victors Hollow Trail | <b>East:</b> North S'warkii Trail").openTooltip().bindPopup("<b>Items:</b><br>#1 Inspiriting Plum<br>#2 Olive of Life<br>#3 Herb of Light" + westSwarkiiTrail_c4_SideQuests, {maxWidth : 700}).openPopup();
+
+	var pathToTheWhisperwoodPos = xy(1020, 1110);
+	var pathToTheWhisperwood = L.marker(pathToTheWhisperwoodPos, {icon: zoneIcon}).bindTooltip("<b>Path to the Whisperwood</b><br>Danger Level: 11<br><b>West:</b> The Whisperwood | <b>East:</b> S'warkii").openTooltip().bindPopup("<b>Items:</b><br>#1 Shadow Soulstone<br>#2 Healing Grape<br>#3 500 Leaves<br>#4 Inspiriting Plum").openPopup();
+
+	// Victor's Hollow
+
+	var eastVictorsHollowTrailPos = xy(1036, 1381);
+	var eastVictorsHollowTrail = L.marker(eastVictorsHollowTrailPos, {icon: zoneIcon}).bindTooltip("<b>East Victors Hollow Trail</b><br>Danger Level: 34<br><b>West:</b> Victors Hollow | <b>South:</b> West S'warkii Trail | <b>North:</b> East Duskbarrow Trail | <b>Cave:</b> Shrine of the Huntress | <b>East:</b> Western Stillsnow ").openTooltip().bindPopup("<b>Items:</b><br>#1 Inspiriting Plum<br>#2 Healing Grape (M)<br>#3 5,000 Leaves").openPopup();
+
+	var eastDuskbarrowTrailPos = xy(916, 1490);
+	var eastDuskbarrowTrail = L.marker(eastDuskbarrowTrailPos, {icon: zoneIcon}).bindTooltip("<b>East Duskbarrow Trail</b><br>Danger Level: 45<br><b>West:</b> Duskbarrow | <b>Southeast:</b> East Victors Hollow Trail | <b>Cave:</b> Moldering Ruins").openTooltip().bindPopup("<b>Items:</b><br>#1 Copper-filled Pouch<br>#2 Herb of Revival<br>#3 Herb of Clamor<br>#4 Olive of Life (M)").openPopup();
+
+	var pathToTheForgottenGrottoPos = xy(878, 1260);
+	var pathToTheForgottenGrotto = L.marker(pathToTheForgottenGrottoPos, {icon: zoneIcon}).bindTooltip("<b>Path to the Forgotten Grotto</b><br>Danger Level: 33<br><b>West:</b> Forgotten Grotto | <b>East:</b> Victors Hollow").openTooltip().bindPopup("<b>Items:</b><br>#1 Healing Grape (M)<br>#2 Olive of Life<br>#3 Shadow Soulstone (M)").openPopup();
+
+
+	// Stillsnow
+
+	var westernStillsnowWildsPos = xy(1190, 1420);
+	var westernStillsnowWilds = L.marker(westernStillsnowWildsPos, {icon: zoneIcon}).bindTooltip("<b>Western Stillsnow Wilds</b><br>Danger Level: 29<br><b>West:</b> East Victors Hollow Trail | <b>Cave 1:</b> Shrine of the Flamebearer | <b>Cave 2:</b> Tomb of the Imperator | <b>North:</b> Southern Northreach | <b>East:</b> Stillsnow").openTooltip().bindPopup("<b>Items:</b><br>#1 Ice Soulstone (M)<br>#2 Energizing Pomegranate (M)<br>#3 Healing Grape (M)").openPopup();
+
+	var southernNorthreachWildsPos = xy(1310, 1550);
+	var southernNorthreachWilds = L.marker(southernNorthreachWildsPos, {icon: zoneIcon}).bindTooltip("<b>Southern Northreach Wilds</b><br>Danger Level: 45<br><b>South:</b> Western Stillsnow Wilds | <b>Cave:</b> Maw of the Ice Dragon | <b>North:</b> Northreach").openTooltip().bindPopup("<b>Items:</b><br>#1 Energizing Pomegranate (M)<br>#2 Shadow Soulstone (M)<br>#3 Herb of Revival<br>#4 Inspiriting Plum Basket").openPopup();
+
+	var roadToTheObsidianParlorPos = xy(1390, 1385);
+	var roadToTheObsidianParlor = L.marker(roadToTheObsidianParlorPos, {icon: zoneIcon}).bindTooltip("<b>Road to the Obsidian Parlor</b><br>Danger Level: 21<br><b>West:</b> Stillsnow | <b>Northeast:</b> Secret Path<br><b>Purple Chest</b>: Dark Amulet").openTooltip();
+
+	var secretPathObsidianParlorPos = xy(1433, 1410);
+	var secretPathObsidianParlor = L.marker(secretPathObsidianParlorPos, {icon: zoneIcon}).bindTooltip("<b>Secret Path</b><br>Danger Level: 21<br><b>South:</b> Road to the Obsidian Parlor | <b>North:</b> Obsidian Parlor<br><b>Purple Chest</b>: Spiked Vest").openTooltip().bindPopup("<b>Items:</b><br>#1 5500 Leaves<br>#2 Energizing Pomegranate (M)<br>#3 Healing Grape Bunch<br>#4 Herb of Revival<br>#5 Inspiriting Plum (M)<br>#6 Shadow Soulstone (M)<br>#7 Wakeful Stone").openPopup();
+
+	var trailToTheWhitewoodPos = xy(1310, 1430);
+	var trailToTheWhitewood = L.marker(trailToTheWhitewoodPos, {icon: zoneIcon}).bindTooltip("<b>Trail to the Whitewood</b><br>Danger Level: 37<br><b>South:</b> Stillsnow | <b>North:</b> The Whitewood").openTooltip().bindPopup("<b>Items:</b><br>#1 Inspiriting Plum Basket)<br>#2 Olive of Life (M)").openPopup();
+
+
+	// Bolderfall
+
+	var northBolderfallPassPos = xy(748, 985);
+	var northBolderfallPass = L.marker(northBolderfallPassPos, {icon: zoneIcon}).bindTooltip("<b>North Bolderfall Pass</b><br>Danger Level: 11<br><b>South:</b> South Bolderfall Pass | <b>North:</b> West S'warkii Trail | <b>Southeast:</b> Bolderfall").openTooltip().bindPopup("<b>Items:</b><br>#1 Healing Grape<br>#2 1000 Leaves<br>#3 Olive of Life").openPopup();
+
+	var southBolderfallPassPos = xy(740, 813);
+	var southBolderfallPass = L.marker(southBolderfallPassPos, {icon: zoneIcon}).bindTooltip("<b>South Bolderfall Pass</b><br>Danger Level: 11<br><b>West:</b> South Quarrycrest Pass | <b>South:</b> West Clearbrook Traverse | <b>Cave:</b> Carrion Caves | <b>North:</b> North Bolderfall Pass").openTooltip().bindPopup("<b>Items:</b><br>#1 Herb of Awakening<br>#2 Wind Soulstone<br>#3 Inspiriting Plum (M)<br>#4 Healing Grape").openPopup();
+
+	var southQuarrycrestPassPos = xy(525, 715);
+	var southQuarrycrestPass = L.marker(southQuarrycrestPassPos, {icon: zoneIcon}).bindTooltip("<b>South Quarrycrest Pass</b><br>Danger Level: 28<br><b>West:</b> South Orewell Pass | <b>North:</b> Quarrycrest | <b>West Cave:</b> Shrine of the Prince of Thieves | <b>East Cave:</b> Derelict Mine | <b>Southeast:</b> South Bolderfall Pass<br><b>Purple Chest</b>: Fire Amulet").openTooltip().bindPopup("<b>Items:</b><br>#1 Herb of Valor<br>#2 Fire Amulet<br>#3 Energizing Pomegranate").openPopup();
+
+	var roadToMorlocksMansePos = xy(362, 880);
+	var roadToMorlocksManse = L.marker(roadToMorlocksMansePos, {icon: zoneIcon}).bindTooltip("<b>Road to Morlock's Manse</b><br>Danger Level: 18<br><b>North:</b> Morlock's Manse | <b>Southeast:</b> Quarrycrest").openTooltip().bindPopup("<b>Items:</b><br>#1 Inspiriting Plum<br>#2 5000 Leaves<br>#3 Healing Grape (M)").openPopup();
+
+	var southOrwellPassPos = xy(362, 602);
+	var southOrwellPass = L.marker(southOrwellPassPos, {icon: zoneIcon}).bindTooltip("<b>South Orwell Pass</b><br>Danger Level: 45<br><b>Northwest:</b> Orewell | <b>North Ruins:</b> Dragonsong Fane | <b>East:</b> South Quarrycrest Pass | <b>South:</b> North Riverford Traverse").openTooltip().bindPopup("<b>Items:</b><br>#1 Energizing Pomegranate (L)<br>#2 Fire Soulstone (M)<br>#3 Healing Grape (M)<br>#4 Olive of Life (M)").openPopup();
+
+	var trailToTheForestOfRubehPos = xy(240, 765);
+	var trailToTheForestOfRubeh = L.marker(trailToTheForestOfRubehPos, {icon: zoneIcon}).bindTooltip("<b>Trail to the Forest of Rubeh</b><br>Danger Level: 45<br><b>North:</b> Forest of Rubeh | <b>South:</b> Orewell").openTooltip().bindPopup("<b>Items:</b><br>#1 Purifying Dust<br>#2 20000 Leaves<br>#3 Energizing Pomegranate (M)").openPopup();
+
+	// Clearbrook
+
+	var westClearbrookTraversePos = xy(768, 671);
+	var westClearbrookTraverse = L.marker(westClearbrookTraversePos, {icon: zoneIcon}).bindTooltip("<b>West Clearbrook Traverse</b><br>Danger Level: 11<br><b>North:</b> South Bolderfall Pass | <b>East:</b> Clearbrook | <b>Cave:</b> South Clearbrook Traverse").openTooltip().bindPopup("<b>Items:</b><br>#1 Odds and ends<br>#2 Olive of Life<br>#3 Healing Grape").openPopup();
+
+	var pathOfRhiyoPos = xy(970, 704);
+	var pathOfRhiyo = L.marker(pathOfRhiyoPos, {icon: zoneIcon}).bindTooltip("<b>Path of Rhiyo</b><br>Danger Level: 11<br><b>West:</b> Clearbrook | <b>East:</b> Caves of Rhiyo").openTooltip().bindPopup("<b>Items:</b><br>#1 Healing Grape<br>#2 Soothing Dust<br>#3 Essence of Plum").openPopup();
+
+	var southClearbrookTraversePos = xy(1030, 493);
+	var southClearbrookTraverse = L.marker(southClearbrookTraversePos, {icon: zoneIcon}).bindTooltip("<b>South Clearbrook Traverse</b><br>Danger Level: 11<br><b>Northwest:</b> West Clearbrook Traverse | <b>Southwest:</b> East Sainstbridge Traverse | <b>Cave:</b> Twin Falls | <b>Southeast:</b> Southern Sunshade Sands").openTooltip().bindPopup("<b>Items:</b><br>#1 500 Leaves<br>#2 Soothing Seed<br>#3 Healing Grape<br>#4 Olive of Life" + southClearbrookTraverseSideQuests, {maxWidth : 700}).openPopup();
+
+	var eastSaintbridgeTraversePos = xy(919, 421);
+	var eastSaintbridgeTraverse = L.marker(eastSaintbridgeTraversePos, {icon: zoneIcon}).bindTooltip("<b>East Saintbridge Traverse</b><br>Danger Level: 29<br><b>West:</b> Saintsbridge | <b>Cave 1:</b> Farshore | <b>Cave 2:</b> Shrine of the Healer | <b>Northeast:</b> South Clearbrook Traverse").openTooltip().bindPopup("<b>Items:</b><br>#1 Herb of Healing<br>#2 Healing Grape (M)<br>#3 Rare Stone" + eastSaintsbridgeTraverseSideQuests, {maxWidth : 700}).openPopup();
+
+	var murkwoodTrailPos = xy(614, 530);
+	var murkwoodTrail = L.marker(murkwoodTrailPos, {icon: zoneIcon}).bindTooltip("<b>Murkwood Trail</b><br>Danger Level: 20<br><b>East:</b> Saintsbridge | <b>North:</b> The Murkwood ").openTooltip().bindPopup("<b>Items:</b><br>#1 3500 Leaves<br>#2 Herb of Awakening<br>#3 Inspiriting Plum Basket").openPopup();
+
+
+	// Sunshade
+
+	var southernSunshadeSandsPos = xy(1218, 540);
+	var southernSunshadeSands = L.marker(southernSunshadeSandsPos, {icon: zoneIcon}).bindTooltip("<b>Southern Sunshade Sands</b><br>Danger Level: 11<br><b>West:</b> South Clearbrook Traverse | <b>North:</b> Sunshade | <b>Cave:</b> Sunshade Catacombs | <b>Southeast:</b> Eastern Sunshade Sands").openTooltip().bindPopup("<b>Items:</b><br>#1 Old Coin<br>#2 Inspiriting Plum<br>#3 Herb of Clarity").openPopup();
+
+	var easternSunshadeSandsPos = xy(1392, 520);
+	var easternSunshadeSands = L.marker(easternSunshadeSandsPos, {icon: zoneIcon}).bindTooltip("<b>Eastern Sunshade Sands</b><br>Danger Level: 11<br><b>West:</b> Southern Sunshade Sands | <b>South:</b> Northern Wellspring Sands | <b>Cave:</b> Whistling Cavern | <b>East:</b> South Cobbleston Gap").openTooltip().bindPopup("<b>Items:</b><br>#1 Healing Grape<br>#2 Olive of Life<br>#3 Thunder Soulstone").openPopup();
+
+	var northernWellspringSandsPos = xy(1384, 426);
+	var northernWellspringSands = L.marker(northernWellspringSandsPos, {icon: zoneIcon}).bindTooltip("<b>Northern Wellspring Sands</b><br>Danger Level: 31<br><b>West:</b> Wellspring | <b>South:</b> Eastern Wellspring Sands | <b>Cave:</b> Quicksand Caves | <b>Northwest:</b> Shrine of the Lady of Grace | <b>North:</b> Eastern Wellspring Sands<br><b>Purple Chest</b>: Unerring Bracelet").openTooltip().bindPopup("<b>Items:</b><br>#1 Inspiriting Plum<br>#2 Olive of Life<br>#3 Energizing Pomegranate (M)<br>#4 Imperial Lance").openPopup();
+
+	var easternWellspringSandsPos = xy(1385, 322);
+	var easternWellspringSands = L.marker(easternWellspringSandsPos, {icon: zoneIcon}).bindTooltip("<b>Eastern Wellspring Sands</b><br>Danger Level: 31<br><b>North:</b> Northern Wellspring Sands | <b>South:</b> Eastern Marsalim Sands | <b>East:</b> West Stonegard Pass<br><b>Purple Chest</b>: Enlightening Bracelet").openTooltip().bindPopup("<b>Items:</b><br>#1 Fool's Gold Ore<br>#2 Copper-filled Pouch<br>#3 Thunder Soulstone (L)<br>#4 Healing Grape (M)").openPopup();
+
+	var easternMarsalimSandsPos = xy(1343, 187);
+	var easternMarsalimSands = L.marker(easternMarsalimSandsPos, {icon: zoneIcon}).bindTooltip("<b>Eastern Marsalim Sands</b><br>Danger Level: 45<br><b>West:</b> Marsalim | <b>North:</b> Eastern Wellspring Sands | <b>East:</b> Marsalim Catacombs<br><b>Purple Chest</b>: 20,000 Leaves").openTooltip().bindPopup("<b>Items:</b><br>#1 Inspiriting Plum Basket<br>#2 Thunder Soulstone (L)").openPopup();
+
+	var roadToBlackMarketPos = xy(1230, 329);
+	var roadToBlackMarket = L.marker(roadToBlackMarketPos, {icon: zoneIcon}).bindTooltip("<b>Road to Black Market</b><br>Danger Level: 32<br><b>Northwest:</b> Black Market | <b>Southeast:</b> Wellspring").openTooltip();
+
+	var roadToLizardmansDenPos = xy(1230, 400);
+	var roadToLizardmansDen = L.marker(roadToLizardmansDenPos, {icon: zoneIcon}).bindTooltip("<b>Road to Lizardman's Den</b><br>Danger Level: 36<br><b>Southwest:</b> Lizardman's Den | <b>Northeast:</b> Wellspring").openTooltip();
+
+	var grimsandRoadPos = xy(1140, 210);
+	var grimsandRoad = L.marker(grimsandRoadPos, {icon: zoneIcon}).bindTooltip("<b>Grimsand Road</b><br>Danger Level: 45<br><b>East:</b> Marsalim | <b>West:</b> Grimsand Ruins").openTooltip().bindPopup("<b>Items:</b><br>#1 Fire Soulstone (L)<br>#2 Silver-filled Pouch<br>#3 Energizing Pomegranate (L)").openPopup();
+
+
+	// Cobbleston
+
+	var southCobblestonGapPos = xy(1675, 515);
+	var southCobblestonGap = L.marker(southCobblestonGapPos, {icon: zoneIcon}).bindTooltip("<b>South Cobbleston Gap</b><br>Danger Level: 11<br><b>West:</b> Eastern Sunshade Sands | <b>North:</b> Cobbleston | <b>East:</b> North Cobbleston Gap").openTooltip().bindPopup("<b>Items:</b><br>#1 Olive of Life<br>#2 Healing Grape<br>#3 1,000 Leaves<br>#4 Herb of Awakening").openPopup();
+
+	var northCobblestonGapPos = xy(1747, 655);
+	var northCobblestonGap = L.marker(northCobblestonGapPos, {icon: zoneIcon}).bindTooltip("<b>North Cobbleston Gap</b><br>Danger Level: 11<br><b>West:</b> South Cobbleston Gap | <b>South:</b> North Stonegard Pass | <b>Cave:</b> Untouched Sanctum | <b>Northeast:</b> East Rippletide Coast<br><b>Purple Chest</b>: Elemental Attack Nut").openTooltip().bindPopup("<b>Items:</b><br>#1 Light Soulstone<br>#2 1,200 Leaves<br>#3 Inspiriting Plum<br>#4 Healing Grape<br>#5 Healing Nut").openPopup();
+
+	var northStonegardPassPos = xy(1810, 470);
+	var northStonegardPass = L.marker(northStonegardPassPos, {icon: zoneIcon}).bindTooltip("<b>North Stonegard Pass</b><br>Danger Level: 30<br><b>Northwest:</b> North Cobbleston Gap | <b>South:</b> West Stonegard Pass | <b>Cave:</b> Shrine of the Thunderblade | <b>North:</b> Moonstruck Coast | <b>East:</b> Stonegard").openTooltip().bindPopup("<b>Items:</b><br>#1 Energizing Pomegranate<br>#2 Light Soulstone (M)<br>#3 Healing Grape (M)").openPopup();
+
+	var westStonegardPassPos = xy(1623, 415);
+	var westStonegardPass = L.marker(westStonegardPassPos, {icon: zoneIcon}).bindTooltip("<b>West Stonegard Pass</b><br>Danger Level: 30<br><b>Southwest:</b> Eastern Wellspring Sands | <b>South:</b> West Everhold Pass | <b>Cave:</b> Tomb of Kings").openTooltip();
+
+	var westEverholdPassPos = xy(1700, 233);
+	var westEverholdPass = L.marker(westEverholdPassPos, {icon: zoneIcon}).bindTooltip("<b>West Everhold Pass</b><br>Danger Level: 45<br><b>West:</b> West Stonegard Pass | <b>South:</b> Everhold Tunnels | <b>North:</b> Everhold | <b>East:</b> Shrine of the Runeblade").openTooltip();
+
+	// Coastlands
+
+	var moonstruckCoastPos = xy(2065, 725);
+	var moonstruckCoast = L.marker(moonstruckCoastPos, {icon: zoneIcon}).bindTooltip("<b>Moonstruck Coast</b><br>Danger Level: 30<br><b>North:</b> West Goldshore Coast | <b>Cave:</b> Shrine of the Trader | <b>South:</b> North Stonegard Pass<br><b>Purple Chest</b>: Articulate Stone").openTooltip().bindPopup("<b>Items:</b><br>#1 Healing Grape (M)<br>#2 Copper-filled Pouch<br>#3 Inspiriting Plum" + moonstruckCoastSideQuests, {maxWidth : 700}).openPopup();
+
+	var roadToTheSpectrewoodPos = xy(2088, 527);
+	var roadToTheSpectrewood = L.marker(roadToTheSpectrewoodPos, {icon: zoneIcon}).bindTooltip("<b>Road to the Spectrewood</b><br>Danger Level: 27<br><b>West:</b> Stonegard | <b>East:</b> The Spectrewood").openTooltip();
+
+	var westGoldshireCoastPos = xy(2200, 810);
+	var westGoldshireCoast = L.marker(westGoldshireCoastPos, {icon: zoneIcon}).bindTooltip("<b>West Goldshire Coast</b><br>Danger Level: 34<br><b>South:</b> Moonstruck Coast | <b>Cave:</b> Captains' Bane | <b>East:</b> Goldshire | <b>Northeast:</b> West Grandport Coast").openTooltip().bindPopup("<b>Items:</b><br>#1 Energizing Pomegranate<br>#2 Bottle of Blinding Dust<br>#3 Herb of Valor<br>#4 Thunder Soulstone (M)").openPopup();
+
+	var westGrandportCoastPos = xy(2335, 960);
+	var westGrandportCoast = L.marker(westGrandportCoastPos, {icon: zoneIcon}).bindTooltip("<b>West Grandport Coast</b><br>Danger Level: 45<br><b>West:</b> West Goldshore Coast | <b>Cave:</b> Loch of the Lost King | <b>East:</b> Grandport").openTooltip();
+
+	var roadToCavesOfAzurePos = xy(2520, 729);
+	var roadToCavesOfAzure = L.marker(roadToCavesOfAzurePos, {icon: zoneIcon}).bindTooltip("<b>Road to Caves of Azure</b><br>Danger Level: 24<br><b>West:</b> Goldshore | <b>Cave:</b> Caves of Azure").openTooltip();
+
+	var roadToSeasideGrottoPos = xy(2429, 690);
+	var roadToSeasideGrotto = L.marker(roadToSeasideGrottoPos, {icon: zoneIcon}).bindTooltip("<b>Road to Seaside Grotto</b><br>Danger Level: 38<br><b>East:</b> Goldshore | <b>Cave:</b> Seaside Grotto").openTooltip();
+
+
+	var zoneGroup = L.layerGroup([westernWispermillFlats, northRiverfordTraverse, northRippletideCoast, eastRippletideCoast, pathToCavesOfMaiya, westernNoblecourtFlats, northAtlasdamFlats, eastAtlasdamFlats, northernFlamesgraceWilds, westernFlamesgraceWilds, northSwarkiiTrail, westSwarkiiTrail, pathToTheCaveOfOrigin, eastVictorsHollowTrail, pathToTheWhisperwood, eastDuskbarrowTrail, westernStillsnowWilds, southernNorthreachWilds, roadToTheObsidianParlor, northBolderfallPass, southBolderfallPass, southQuarrycrestPass, westClearbrookTraverse, roadToMorlocksManse, southOrwellPass, pathOfRhiyo, southClearbrookTraverse, eastSaintbridgeTraverse, southernSunshadeSands, easternSunshadeSands, northernWellspringSands, easternWellspringSands, easternMarsalimSands, roadToBlackMarket, roadToLizardmansDen, southCobblestonGap, northCobblestonGap, northStonegardPass, westStonegardPass, westEverholdPass, moonstruckCoast, roadToTheSpectrewood, westGoldshireCoast, westGrandportCoast, roadToCavesOfAzure, roadToSeasideGrotto, trailToTheWhitewood, secretPathObsidianParlor, pathToTheForgottenGrotto, murkwoodTrail, trailToTheForestOfRubeh, grimsandRoad]);
+
+
+	// Cities
+	var atlasdamPos = xy(1430, 1020);
+	var atlasdam = L.marker(atlasdamPos, {icon: cityIcon}).bindTooltip("<b>Atlasdam</b>").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Elemental Attack + Defense<br>Attack + Defense<br>Fire AoE Attack" + atlasdamSideQuests + atlasdam_c4_SideQuests, {maxWidth : 700}).openPopup();
+
+	var bolderfallPos = xy(850, 850);
+	var bolderfall = L.marker(bolderfallPos, {icon: cityIcon}).bindTooltip("<b>Bolderfall</b><br><b>Purple Chest</b>: Stinging Dagger, Iron Helm").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Attack Buff<br>Defense Buff<br>Elemental Attack + Defense<br>Attack Break<br>Fire AoE Attack" + bolderfallSideQuests + boldefall_c4_SideQuests, {maxWidth : 700}).openPopup();
+
+	var clearbrookPos = xy(915, 705);
+	var clearbrook = L.marker(clearbrookPos, {icon: cityIcon}).bindTooltip("<b>Clearbrook</b><br><b>Purple Chest</b>: Elemental Attack Nut").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Attack Buff<br>Fire AoE Attack" + clearbrookSideQuests + clearbrook_c4_SideQuests, {maxWidth : 700}).openPopup();
+
+	var cobblestonePos = xy(1610, 570);
+	var cobblestone = L.marker(cobblestonePos, {icon: cityIcon}).bindTooltip("<b>Cobblestone</b>").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Attack Buff<br>Defense Buff" + cobblestonSideQuests, {maxWidth : 700}).openPopup();
+
+	var duskbarrowPos = xy(760, 1535);
+	var duskbarrow = L.marker(duskbarrowPos, {icon: cityIcon}).bindTooltip("<b>Duskbarrow</b><br><b>Purple Chest</b>: 30,000 Leaves").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Attack Buff<br>Defense Break<br>Fire AoE Attack" + duskbarrowSideQuests, {maxWidth : 700}).openPopup();
+
+	var everholdPos = xy(1730, 260);
+	var everhold = L.marker(everholdPos, {icon: cityIcon}).bindTooltip("<b>Everhold</b>").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Attack + Defense Break<br>Slow Enemy Down" + everholdSideQuests, {maxWidth : 700}).openPopup();
+
+	var flamesgracePos = xy(1290, 1110);
+	var flamesgrace = L.marker(flamesgracePos, {icon: cityIcon}).bindTooltip("<b>Flamesgrace</b>").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Attack Buff<br>Defense Buff" + flamesgraceSideQuests + flamesgrace_c4_SideQuests, {maxWidth : 700}).openPopup();
+
+	var goldshorePos = xy(2430, 760);
+	var goldshore = L.marker(goldshorePos, {icon: cityIcon}).bindTooltip("<b>Goldshore</b>").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Attack Buff<br>Attack Break<br>Lightning AoE" + goldshoreSideQuests, {maxWidth : 700}).openPopup();
+
+	var grandportPos = xy(2500, 1000);
+	var grandport = L.marker(grandportPos, {icon: cityIcon}).bindTooltip("<b>Grandport</b>").openTooltip().bindPopup("<b>Useful Villagers:</b><br>All Villager Types" + grandportSideQuests + grandport_c4_SideQuests, {maxWidth : 700}).openPopup();
+
+	var marsalimPos = xy(1280, 235);
+	var marsalim = L.marker(marsalimPos, {icon: cityIcon}).bindTooltip("<b>Marsalim</b><br><b>Purple Chest</b>: Spirit Bow, Tempest Amulet").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Attack Buff<br>Defense Break<br>Fire AoE" + marsalimSideQuests + marsalim_c4_SideQuests, {maxWidth : 700}).openPopup();
+
+	var noblecourtPos = xy(1655, 1264);
+	var noblecourt = L.marker(noblecourtPos, {icon: cityIcon}).bindTooltip("<b>Noblecourt</b><br><b>Purple Chest</b>: 10,000 Leaves").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Full Break" + noblecourtSideQuests + noblecourt_c4_SideQuests, {maxWidth : 700}).openPopup();
+
+	var northreachPos = xy(1200, 1625);
+	var northreach = L.marker(northreachPos, {icon: cityIcon}).bindTooltip("<b>Northreach</b><br><b>Purple Chest</b>: Master's Longbow").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Attack Buff<br>Elemental Attack + Defense" + northreachSideQuests + northreach_c4_SideQuests, {maxWidth : 700}).openPopup();
+
+	var orewellPos = xy(270, 735);
+	var orewell = L.marker(orewellPos, {icon: cityIcon}).bindTooltip("<b>Orewell</b>").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Attack Buff<br>Slow Enemy Down" + orewellSideQuests, {maxWidth : 700}).openPopup();
+
+	var quarrycrestPos = xy(430, 840);
+	var quarrycrest = L.marker(quarrycrestPos, {icon: cityIcon}).bindTooltip("<b>Quarrycrest</b>").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Attack Buff<br>Defense Break" + quarrycrestSideQuests + quarrycrest_c4_SideQuests, {maxWidth : 700}).openPopup();
+
+	var rippletidePos = xy(1640, 800);
+	var rippletide = L.marker(rippletidePos, {icon: cityIcon}).bindTooltip("<b>Rippletide</b>").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Fire AoE Attack<br>Ice AoE Attack" + rippletideSideQuests + rippletide_c4_SideQuests, {maxWidth : 700}).openPopup();
+
+	var riverfordPos = xy(400, 430);
+	var riverford = L.marker(riverfordPos, {icon: cityIcon}).bindTooltip("<b>Riverford</b>").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Elemental Attack + Elemental Defense Break<br>Light AoE<br>Dark AoE<br>Full Break" + riverfordSideQuests + riverford_c4_SideQuests, {maxWidth : 700}).openPopup();
+
+	var saintsbridgePos = xy(740, 540);
+	var saintsbridge = L.marker(saintsbridgePos, {icon: cityIcon}).bindTooltip("<b>Saintsbridge</b>").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Ice AoE Attack<br>Lightning AoE Attack<br>Team HP Heal" + saintsbridgeSideQuests + saintsbridge_c4_SideQuests, {maxWidth : 700}).openPopup();
+
+	var stillsnowPos = xy(1325, 1360);
+	var stillsnow = L.marker(stillsnowPos, {icon: cityIcon}).bindTooltip("<b>Stillsnow</b>").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Fire AoE Attack" + stillsnowSideQuests + stillsnow_c4_SideQuests, {maxWidth : 700}).openPopup();
+
+	var stoneguardPos = xy(1965, 550);
+	var stoneguard = L.marker(stoneguardPos, {icon: cityIcon}).bindTooltip("<b>Stoneguard</b>").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Attack Buff<br>Attack Break<br>Fire AoE" + stonegardSideQuests + stonegard_c4_SideQuests, {maxWidth : 700}).openPopup();
+
+	var sunshadePos = xy(1315, 615);
+	var sunshade = L.marker(sunshadePos, {icon: cityIcon}).bindTooltip("<b>Sunshade</b>").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Elemental Attack + Defense<br>Fire AoE Attack" + sunshadeSideQuests + sunshade_c4_SideQuests, {maxWidth : 700}).openPopup();
+
+	var swarkiiPos = xy(1060, 1160);
+	var swarkii = L.marker(swarkiiPos, {icon: cityIcon}).bindTooltip("<b>S'warkii</b><br><b>Purple Chest</b>: Stone Bow").openTooltip().bindPopup("<b>Useful Villagers:</b><br>" + swarkiiSideQuests, {maxWidth : 700}).openPopup();
+
+	var victorshollowPos = xy(955, 1380);
+	var victorshollow = L.marker(victorshollowPos, {icon: cityIcon}).bindTooltip("<b>Victor's Hollow</b><br><b>Story</b>: Olberic - Chapter 2<br><b>Purple Chest</b>: Dark Amulet").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Attack Buff<br>Defense Buff<br>Defense Break<br>Strong Multi-Attack" + victorsHollowSideQuests + victorsHollow_c4_SideQuests, {maxWidth : 700}).openPopup();
+
+	var wellspringPos = xy(1285, 360);
+	var wellspring = L.marker(wellspringPos, {icon: cityIcon}).bindTooltip("<b>Wellspring</b><br><b>Purple Chest</b>: 9,000 Leaves, 14,000 Leaves").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Attack Buff<br>Defense Buff<br>Defense Break<br>Ice AoE" + wellspringSideQuests + wellspring_c4_SideQuests, {maxWidth : 700}).openPopup();
+
+	var wispermillPos = xy(1880, 1460);
+	var wispermill = L.marker(wispermillPos, {icon: cityIcon}).bindTooltip("<b>Wispermill</b>").openTooltip().bindPopup("<b>Useful Villagers:</b><br>Attack Buff<br>Elemental Attack + Defense" + wispermillSideQuests + wispermill_c4_SideQuests, {maxWidth : 700}).openPopup();
+
+	var cityGroup = L.layerGroup([duskbarrow, victorshollow, northreach, stillsnow, wispermill, noblecourt, swarkii, flamesgrace, atlasdam, rippletide, bolderfall, clearbrook, sunshade, cobblestone, quarrycrest, orewell, riverford, saintsbridge, wellspring, marsalim, stoneguard, everhold, grandport, goldshore]);
+
+	// Shrines
+
+	var apothecaryShrinePos = xy(957, 417);
+	var apothecaryShrine = L.marker(apothecaryShrinePos, {icon: shrineIcon}).bindTooltip("<b>Shrine of the Healer</b><br>(Apothecary Job)").openTooltip();
+
+	var clericShrinePos = xy(1213, 1392);
+	var clericShrine = L.marker(clericShrinePos, {icon: shrineIcon}).bindTooltip("<b>Shrine of the Flamebringer</b><br>(Cleric Job)").openTooltip();
+
+	var dancerShrinePos = xy(1350, 445);
+	var dancerShrine = L.marker(dancerShrinePos, {icon: shrineIcon}).bindTooltip("<b>Shrine of the Lady of Grace</b><br>(Dancer Job)").openTooltip();
+
+	var hunterShrinePos = xy(1059, 1398);
+	var hunterShrine = L.marker(hunterShrinePos, {icon: shrineIcon}).bindTooltip("<b>Shrine of the Huntress</b><br>(Hunter Job)").openTooltip();
+
+	var scholarShrinePos = xy(1542, 1190);
+	var scholarShrine = L.marker(scholarShrinePos, {icon: shrineIcon}).bindTooltip("<b>Shrine of the Sage</b><br>(Scholar Job)").openTooltip();
+
+	var merchantShrinePos = xy(2027, 730);
+	var merchantShrine = L.marker(merchantShrinePos, {icon: shrineIcon}).bindTooltip("<b>Shrine of the Trader</b><br>(Merchant Job)").openTooltip();
+
+	var thiefShrinePos = xy(450, 770);
+	var thiefShrine = L.marker(thiefShrinePos, {icon: shrineIcon}).bindTooltip("<b>Shrine of the Prince of Thieves</b><br>(Thief Job)").openTooltip();
+
+	var warriorShrinePos = xy(1756, 505);
+	var warriorShrine = L.marker(warriorShrinePos, {icon: shrineIcon}).bindTooltip("<b>Shrine of the Thunderblade</b><br>(Warrior Job)").openTooltip();
+
+	var runebladeShrinePos = xy(1743, 223);
+	var runebladeShrine = L.marker(runebladeShrinePos, {icon: advancedShrineIcon}).bindTooltip("<b>Shrine of the Runeblade</b><br>(Runelord Job)").openTooltip();
+
+	var sorcerorShrinePos = xy(936, 1515);
+	var sorcerorShrine = L.marker(sorcerorShrinePos, {icon: advancedShrineIcon}).bindTooltip("<b>Shrine of the Archmagus</b><br>(Sorceror Job)").openTooltip();
+
+	var starseerShrinePos = xy(1790, 1470);
+	var starseerShrine = L.marker(starseerShrinePos, {icon: advancedShrineIcon}).bindTooltip("<b>Shrine of the Starseer</b><br>(Starseer Job)").openTooltip();
+
+	var warbringerShrinePos = xy(270, 400);
+	var warbringerShrine = L.marker(warbringerShrinePos, {icon: advancedShrineIcon}).bindTooltip("<b>Shrine of the Warbringer</b><br>(Warmaster Job)").openTooltip();
+
+	var shrineGroup = L.layerGroup([clericShrine, scholarShrine, merchantShrine, hunterShrine, warriorShrine, thiefShrine, apothecaryShrine, dancerShrine, sorcerorShrine, starseerShrine, runebladeShrine, warbringerShrine]);
+
+	// Chapters
+
+	// Alfyn
+	var cavesOfRhiyoChapter1 = L.marker(cavesOfRhiyoPos, {icon: caveGreenIcon}).bindTooltip("<b>Caves of Rhiyo</b><br>Danger Level: 11<br><b>Story</b>: Alfyn - Chapter 1").openTooltip();
+	var cavesOfAzureChapter2 = L.marker(cavesOfAzurePos, {icon: caveGreenIcon}).bindTooltip("<b>Caves of Azure</b><br>Danger Level: 24<br><b>Story</b>: Alfyn - Chapter 2<br><b>Purple Chest</b>: Spiked Vest, Falcon Garb").openTooltip();
+	var riviraWoodsChapter3 = L.marker(riviraWoodsPos, {icon: forestGreenIcon}).bindTooltip("<b>Rivira Woods</b><br>Danger Level: 32<br><b>Story</b>: Alfyn - Chapter 3<br><b>Purple Chest</b>: Gaolbreaker, Ice Amulet").openTooltip();
+	var forestOfRubehChapter4 = L.marker(forestOfRubehPos, {icon: forestGreenIcon}).bindTooltip("<b>Forest of Rubeh</b><br>Danger Level: 45<br><b>Story</b>: Alfyn - Chapter 4<br><b>Purple Chest</b>: Inferno Amulet").openTooltip();
+
+	var alfynChapters = L.layerGroup([cavesOfRhiyoChapter1, cavesOfAzureChapter2, riviraWoodsChapter3, forestOfRubehChapter4]);
+
+	// Cyrus
+	var subterraneanStudyChapter1 = L.marker(subterraneanStudyPos, {icon: caveGreenIcon}).bindTooltip("<b>Subterranean Study</b><br>Danger Level: 11<br><b>Story</b>: Cyrus - Chapter 1").openTooltip();
+	var theSewersChapter2 = L.marker(theSewersPos, {icon: catacombGreenIcon}).bindTooltip("<b>The Sewers</b><br>Danger Level: 24<br><b>Story</b>: Cyrus - Chapter 2<br><b>Purple Chest</b>: Snipe Saber").openTooltip();
+	var yvonsBirthplaceChapter3 = L.marker(yvonsBirthplacePos, {icon: mansionGreenIcon}).bindTooltip("<b>Yvon's Birthplace</b><br>Danger Level: 40<br><b>Story</b>: Cyrus - Chapter 3<br><b>Purple Chest</b>: Sturdy Quartz Rod").openTooltip();
+	var ruinsOfEldChapter4 = L.marker(ruinsOfEldPos, {icon: ruinsGreenIcon}).bindTooltip("<b>Ruins of Eld</b><br>Danger Level: 45<br><b>Story</b>: Cyrus - Chapter 4<br><b>Purple Chest</b>: Rune Bow, 50,000 Leaves").openTooltip();
+
+	var cyrusChapters = L.layerGroup([subterraneanStudyChapter1, theSewersChapter2, yvonsBirthplaceChapter3, ruinsOfEldChapter4]);
+
+	// H'aanit
+	var theWhisperwoodChapter1 = L.marker(theWhisperwoodPos, {icon: forestGreenIcon}).bindTooltip("<b>The Whisperwood</b><br>Danger Level: 11<br><b>Story</b>: H'aanit - Chapter 1").openTooltip();
+	var theSpectrewoodChapter2 = L.marker(theSpectrewoodPos, {icon: forestGreenIcon}).bindTooltip("<b>The Spectrewood</b><br>Danger Level: 27<br><b>Story</b>: H'aanit - Chapter 2<br><b>Purple Chest</b>: Fire Amulet").openTooltip();
+	var TheWhitewoodChapter3 = L.marker(TheWhitewoodPos, {icon: forestGreenIcon}).bindTooltip("<b>The Whitewood</b><br>Danger Level: 38<br><b>Story</b>: H'aanit - Chapter 3<br /><b>Purple Chest</b>: 15000 Leaves").openTooltip();
+	var grimsandRuinChapter4 = L.marker(grimsandRuinPos, {icon: ruinsGreenIcon}).bindTooltip("<b>Grimsand Ruin</b><br>Danger Level: 45<br><b>Story</b>: H'aanit - Chapter 4<br><b>Purple Chest</b>: Unseen Saber, 50,000 Leaves").openTooltip();
+
+	var haanitChapters = L.layerGroup([theWhisperwoodChapter1, theSpectrewoodChapter2, TheWhitewoodChapter3, grimsandRuinChapter4]);
+
+	// Olberic
+	var brigandsDenChapter1 = L.marker(brigandsDenPos, {icon: caveGreenIcon}).bindTooltip("<b>Brigand's Den</b><br>Danger Level: 11<br><b>Story</b>: Olberic - Chapter 1").openTooltip();
+	var victorshollowChapter2 = L.marker(victorshollowPos, {icon: cityGreenIcon}).bindTooltip("<b>Victor's Hollow Arena</b><br>Danger Level: 27<br><b>Story</b>: Olberic - Chapter 2<br><b>Purple Chest</b>: Dark Amulet").openTooltip();
+	var lizardmansDenChapter3 = L.marker(lizardmansDenPos, {icon: caveGreenIcon}).bindTooltip("<b>Lizardman's Den</b><br>Danger Level: 32<br><b>Story</b>: Olberic - Chapter 3<br><b>Purple Chest</b>: Silver-filled Pouch").openTooltip();
+	var lordsManseChapter4 = L.marker(lordsMansePos, {icon: mansionGreenIcon}).bindTooltip("<b>Lord's Manse</b><br>Danger Level: 45<br><b>Story</b>: Olberic - Chapter 4<br><b>Purple Chest</b>: Imperial Helm, Rune Hatchet").openTooltip();
+	var hiddenPathChapter4 = L.marker(hiddenPathPos, {icon: catacombGreenIcon}).bindTooltip("<b>Hidden Path</b><br>Danger Level: 45<br><b>Story</b>: Olberic - Chapter 4<br><b>Purple Chest</b>: Imperial Helm").openTooltip();
+	var olbericChapters = L.layerGroup([brigandsDenChapter1, victorshollowChapter2, lizardmansDenChapter3, lordsManseChapter4, hiddenPathChapter4]);
+
+	// Ophilia
+	var caveOfOriginChapter1 = L.marker(caveOfOriginPos, {icon: caveGreenIcon}).bindTooltip("<b>Cave of Origin</b><br>Danger Level: 11<br><b>Story</b>: Ophilia - Chapter 1").openTooltip();
+	var theMurkwoodChapter2 = L.marker(theMurkwoodPos, {icon: forestGreenIcon}).bindTooltip("<b>The Murkwood</b><br>Danger Level: 23<br><b>Story</b>: Ophilia - Chapter 2<br><b>Purple Chest</b>: Clarity Stone").openTooltip();
+	var seasideGrottoChapter3 = L.marker(seasideGrottoPos, {icon: caveGreenIcon}).bindTooltip("<b>Seaside Grotto</b><br>Danger Level: 38<br><b>Story</b>: Ophilia - Chapter 3<br><b>Purple Chest</b>: Grand Helm").openTooltip();
+	var ebonyGrottoChapter4 = L.marker(ebonyGrottoPos, {icon: caveGreenIcon}).bindTooltip("<b>Ebony Grotto</b><br>Danger Level: 45<br><b>Story</b>: Ophilia - Chapter 4<br><b>Purple Chest</b>: Adamantine Hat").openTooltip();
+
+	var ophiliaChapters = L.layerGroup([caveOfOriginChapter1, theMurkwoodChapter2, seasideGrottoChapter3, ebonyGrottoChapter4]);
+
+	// Primrose
+	var sunshadeCatacombsChapter1 = L.marker(sunshadeCatacombsPos, {icon: catacombGreenIcon}).bindTooltip("<b>Sunshade Catacombs</b><br>Danger Level: 11<br><b>Story</b>: Primrose - Chapter 1").openTooltip();
+	var obsidianParlorChapter2 = L.marker(obsidianParlorPos, {icon: mansionGreenIcon}).bindTooltip("<b>Obsidian Parlor</b><br>Danger Level: 21<br><b>Story</b>: Primrose - Chapter 2<br><b>Purple Chest</b>: Spiked Vest").openTooltip();
+	var obsidianManseChapter3 = L.marker(obsidianMansePos, {icon: mansionGreenIcon}).bindTooltip("<b>Obsidian Manse</b><br>Danger Level: 40<br><b>Story</b>: Primrose - Chapter 3<br><b>Purple Chest</b>: Elemental Hat").openTooltip();
+	var amphitheatreChapter4 = L.marker(amphitheatrePos, {icon: mansionGreenIcon}).bindTooltip("<b>Amphitheatre</b><br>Danger Level: 45<br><b>Story</b>: Primrose - Chapter 4<br><b>Purple Chest</b>: Unseen Saber, Enchanted Rod, Ethereal Dancers Garb").openTooltip();
+
+	var primroseChapters = L.layerGroup([sunshadeCatacombsChapter1, obsidianParlorChapter2, obsidianManseChapter3, amphitheatreChapter4]);
+
+	// Therion
+	var ravusManorChapter1 = L.marker(ravusManorPos, {icon: mansionGreenIcon}).bindTooltip("<b>Ravus Manor</b><br>Danger Level: 11<br><b>Story</b>: Therion - Chapter 1<br><b>Purple Chest</b>: Wind Attire, SP Nut").openTooltip();
+	var orlicksManseChapter2 = L.marker(orlicksMansePos, {icon: mansionGreenIcon}).bindTooltip("<b>Orlick's Manse</b><br>Danger Level: 22<br><b>Story</b>: Therion - Chapter 2<br><b>Purple Chest</b>: Lightning Amulet").openTooltip();
+	var blackMarketChapter3 = L.marker(blackMarketPos, {icon: caveGreenIcon}).bindTooltip("<b>Black Market</b><br>Danger Level: 36<br><b>Story</b>: Therion - Chapter 3<br><b>Purple Chest</b>: Calming Stone").openTooltip();
+	var lornCathedralChapter4 = L.marker(lornCathedralPos, {icon: ruinsGreenIcon}).bindTooltip("<b>Lorn Cathedral</b><br>Danger Level: 45<br><b>Story</b>: Therion - Chapter 4<br><b>Purple Chest</b>: Enchanted Sword").openTooltip();
+
+	var therionChapters = L.layerGroup([ravusManorChapter1, orlicksManseChapter2, blackMarketChapter3, lornCathedralChapter4]);
+
+	// Tressa
+	var cavesOfMaiyaChapter1 = L.marker(cavesOfMaiyaPos, {icon: caveGreenIcon}).bindTooltip("<b>Caves of Maiya</b><br>Danger Level: 11<br><b>Story</b>: Tressa - Chapter 1").openTooltip();
+	var morlocksManseChapter2 = L.marker(morlocksMansePos, {icon: mansionGreenIcon}).bindTooltip("<b>Morlock's Manse</b><br>Danger Level: 18<br><b>Story</b>: Tressa - Chapter 2<br><b>Purple Chest</b>: Hasty Helm").openTooltip();
+	var forgottenGrottoChapter3 = L.marker(forgottenGrottoPos, {icon: caveGreenIcon}).bindTooltip("<b>Forgotten Grotto</b><br>Danger Level: 34<br><b>Story</b>: Tressa - Chapter 3<br><b>Purple Chest</b>: Sledge Hammer").openTooltip();
+	var grandportSewersChapter4 = L.marker(grandportSewersPos, {icon: catacombGreenIcon}).bindTooltip("<b>Grandport Sewers</b><br>Danger Level: 45<br><b>Story</b>: Tressa - Chapter 4<br><b>Purple Chest</b>: Legion Dagger").openTooltip();
+
+	var tressaChapters = L.layerGroup([cavesOfMaiyaChapter1, morlocksManseChapter2, forgottenGrottoChapter3, grandportSewersChapter4]);
+
+
+
+	// Level 1-19
+
+	var caveOfOrigin_1_19 = L.marker(caveOfOriginPos, {icon: caveGreenIcon}).bindTooltip("<b>Cave of Origin</b><br>Danger Level: 11<br><b>Story</b>: Ophilia - Chapter 1").openTooltip();
+	var subterraneanStudy_1_19 = L.marker(subterraneanStudyPos, {icon: caveGreenIcon}).bindTooltip("<b>Subterranean Study</b><br>Danger Level: 11<br><b>Story</b>: Cyrus - Chapter 1").openTooltip();
+	var cavesOfRhiyo_1_19 = L.marker(cavesOfRhiyoPos, {icon: caveGreenIcon}).bindTooltip("<b>Caves of Rhiyo</b><br>Danger Level: 11<br><b>Story</b>: Alfyn - Chapter 1").openTooltip();
+	var cavesOfMaiya_1_19 = L.marker(cavesOfMaiyaPos, {icon: caveGreenIcon}).bindTooltip("<b>Caves of Maiya</b><br>Danger Level: 11<br><b>Story</b>: Tressa - Chapter 1").openTooltip();
+	var brigandsDen_1_19 = L.marker(brigandsDenPos, {icon: caveGreenIcon}).bindTooltip("<b>Brigand's Den</b><br>Danger Level: 11<br><b>Story</b>: Olberic - Chapter 1").openTooltip();
+	var untouchedSanctum_1_19 = L.marker(untouchedSanctumPos, {icon: caveGreenIcon}).bindTooltip("<b>Untouched Sanctum</b><br>Danger Level: 15<br><b>Purple Chest</b>: Accuracy Nut").openTooltip();
+	var theWhistlewood_1_19 = L.marker(theWhistlewoodPos, {icon: forestGreenIcon}).bindTooltip("<b>The Whistlewood</b><br>Danger Level: 15").openTooltip();
+	var pathOfBeasts_1_19 = L.marker(pathOfBeastsPos, {icon: forestGreenIcon}).bindTooltip("<b>Path of Beasts</b><br>Danger Level: 15<br /><b>Purple Chest</b>: War Lance").openTooltip();
+	var theWhisperwood_1_19 = L.marker(theWhisperwoodPos, {icon: forestGreenIcon}).bindTooltip("<b>The Whisperwood</b><br>Danger Level: 11<br><b>Story</b>: H'aanit - Chapter 1").openTooltip();
+	var sunshadeCatacombs_1_19 = L.marker(sunshadeCatacombsPos, {icon: catacombGreenIcon}).bindTooltip("<b>Sunshade Catacombs</b><br>Danger Level: 11<br><b>Story</b>: Primrose - Chapter 1").openTooltip();
+	var ravusManor_1_19 = L.marker(ravusManorPos, {icon: mansionGreenIcon}).bindTooltip("<b>Ravus Manor</b><br>Danger Level: 11<br><b>Story</b>: Therion - Chapter 1<br><b>Purple Chest</b>: Wind Attire, SP Nut").openTooltip();
+	var morlocksManse_1_19 = L.marker(morlocksMansePos, {icon: mansionGreenIcon}).bindTooltip("<b>Morlock's Manse</b><br>Danger Level: 18<br><b>Story</b>: Tressa - Chapter 2<br><b>Purple Chest</b>: Hasty Helm").openTooltip();
+
+	var level_1_19 = L.layerGroup([caveOfOrigin_1_19, subterraneanStudy_1_19, cavesOfRhiyo_1_19, cavesOfMaiya_1_19, brigandsDen_1_19, untouchedSanctum_1_19, theWhistlewood_1_19, pathOfBeasts_1_19, theWhisperwood_1_19, theWhisperwood_1_19, sunshadeCatacombs_1_19, ravusManor_1_19, morlocksManse_1_19]);
+
+	// Level 20-29
+
+	var hoarfrostGrotto_20_29 = L.marker(hoarfrostGrottoPos, {icon: caveGreenIcon}).bindTooltip("<b>Hoarfrost Grotto</b><br>Danger Level: 25<br><b>Purple Chest</b>: Soul Hatchet").openTooltip();
+	var carrionCaves_20_29 = L.marker(carrionCavesPos, {icon: caveGreenIcon}).bindTooltip("<b>Carrion Caves</b><br>Danger Level: 20<br><b>Purple Chest</b>: Physical Defense Nut").openTooltip();
+	var twinFalls_20_29 = L.marker(twinFallsPos, {icon: caveGreenIcon}).bindTooltip("<b>Twin Falls</b><br>Danger Level: 20<br><b>Purple Chest</b>: Psychic Staff").openTooltip();
+	var whistlingCaverns_20_29 = L.marker(whistlingCavernsPos, {icon: caveGreenIcon}).bindTooltip("<b>Whistling Caverns</b><br>Danger Level: 20<br><b>Purple Chest</b>: 6,000 Leaves").openTooltip();
+	var cavesOfAzure_20_29 = L.marker(cavesOfAzurePos, {icon: caveGreenIcon}).bindTooltip("<b>Caves of Azure</b><br>Danger Level: 24<br><b>Story</b>: Alfyn - Chapter 2<br><b>Purple Chest</b>: Spiked Vest, Falcon Garb").openTooltip();
+	var theMurkwood_20_29 = L.marker(theMurkwoodPos, {icon: forestGreenIcon}).bindTooltip("<b>The Murkwood</b><br>Danger Level: 23<br><b>Story</b>: Ophilia - Chapter 2<br><b>Purple Chest</b>: Clarity Stone").openTooltip();
+	var theSpectrewood_20_29 = L.marker(theSpectrewoodPos, {icon: forestGreenIcon}).bindTooltip("<b>The Spectrewood</b><br>Danger Level: 27<br><b>Story</b>: H'aanit - Chapter 2<br><b>Purple Chest</b>: Fire Amulet").openTooltip();
+	var theHollowThrone_20_29 = L.marker(theHollowThronePos, {icon: ruinsGreenIcon}).bindTooltip("<b>The Hollow Throne</b><br>Danger Level: 25<br><b>Purple Chest</b>: Argent Axe").openTooltip();
+	var tombOfKings_20_29 = L.marker(tombOfKingsPos, {icon: ruinsGreenIcon}).bindTooltip("<b>Tomb of Kings</b><br>Danger Level: 25<br><b>Purple Chest</b>: Hasty Helm").openTooltip();
+	var theSewers_20_29 = L.marker(theSewersPos, {icon: catacombGreenIcon}).bindTooltip("<b>The Sewers</b><br>Danger Level: 24<br><b>Story</b>: Cyrus - Chapter 2<br><b>Purple Chest</b>: Snipe Saber").openTooltip();
+	var orlicksManse_20_29 = L.marker(orlicksMansePos, {icon: mansionGreenIcon}).bindTooltip("<b>Orlick's Manse</b><br>Danger Level: 22<br><b>Story</b>: Therion - Chapter 2<br><b>Purple Chest</b>: Lightning Amulet").openTooltip();
+	var obsidianParlor_20_29 = L.marker(obsidianParlorPos, {icon: mansionGreenIcon}).bindTooltip("<b>Obsidian Parlor</b><br>Danger Level: 21<br><b>Story</b>: Primrose - Chapter 2<br><b>Purple Chest</b>: Spiked Vest").openTooltip();
+
+
+	var level_20_29 = L.layerGroup([hoarfrostGrotto_20_29, carrionCaves_20_29, twinFalls_20_29, whistlingCaverns_20_29, cavesOfAzure_20_29, theMurkwood_20_29, theSpectrewood_20_29, theHollowThrone_20_29, tombOfKings_20_29, theSewers_20_29, orlicksManse_20_29, obsidianParlor_20_29]);
+
+	// Level 30-39
+
+	var forgottenGrotto_30_39 = L.marker(forgottenGrottoPos, {icon: caveGreenIcon}).bindTooltip("<b>Forgotten Grotto</b><br>Danger Level: 34<br><b>Story</b>: Tressa - Chapter 3<br><b>Purple Chest</b>: Sledge Hammer").openTooltip();
+	var derelictMine_30_39 = L.marker(derelictMinePos, {icon: caveGreenIcon}).bindTooltip("<b>Derelict Mine</b><br>Danger Level: 30<br><b>Purple Chest</b>: Conscious Stone").openTooltip();
+	var farshore_30_39 = L.marker(farshorePos, {icon: caveGreenIcon}).bindTooltip("<b>Farshore</b><br>Danger Level: 30<br><b>Purple Chest</b>: Clarity Stone, 30,000 Leaves").openTooltip();
+	var blackMarket_30_39 = L.marker(blackMarketPos, {icon: caveGreenIcon}).bindTooltip("<b>Black Market</b><br>Danger Level: 36<br><b>Story</b>: Therion - Chapter 3<br><b>Purple Chest</b>: Calming Stone").openTooltip();
+	var lizardmansDen_30_39 = L.marker(lizardmansDenPos, {icon: caveGreenIcon}).bindTooltip("<b>Lizardman's Den</b><br>Danger Level: 32<br><b>Story</b>: Olberic - Chapter 3<br><b>Purple Chest</b>: Silver-filled Pouch").openTooltip();
+	var captainsBain_30_39 = L.marker(captainsBainPos, {icon: caveGreenIcon}).bindTooltip("<b>Captains' Bain</b><br>Danger Level: 35<br><b>Purple Chest</b>: Hedgehog Spear").openTooltip();
+	var seasideGrotto_30_39 = L.marker(seasideGrottoPos, {icon: caveGreenIcon}).bindTooltip("<b>Seaside Grotto</b><br>Danger Level: 38<br><b>Story</b>: Ophilia - Chapter 3<br><b>Purple Chest</b>: Grand Helm").openTooltip();
+	var TheWhitewood_30_39 = L.marker(TheWhitewoodPos, {icon: forestGreenIcon}).bindTooltip("<b>The Whitewood</b><br>Danger Level: 38<br><b>Story</b>: H'aanit - Chapter 3<br /><b>Purple Chest</b>: 15,000 Leaves").openTooltip();
+	var riviraWoods_30_39 = L.marker(riviraWoodsPos, {icon: forestGreenIcon}).bindTooltip("<b>Rivira Woods</b><br>Danger Level: 32<br><b>Story</b>: Alfyn - Chapter 3<br><b>Purple Chest</b>: Gaolbreaker, Ice Amulet").openTooltip();
+	var tombOfTheImperator_30_39 = L.marker(tombOfTheImperatorPos, {icon: catacombGreenIcon}).bindTooltip("<b>Tomb of the Imperator</b><br>Danger Level: 35<br><b>Purple Chest</b>: Wakeful Stone").openTooltip();
+
+
+	var level_30_39 = L.layerGroup([forgottenGrotto_30_39, derelictMine_30_39, farshore_30_39, blackMarket_30_39, lizardmansDen_30_39, captainsBain_30_39, seasideGrotto_30_39, TheWhitewood_30_39, riviraWoods_30_39, tombOfTheImperator_30_39]);
+
+	// Level 40+
+
+	var undertowCove_40_49 = L.marker(undertowCovePos, {icon: caveGreenIcon}).bindTooltip("<b>Undertow Cove</b><br>Danger Level: 45<br>Purple Chest Justice Breaker").openTooltip();
+	var ebonyGrotto_40_49 = L.marker(ebonyGrottoPos, {icon: caveGreenIcon}).bindTooltip("<b>Ebony Grotto</b><br>Danger Level: 45<br><b>Story</b>: Ophilia - Chapter 4<br><b>Purple Chest</b>: Adamantine Hat").openTooltip();
+	var mawOfTheIceDragon_40_49 = L.marker(mawOfTheIceDragonPos, {icon: caveGreenIcon}).bindTooltip("<b>Maw of the Ice Dragon</b><br>Danger Level: 45<br><b>Purple Chest</b>: Adamantine Hat").openTooltip();
+	var quicksandCaves_40_49 = L.marker(quicksandCavesPos, {icon: caveGreenIcon}).bindTooltip("<b>Quicksand Caves</b><br>Danger Level: 40<br><b>Purple Chest</b>: Inferno Axe").openTooltip();
+	var forestOfNoReturn_40_49 = L.marker(forestOfNoReturnPos, {icon: forestGreenIcon}).bindTooltip("<b>Forest of No Return</b><br>Danger Level: 48<br /><b>Purple Chest</b>: Elemental Glaive").openTooltip();
+	var forestOfRubeh_40_49 = L.marker(forestOfRubehPos, {icon: forestGreenIcon}).bindTooltip("<b>Forest of Rubeh</b><br>Danger Level: 45<br><b>Story</b>: Alfyn - Chapter 4<br><b>Purple Chest</b>: Inferno Amulet").openTooltip();
+	var lornCathedral_40_49 = L.marker(lornCathedralPos, {icon: ruinsGreenIcon}).bindTooltip("<b>Lorn Cathedral</b><br>Danger Level: 45<br><b>Story</b>: Therion - Chapter 4<br><b>Purple Chest</b>: Enchanted Sword").openTooltip();
+	var ruinsOfEld_40_49 = L.marker(ruinsOfEldPos, {icon: ruinsGreenIcon}).bindTooltip("<b>Ruins of Eld</b><br>Danger Level: 45<br><b>Story</b>: Cyrus - Chapter 4<br><b>Purple Chest</b>: Rune Bow, 50,000 Leaves").openTooltip();
+	var grimsandRuin_40_49 = L.marker(grimsandRuinPos, {icon: ruinsGreenIcon}).bindTooltip("<b>Grimsand Ruin</b><br>Danger Level: 45<br><b>Story</b>: H'aanit - Chapter 4<br><b>Purple Chest</b>: Unseen Saber, 50,000 Leaves").openTooltip();
+	var molderingRuins_40_49 = L.marker(molderingRuinsPos, {icon: catacombGreenIcon}).bindTooltip("<b>Moldering Ruins</b><br>Danger Level: 45<br><b>Purple Chest</b>: Hypnos Crown").openTooltip();
+	var hiddenPath_40_49 = L.marker(hiddenPathPos, {icon: catacombGreenIcon}).bindTooltip("<b>Hidden Path</b><br>Danger Level: 45<br><b>Story</b>: Olberic - Chapter 4<br><b>Purple Chest</b>: Imperial Helm").openTooltip();
+	var grandportSewers_40_49 = L.marker(grandportSewersPos, {icon: catacombGreenIcon}).bindTooltip("<b>Grandport Sewers</b><br>Danger Level: 45<br><b>Story</b>: Tressa - Chapter 4<br><b>Purple Chest</b>: Legion Dagger").openTooltip();
+	var obsidianManse_40_49 = L.marker(obsidianMansePos, {icon: mansionGreenIcon}).bindTooltip("<b>Obsidian Manse</b><br>Danger Level: 40<br><b>Story</b>: Primrose - Chapter 3<br><b>Purple Chest</b>: Elemental Hat").openTooltip();
+	var lordsManse_40_49 = L.marker(lordsMansePos, {icon: mansionGreenIcon}).bindTooltip("<b>Lord's Manse</b><br>Danger Level: 45<br><b>Story</b>: Olberic - Chapter 4<br><b>Purple Chest</b>: Imperial Helm, Rune Hatchet").openTooltip();
+	var amphitheatre_40_49 = L.marker(amphitheatrePos, {icon: mansionGreenIcon}).bindTooltip("<b>Amphitheatre</b><br>Danger Level: 45<br><b>Story</b>: Primrose - Chapter 4<br><b>Purple Chest</b>: Unseen Saber, Enchanted Rod, Ethereal Dancers Garb").openTooltip();
+	var yvonsBirthplace_40_49 = L.marker(yvonsBirthplacePos, {icon: mansionGreenIcon}).bindTooltip("<b>Yvon's Birthplace</b><br>Danger Level: 40<br><b>Story</b>: Cyrus - Chapter 3<br><b>Purple Chest</b>: Sturdy Quartz Rod").openTooltip();
+
+
+	var level_40_49 = L.layerGroup([undertowCove_40_49, ebonyGrotto_40_49, mawOfTheIceDragon_40_49, quicksandCaves_40_49, forestOfNoReturn_40_49, forestOfRubeh_40_49, lornCathedral_40_49, ruinsOfEld_40_49, grimsandRuin_40_49, molderingRuins_40_49, hiddenPath_40_49, grandportSewers_40_49, obsidianManse_40_49, lordsManse_40_49, amphitheatre_40_49, yvonsBirthplace_40_49]);
+
+
+	// Level 50+
+
+	var refugeRuins_50_59 = L.marker(refugeRuinsPos, {icon: caveGreenIcon}).bindTooltip("<b>Refuge Ruins</b><br>Danger Level: 50<br><b>Purple Chest</b>: Forbidden Sword").openTooltip();
+	var lochOfTheLostKing_50_59 = L.marker(lochOfTheLostKingPos, {icon: caveGreenIcon}).bindTooltip("<b>Loch of the Lost King</b><br>Danger Level: 50<br><b>Purple Chest</b>: Sturdy Sapphire Rod").openTooltip();
+	var forestOfPurgation_50_59 = L.marker(forestOfPurgationPos, {icon: forestGreenIcon}).bindTooltip("<b>Forest of Purgation</b><br>Danger Level: 58<br><b>Purple Chest</b>: Forbidden Dagger").openTooltip();
+	var dragonsongFane_50_59 = L.marker(dragonsongFanePos, {icon: ruinsGreenIcon}).bindTooltip("<b>Dragonsong Fane</b><br>Danger Level: 50<br><b>Purple Chest</b>: Holy Longbow").openTooltip();
+	var everholdTunnels_50_59 = L.marker(everholdTunnelsPos, {icon: ruinsGreenIcon}).bindTooltip("<b>Everhold Tunnels</b><br>Danger Level: 50<br><b>Purple Chest</b>: Knowledge Staff").openTooltip();
+	var marsalimCatacombs_50_59 = L.marker(marsalimCatacombsPos, {icon: ruinsGreenIcon}).bindTooltip("<b>Marsalim Catacombs</b><br>Danger Level: 50<br><b>Purple Chest</b>: Viper Dagger").openTooltip();
+	var level_50_59 = L.layerGroup([refugeRuins_50_59, lochOfTheLostKing_50_59, forestOfPurgation_50_59, dragonsongFane_50_59, everholdTunnels_50_59, marsalimCatacombs_50_59]);
+
+
+	// Sidequests
+
+
+	var baseMaps = {
+
+	};
+
+	var overlayMaps = {
+    	"<img src='images/therion.png' width='10' height='10'> Characters": characterGroup,
+    	"<img src='images/icons/shrine.png' width='10' height='10'> Shrines": shrineGroup,
+    	"<img src='images/icons/town.png' width='10' height='10'> Cities": cityGroup,
+    	"<img src='images/icons/zone.png' width='10' height='10'> Regions": zoneGroup,
+    	"<img src='images/icons/cave.png' width='10' height='10'> Caves": caveGroup,
+    	"<img src='images/icons/forest.png' width='10' height='10'> Forests": forestGroup,
+    	"<img src='images/icons/ruins.png' width='10' height='10'> Ruins" : ruinsGroup,
+    	"<img src='images/icons/catacomb.png' width='10' height='10'> Catacombs" : catacombsGroup,
+    	"<img src='images/icons/mansion.png' width='10' height='10'> Mansions" : mansionsGroup,
+    	"<img src='images/alfyn.png' width='20' height='30'> Alfyn Chapters" : alfynChapters,
+    	"<img src='images/cyrus.png' width='20' height='30'> Cyrus Chapters" : cyrusChapters,
+    	"<img src='images/haanit.png' width='20' height='30'> H'aanit Chapters" : haanitChapters,
+    	"<img src='images/olberic.png' width='20' height='30'> Olberic Chapters" : olbericChapters,
+    	"<img src='images/ophelia.png' width='20' height='30'> Ophilia Chapters" : ophiliaChapters,
+    	"<img src='images/primrose.png' width='20' height='30'> Primrose Chapters" : primroseChapters,
+    	"<img src='images/therion.png' width='20' height='30'> Therion Chapters" : therionChapters,
+    	"<img src='images/tressa.png' width='20' height='30'> Tressa Chapters" : tressaChapters,
+    	"Danger Level 1-19" : level_1_19,
+    	"Danger Level 20-29" : level_20_29,
+    	"Danger Level 30-39" : level_30_39,
+    	"Danger Level 40-49" : level_40_49,
+    	"Danger Level 50-59" : level_50_59
+	};
+
+	var bounds = [[0,0], [1890, 2690]];
+
+	var map = L.map('map', {
+		crs: L.CRS.Simple,
+		minZoom: -2,
+		zoom: 0,
+		layers: [shrineGroup, cityGroup, zoneGroup, caveGroup, forestGroup, ruinsGroup, catacombsGroup, mansionsGroup]
+	});
+
+
+	map.setMaxBounds(bounds);
+	map.on('drag', function() {
+	    map.panInsideBounds(bounds, { animate: false });
+	});
+
+	var image = L.imageOverlay('https://s3.amazonaws.com/corum-files/clean_map.jpg', bounds).addTo(map);
+
+	L.control.layers(baseMaps, overlayMaps, {collapsed:true, position: 'topleft'}).addTo(map);
+
+	map.setView( [945, 1345], 0);
+
+</script>
+
+
+</body>
+
+</html>

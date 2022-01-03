@@ -1,0 +1,89 @@
+<html>
+<head>
+	<title>Octopath Traveler Interactive Map</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="robots" content="index, follow">
+	<meta name="keywords" content="Octopath, octopath traveler interactive map, octopath interactive map, interactive map, map, Octopath Treaveller, Octopath Traveler, Nintendo Switch Maps, octopath map, octopath traveler map, octopath guide" />
+	<meta name='owner' content='Wess Bechard'>
+	<meta property="og:locale:alternate" content="en_US" />
+	<meta property="og:type" content="activity" />
+	<meta property="og:url" content="http://www.octopathtravelmap.com" />
+	<meta property="og:site_name" content="Octopath Traveler Interactive Map" />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:title" content="Octopath Traveler Interactive Map" />
+	<meta property="og:description" content="Octopath Traveler Map provides an interactive map of Orsterra from Octopath Traveler with waypoints, treasure, interesting townspeople, and much more."/>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css" />
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+</head>
+<body>
+
+    <script>
+        let openNav = () => {
+            document.getElementById("sideNavigation").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+        }
+
+        let closeNav = () => {
+            document.getElementById("sideNavigation").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+        }
+    </script>
+
+<div id="sideNavigation" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="#dialog_about" rel="modal:open">About</a>
+  <a href="#dialog_contributors" rel="modal:open">Contributors</a>
+  <a href="https://old.reddit.com/r/octopathtraveler/" target="_blank">Octopath Traveler Subreddit</a>
+  <a href="https://www.reddit.com/user/bechard" target="_blank">PM me on Reddit!</a>
+  <a href="mailto:bechard@gmail.com">Send me an E-Mail!</a>
+  <span><p><b>Map Notes</b><br /><br />Hover to see details, click for additional information on towns and zones!</p><br />
+  		<p>Please get in touch if you have any additional details, or find any incorrect waypoints.  I'd also love to hear what you think!</p></span>
+  		<span ><p>If you like this map, feel free to <br/><a href="https://paypal.me/WessBechard" target="_blank">Buy me a beer!</a></p></span>
+</div>
+
+<nav class="topnav">
+  <a href="#" onclick="openNav()">
+    <svg width="20" height="20" id="icoOpen">
+        <path d="M0,3 20,3" stroke="#000" stroke-width="3"/>
+        <path d="M0,10 20,10" stroke="#000" stroke-width="3"/>
+        <path d="M0,17 20,17" stroke="#000" stroke-width="3"/>
+    </svg>
+  </a>
+  <div class="topnav_title">
+  	<span>Octopath Traveler Map</span>
+  </div>
+</nav>
+
+<div id="main">
+	<div id="map"></div>
+</div>
+
+<div id="dialog_about" title="About This Map" style="display:none;">
+  <p>Hi, my name is Wess, and this map was created for the <a href="https://old.reddit.com/r/octopathtraveler" target="_blank">/r/octopathtraveler</a> community, with information gathered by the community!<br/><br />We all share a unique love for this game, and this map serves as a love letter to the enjoyment of playing.<br /><br />Cheers.</p>
+</div>
+
+<div id="dialog_contributors" title="Contributors" style="display:none;">
+  <p>I can't thank these contributors enough, this wouldn't have been possible without your help!<br />
+  <br />
+  <br/><b>relator_fabula</b> -- Map Icons, so many awesome icons!
+  <br/><b>captain_merrrica</b> -- Detailed dungeon levels, zone levels, story areas, etc.
+  <br/><b>junpei</b> -- Thanks for catching my CSS mistakes!
+  <br/><b>Remgine</b> -- Full map with notes everywhere!  Useful Villagers, Beasts, Cities, etc.
+  <br/><b>miss_claymore (Mod)</b> -- Thanks for your support!
+
+  </p>
+</div>
+
+<script src="./script.js"></script>
+
+</body>
+
+</html>
