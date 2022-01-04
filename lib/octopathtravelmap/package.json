@@ -10,6 +10,7 @@
     "author": "Clay Dunston <dunstontc@gmail.com>",
     "license": "MIT",
     "dependencies": {
-        "pkg-dir": "^6.0.1"
+        "pkg-dir": "^6.0.1",
+        "write-json-file": "^5.0.0"
     }
 }
