@@ -1,4 +1,7 @@
-export const positions = {
+import { PositionData } from "@types";
+
+
+export const positions: PositionData = {
     // =============================================================================
     // Character Start Positions
     // =============================================================================

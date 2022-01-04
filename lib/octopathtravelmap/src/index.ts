@@ -1,13 +1,14 @@
 import { join } from "path"
 import { writeFileSync } from "fs"
-import { parse } from "json2csv"
+import moment from "moment"
+import { uniqBy } from "lodash"
 
 
 import { LocationData } from "@types"
 import { jsonToTsv, outFolder } from "@util"
-import { positions, sideQuests } from "./data"
+
+import { positions, sideQuests } from "@data"
 import { locations } from "./data/locations/locations-v5"
-import moment from "moment"
 
 const checkNumbers = (): void => {
     let numberOfPositions  = Object.keys(positions).length
@@ -20,18 +21,16 @@ const checkNumbers = (): void => {
 }
 
 
-// const parseLocationData = (): any => {
-//     let outData = []
-//     for (const location of locations) {
-//         outData.push(new LocationData(location).ToJson())
-//     }
-//     return outData
-// }
+const parseLocationData = (): any => {
+    const data = locations.map(x => new LocationData(x).ToJson())
+    let uniqueData = uniqBy(data, "ID")
+    return uniqueData
+}
 
 const main = async () => {
     const timestamp = moment().format("MM-DD-YYYY--HH:mm:ss")
     const outPath = join(outFolder, `LocationData.${timestamp}.tsv`)
-    const data = locations.map(x => new LocationData(x).ToJson())
+    const data = parseLocationData()
     const outData = JSON.stringify(data, null, 4)
     const csv = jsonToTsv(data)
     // const outPath = join(packageDir, "out", "LocationData.json")

@@ -1,22 +1,20 @@
+import { CITY_NAMES, SHRINE_NAMES, positions } from "@data"
 import { compact } from "@util"
-import { Position } from "."
-
-export interface RawLocationData {
-    variableName?: string
-    position?: string
-    icon?: string
-    tooltipText?: string
-    otherText?: string
-}
+import { Position, RawLocationData } from "@types"
 
 export interface NewLocationData {
+    ID?: string
     Title?: string
-    DangerLevel?: number
+    DangerLevel?: number | null
     PurpleChest?: string
     Position?: Position
     Story?: string
     TooltipTextLines?: string[]
     OtherTextLines?: string[]
+    IsCity?: boolean
+    IsShrine?: boolean
+    X?: number
+    Y?: number
 }
 
 const TITLE_PATTERN = /^<b>([A-Za-z, ']+)<\/b>/
@@ -35,30 +33,67 @@ export class LocationData {
 
     public ToJson(): any {
         // const output: any = {}
-        // output.rawData = compact(this.rawData)
-        // output.newData = compact(this.newData)
-        // return output
-        return compact(this.newData)
+        // const compactRawData = compact(this.rawData)
+        const compactNewData = compact(this.newData)
+        // output.rawData = compactRawData
+        // output.newData = compactNewData
+        const output = compactNewData
+        return output
     }
 
     private parse(): void {
         this.parseTitle()
         this.parseDangerLevel()
+        this.parsePosition()
         // this.newData.TooltipTextLines = this.rawData.tooltipText?.split(/<br\s*\/?>/)
         // this.newData.OtherTextLines = this.rawData.otherText?.split(/<br\s*\/?>/)
+        this.newData.ID = `${this.newData.Title} - ${this.newData.DangerLevel}`
     }
 
     private parseTitle(): void {
-        let title = this.rawData.tooltipText?.match(TITLE_PATTERN) || null
-        if (title != null && title?.length > 0) {
-            this.newData.Title = title[1]
+        let titleMatches = this.rawData.tooltipText?.match(TITLE_PATTERN) || null
+
+        if (titleMatches == null) {
+            return
+        }
+        if (!(titleMatches?.length > 0)) {
+            return
+        }
+
+        const title = titleMatches[1]
+        this.newData.Title = title
+
+        if (CITY_NAMES.includes(title)) {
+            this.newData.IsCity = true
+        } else {
+            this.newData.IsCity = false
+        }
+
+        if (SHRINE_NAMES.includes(title)) {
+            this.newData.IsShrine = true
+        } else {
+            this.newData.IsShrine = false
         }
     }
 
     private parseDangerLevel(): void {
+        if (this.newData.IsCity) {
+            this.newData.DangerLevel = 0
+            return
+        }
         let dangerLevel = this.rawData.tooltipText?.match(DANGER_PATTERN) || null
         if (dangerLevel && dangerLevel?.length > 0) {
             this.newData.DangerLevel = parseInt(dangerLevel[1])
+        } else {
+            this.newData.DangerLevel = null
+        }
+    }
+
+    private parsePosition(): void {
+        const position = positions[this.rawData.position as string]
+        if (position) {
+            this.newData.X = position[0]
+            this.newData.Y = position[1]
         }
     }
 
