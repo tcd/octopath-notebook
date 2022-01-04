@@ -13,8 +13,10 @@ Trestle.admin(:home) do
     # @return [void]
     def index()
       @admins = [
-        { model: Character,  admin: CharactersAdmin  },
-        { model: Job,        admin: JobsAdmin        },
+        { model: Character,       admin: CharactersAdmin       },
+        { model: Job,             admin: JobsAdmin             },
+        { model: Region,          admin: RegionsAdmin          },
+        { model: JobSupportSkill, admin: JobSupportSkillsAdmin },
         # { model: Hyperlink,  admin: HyperlinksAdmin  },
       ]
       @models = @admins.map do |a|

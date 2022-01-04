@@ -1,5 +1,7 @@
 class JobSupportSkill < ApplicationRecord
 
+  paginates_per(50)
+
   # =====================================================================
   # Attributes
   # =====================================================================
@@ -67,7 +69,7 @@ class JobSupportSkill < ApplicationRecord
 
   # @!method self.scope_for_trestle()
   #   @return [JobSupportSkill::ActiveRecord_Relation]
-  # scope(:scope_for_trestle, -> { all() })
+  scope(:scope_for_trestle, -> { all() })
 
   # @!endgroup Scopes
 

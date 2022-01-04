@@ -19,34 +19,8 @@ module Mixins
     # Form
     # ==========================================================================
     Form = -> do
-      # @param job [Job]
-      form do |job|
-
-        tab(:job) do
-
-          row do
-            col(md: 6) do
-              form_group(class: "required") do
-                text_field(:name)
-              end
-            end
-          end
-
-          row do
-            col(md: 6) do
-              form_group(class: "required") do
-                check_box(:primary)
-              end
-            end
-            col(md: 6) do
-              form_group(class: "required") do
-                check_box(:secret)
-              end
-            end
-          end
-
-        end
-
+      # @param region [Region]
+      form do |region|
       end
     end
 

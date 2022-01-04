@@ -1,6 +1,6 @@
-Trestle.resource(:characters) do
+Trestle.resource(:job_support_skills) do
 
-  instance_exec(&Mixins::CharactersAdminMixins::Table)
+  # instance_exec(&Mixins::JobSupportSkillsAdminMixins::Table)
 
   menu do
     item(
@@ -10,7 +10,7 @@ Trestle.resource(:characters) do
   end
 
   collection do
-    model.scope_for_trestle
+    model.scope_for_trestle()
   end
 
 end
