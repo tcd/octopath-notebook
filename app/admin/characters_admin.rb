@@ -1,6 +1,6 @@
-Trestle.resource(:jobs) do
+Trestle.resource(:characters) do
 
-  instance_exec(&Mixins::JobsAdminMixins::Table)
+  instance_exec(&Mixins::CharactersAdminMixins::Table)
   # instance_exec(&Mixins::JobsAdminMixins::Form)
 
   menu do
