@@ -32,3 +32,4 @@ ignore/*
 /db/dumps/*
 .yardoc
 doc
+lib/octopathtravelmap/out
