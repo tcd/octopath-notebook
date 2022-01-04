@@ -18,6 +18,7 @@ module Lib
         invalid = {}
         invalid["stats"] = self.stats()
         invalid["damage_types"] = self.damage_types()
+        invalid["equipment_categories"] = self.equipment_categories()
         invalid["regions"] = self.regions()
         invalid["towns"] = self.towns()
         invalid["jobs"] = self.jobs()
@@ -94,6 +95,18 @@ module Lib
             id:          fx["id"],
             name:        fx["name"],
             description: fx["description"],
+          }
+        end
+        return invalid
+      end
+
+      # @return [void]
+      def self.equipment_categories()
+        invalid = self.from_fixture("equipment_categories.yml", EquipmentCategory) do |fx|
+          _args = {
+            id:     fx["id"],
+            name:   fx["name"],
+            weapon: fx["weapon"],
           }
         end
         return invalid
