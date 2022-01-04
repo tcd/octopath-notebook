@@ -8,25 +8,37 @@
         "transpileOnly": true,
         "files": true,
         "compilerOptions": {
-            // compilerOptions specified here will override those declared below,
-            // but *only* in ts-node.  Useful if you want ts-node and tsc to use
-            // different options with a single tsconfig.json.
+            // compilerOptions specified here will override those declared below, but *only* in ts-node.
+            // Useful if you want ts-node and tsc to use different options with a single tsconfig.json.
+            // "module": "CommonJS",
         },
+        "require": [
+            "tsconfig-paths/register",
+        ],
+        "ignore": [
+        ]
     },
     "compilerOptions": {
         "esModuleInterop": true,
         // "target": "ES2017",
         // "module": "ESNext",
         // "target": "ES5",
-        "module": "CommonJS",
+        // "module": "ES6",
         "outDir": "./out/ts-node",
         "rootDir": "./src",
-        "strict": true,
+        // "strict": true,
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
-        "types": [
-            "node",
-            ""
-        ],
+        "importHelpers": true,
+        // "types": [
+        //     "node",
+        // ],
+        // "lib": [
+        // ],
+        "baseUrl": "./",
+        "paths": {
+          "@util":  ["./src/util/index.ts"],
+          "@types": ["./src/types/index.ts"],
+        },
     }
 }
