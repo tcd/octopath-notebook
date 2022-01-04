@@ -16,9 +16,10 @@ module Lib
       # @return [Hash]
       def self.all()
         invalid = {}
+        invalid["stats"] = self.stats()
+        invalid["damage_types"] = self.damage_types()
         invalid["regions"] = self.regions()
         invalid["towns"] = self.towns()
-        invalid["damage_types"] = self.damage_types()
         invalid["jobs"] = self.jobs()
         invalid["job_support_skills"] = self.job_support_skills()
         invalid["characters"] = self.characters()
@@ -82,6 +83,18 @@ module Lib
           pp(args)
           puts(e)
           pb.newline()
+        end
+        return invalid
+      end
+
+      # @return [void]
+      def self.stats()
+        invalid = self.from_fixture("stats.yml", Stat) do |fx|
+          _args = {
+            id:          fx["id"],
+            name:        fx["name"],
+            description: fx["description"],
+          }
         end
         return invalid
       end
