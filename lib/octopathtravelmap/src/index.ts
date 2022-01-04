@@ -23,7 +23,7 @@ const checkNumbers = (): void => {
 
 const parseLocationData = (): any => {
     const data = locations.map(x => new LocationData(x).ToJson())
-    let uniqueData = uniqBy(data, "ID")
+    let uniqueData = uniqBy(data, "id")
     return uniqueData
 }
 

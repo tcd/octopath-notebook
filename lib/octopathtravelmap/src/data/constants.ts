@@ -41,3 +41,14 @@ export const SHRINE_NAMES = [
     "Shrine of the Starseer",
     "Shrine of the Warbringer",
 ]
+
+export const PRIMARY_SHRINE_NAMES = [
+    "Shrine of the Healer",
+    "Shrine of the Flamebringer",
+    "Shrine of the Lady of Grace",
+    "Shrine of the Huntress",
+    "Shrine of the Sage",
+    "Shrine of the Trader",
+    "Shrine of the Prince of Thieves",
+    "Shrine of the Thunderblade",
+]

@@ -1,31 +1,36 @@
-import { CITY_NAMES, SHRINE_NAMES, positions } from "@data"
+import { CITY_NAMES, SHRINE_NAMES, PRIMARY_SHRINE_NAMES, positions } from "@data"
 import { compact } from "@util"
 import { Position, RawLocationData } from "@types"
 
 export interface NewLocationData {
-    ID?: string
-    Title?: string
-    DangerLevel?: number | null
-    PurpleChest?: string
-    Position?: Position
-    Story?: string
+    id?: string
+    title?: string
+    danger_level?: number | null
+    purple_chest?: string
+    position?: Position
+    story?: string
     TooltipTextLines?: string[]
     OtherTextLines?: string[]
-    IsCity?: boolean
-    IsShrine?: boolean
-    X?: number
-    Y?: number
+    is_city?: boolean
+    is_shrine?: boolean
+    x?: number
+    y?: number
+    relative_directions?: any
 }
 
 const TITLE_PATTERN = /^<b>([A-Za-z, ']+)<\/b>/
 const DANGER_PATTERN = /Danger Level: (\d+)/
+const DIRECTION_PATTERN = /<b>(?<direction>(Northeast|Northwest|Southeast|Southwest|North|East|South|West)):<\/b>\s(?<destination>[a-zA-Z ']+)(?:(?:\s\|\s)|(?:",)|(?:<br))/mg
 
 export class LocationData {
 
     public newData: NewLocationData
     public rawData: RawLocationData
 
+    public dangerLevelSet: boolean
+
     constructor(rawData: RawLocationData) {
+        this.dangerLevelSet = false
         this.rawData = rawData
         this.newData = {}
         this.parse()
@@ -45,9 +50,10 @@ export class LocationData {
         this.parseTitle()
         this.parseDangerLevel()
         this.parsePosition()
+        this.parseRelativeDirections()
         // this.newData.TooltipTextLines = this.rawData.tooltipText?.split(/<br\s*\/?>/)
         // this.newData.OtherTextLines = this.rawData.otherText?.split(/<br\s*\/?>/)
-        this.newData.ID = `${this.newData.Title} - ${this.newData.DangerLevel}`
+        this.newData.id = `${this.newData.title} - ${this.newData.danger_level}`
     }
 
     private parseTitle(): void {
@@ -61,40 +67,59 @@ export class LocationData {
         }
 
         const title = titleMatches[1]
-        this.newData.Title = title
+        this.newData.title = title
 
         if (CITY_NAMES.includes(title)) {
-            this.newData.IsCity = true
+            this.newData.is_city = true
         } else {
-            this.newData.IsCity = false
+            this.newData.is_city = false
         }
 
         if (SHRINE_NAMES.includes(title)) {
-            this.newData.IsShrine = true
+            this.newData.is_shrine = true
         } else {
-            this.newData.IsShrine = false
+            this.newData.is_shrine = false
         }
     }
 
     private parseDangerLevel(): void {
-        if (this.newData.IsCity) {
-            this.newData.DangerLevel = 0
+        if (this.newData.is_city) {
+            this.newData.danger_level = 0
             return
         }
+
+        if (this.newData.is_shrine && PRIMARY_SHRINE_NAMES.includes(this.newData.title as string)) {
+            this.newData.danger_level = 0
+            return
+        }
+
         let dangerLevel = this.rawData.tooltipText?.match(DANGER_PATTERN) || null
+
         if (dangerLevel && dangerLevel?.length > 0) {
-            this.newData.DangerLevel = parseInt(dangerLevel[1])
+            this.newData.danger_level = parseInt(dangerLevel[1])
         } else {
-            this.newData.DangerLevel = null
+            this.newData.danger_level = null
         }
     }
 
     private parsePosition(): void {
         const position = positions[this.rawData.position as string]
         if (position) {
-            this.newData.X = position[0]
-            this.newData.Y = position[1]
+            this.newData.x = position[0]
+            this.newData.y = position[1]
         }
+    }
+
+    private parseRelativeDirections(): void {
+        let directions: any = {}
+        let match
+        while ((match = DIRECTION_PATTERN.exec(this.rawData.tooltipText as string)) !== null) {
+            if (match.groups) {
+                let { direction, destination } = match.groups
+                directions[direction] = destination
+            }
+        }
+        this.newData.relative_directions = directions
     }
 
 }
