@@ -1,15 +1,17 @@
 import { join } from "path"
-import { packageDirectory } from "pkg-dir"
+// import { packageDirectory } from "pkg-dir"
 import { writeJsonFile } from "write-json-file"
 
 import {
     positions,
     sideQuests,
     v1 as locations,
-} from "./data/index.mjs"
+} from "./data"
 
-const packageDir = await packageDirectory()
-const outDir = join(packageDir, "out")
+// const outDir = async () => {
+//     const packageDir = await packageDirectory()
+//     return join(packageDir, "out")
+// }
 
 let numberOfPositions = Object.keys(positions).length
 let numberOfSideQuests = Object.keys(sideQuests).length
