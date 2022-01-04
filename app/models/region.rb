@@ -1,3 +1,4 @@
+# a region on the continent of Orsterra
 class Region < ApplicationRecord
 
   # =====================================================================

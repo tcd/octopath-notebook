@@ -1,3 +1,4 @@
+# characters (currently only primary characters) in Octopath Traveler
 class Character < ApplicationRecord
 
   # =====================================================================
@@ -79,7 +80,7 @@ class Character < ApplicationRecord
 
   # @!method self.scope_for_trestle()
   #   @return [Character::ActiveRecord_Relation]
-  scope(:scope_for_trestle, -> { all() })
+  scope(:scope_for_trestle, -> { includes(:primary_job) })
 
   # @!endgroup Scopes
 

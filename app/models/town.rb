@@ -1,3 +1,4 @@
+# a town in the continent of Orsterra
 class Town < ApplicationRecord
 
   # =====================================================================
