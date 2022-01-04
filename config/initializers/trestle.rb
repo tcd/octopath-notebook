@@ -18,7 +18,7 @@ Trestle.configure do |config|
 
   # Speficy a favicon to be used within the admin.
   #
-  config.favicon = "database-FF0000.png"
+  config.favicon = "database-151207.png"
 
   # Sets the default precision for timestamps (either :minutes or :seconds).
   # Defaults to :minutes.
