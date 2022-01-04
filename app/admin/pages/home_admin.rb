@@ -15,7 +15,7 @@ Trestle.admin(:home) do
       @admins = [
         { model: Character,  admin: CharactersAdmin  },
         { model: Job,        admin: JobsAdmin        },
-        { model: Hyperlink,  admin: HyperlinksAdmin  },
+        # { model: Hyperlink,  admin: HyperlinksAdmin  },
       ]
       @models = @admins.map do |a|
         {
