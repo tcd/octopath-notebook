@@ -10,6 +10,7 @@
   },
   "scripts": {},
   "dependencies": {
-    "@mdi/font": "^6.5.95"
+    "@mdi/font": "^6.5.95",
+    "rpg-awesome": "^0.2.0"
   }
 }
