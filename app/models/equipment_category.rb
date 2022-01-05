@@ -23,6 +23,15 @@ class EquipmentCategory < ApplicationRecord
 
   # @!group Associations
 
+  # @!attribute equipment [rw]
+  #   @return [Array<Equipment>]
+  has_many(
+    :equipment,
+    class_name: "Equipment",
+    primary_key: "name",
+    foreign_key: "category_name",
+  )
+
   # @!endgroup Associations
 
   # ==========================================================================

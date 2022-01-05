@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_04_232241) do
+ActiveRecord::Schema.define(version: 2022_01_04_233358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,6 +60,28 @@ ActiveRecord::Schema.define(version: 2022_01_04_232241) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_damage_types_on_name", unique: true
+  end
+
+  create_table "equipment", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "category_name", null: false
+    t.integer "sell_price"
+    t.integer "physical_attack", default: 0, null: false
+    t.integer "physical_defense", default: 0, null: false
+    t.integer "elemental_attack", default: 0, null: false
+    t.integer "elemental_defense", default: 0, null: false
+    t.integer "max_hp", default: 0, null: false
+    t.integer "max_sp", default: 0, null: false
+    t.integer "accuracy", default: 0, null: false
+    t.integer "speed", default: 0, null: false
+    t.integer "critical", default: 0, null: false
+    t.integer "evasion", default: 0, null: false
+    t.string "other_effects"
+    t.jsonb "metadata", default: {}
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_name"], name: "index_equipment_on_category_name"
+    t.index ["name"], name: "index_equipment_on_name", unique: true
   end
 
   create_table "equipment_categories", force: :cascade do |t|
@@ -170,6 +192,7 @@ ActiveRecord::Schema.define(version: 2022_01_04_232241) do
   add_foreign_key "characters", "jobs", column: "primary_job_name", primary_key: "name"
   add_foreign_key "characters", "towns", column: "native_town_name", primary_key: "name"
   add_foreign_key "characters", "towns", column: "starting_town_name", primary_key: "name"
+  add_foreign_key "equipment", "equipment_categories", column: "category_name", primary_key: "name"
   add_foreign_key "job_support_skills", "jobs", column: "job_name", primary_key: "name"
   add_foreign_key "taggings", "tags"
   add_foreign_key "towns", "regions", column: "region_name", primary_key: "name"
