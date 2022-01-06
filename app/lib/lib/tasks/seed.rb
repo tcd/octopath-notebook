@@ -19,6 +19,7 @@ module Lib
         invalid["stats"] = self.stats()
         invalid["damage_types"] = self.damage_types()
         invalid["equipment_categories"] = self.equipment_categories()
+        invalid["equipment"] = self.equipment()
         invalid["regions"] = self.regions()
         invalid["towns"] = self.towns()
         invalid["jobs"] = self.jobs()
@@ -190,6 +191,30 @@ module Lib
             primary_job_name:   fx["primary_job_name"],
             starting_town_name: fx["starting_town_name"],
             native_town_name:   fx["native_town_name"],
+          }
+        end
+        return invalid
+      end
+
+      # @return [void]
+      def self.equipment()
+        invalid = self.from_tsv("Equipment.tsv", Equipment) do |fx|
+          _args = {
+            id:                fx["id"],
+            name:              fx["name"],
+            category_name:     fx["category_name"],
+            sell_price:        fx["sell_price"],
+            physical_attack:   fx["physical_attack"],
+            physical_defense:  fx["physical_defense"],
+            elemental_attack:  fx["elemental_attack"],
+            elemental_defense: fx["elemental_defense"],
+            max_hp:            fx["max_hp"],
+            max_sp:            fx["max_sp"],
+            accuracy:          fx["accuracy"],
+            speed:             fx["speed"],
+            critical:          fx["critical"],
+            evasion:           fx["evasion"],
+            other_effects:     fx["other_effects"],
           }
         end
         return invalid
