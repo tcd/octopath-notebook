@@ -1,7 +1,7 @@
-Trestle.resource(:job_support_skills) do
+Trestle.resource(:equipment) do
 
-  # instance_exec(&Mixins::JobSupportSkillsAdminMixins::Table)
-  # instance_exec(&Mixins::JobSupportSkillsAdminMixins::Form)
+  # instance_exec(&Mixins::EquipmentAdminMixins::Table)
+  # instance_exec(&Mixins::EquipmentAdminMixins::Form)
 
   menu do
     item(

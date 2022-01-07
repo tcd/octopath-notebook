@@ -90,7 +90,8 @@ class Character < ApplicationRecord
 
   # @return [String]
   def self.icon_css_class()
-    return "mdi mdi-account-star"
+    # return "mdi mdi-account-star"
+    return "ra ra-player"
   end
 
   # =====================================================================

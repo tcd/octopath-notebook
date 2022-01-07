@@ -1,6 +1,8 @@
 # any item that can be equipped to a character
 class Equipment < ApplicationRecord
 
+  paginates_per(500)
+
   # =====================================================================
   # Attributes
   # =====================================================================
@@ -121,7 +123,8 @@ class Equipment < ApplicationRecord
 
   # @return [String]
   def self.icon_css_class()
-    return "mdi mdi-shield-sword"
+    # return "mdi mdi-shield-sword"
+    return "mdi mdi-treasure-chest"
   end
 
   # =====================================================================

@@ -1,5 +1,5 @@
 module Mixins
-  module JobSupportSkillsMixins
+  module EquipmentAdminMixins
 
     # ==========================================================================
     # Table
@@ -8,7 +8,10 @@ module Mixins
       table do
         column(:id)
         column(:name, sort: :name, class: "table-link") do |x|
-          link_to(x.display_name, JobSupportSkillsAdmin.path(:show, id: x.id))
+          link_to(x.display_name, EquipmentAdmin.path(:show, id: x.id))
+        end
+        column(:category, sort: :category_name, class: "table-link") do |x|
+          link_to(x.category_name, EquipmentCategoriesAdmin.path(:show, id: x.equipment_category.id))
         end
         column(:created_at, align: :center)
         column(:updated_at, align: :center)
@@ -19,12 +22,8 @@ module Mixins
     # Form
     # ==========================================================================
     Form = -> do
-      # @param job_support_skill [JobSupportSkill]
-      form do |job_support_skill|
-
-        tab(:job_support_skill) do
-        end
-
+      # @param region [Region]
+      form do |region|
       end
     end
 
