@@ -1,3 +1,4 @@
+# a passive ability associated with a given job
 class JobSupportSkill < ApplicationRecord
 
   paginates_per(50)
