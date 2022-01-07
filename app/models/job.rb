@@ -1,3 +1,4 @@
+# character classes
 class Job < ApplicationRecord
 
   # =====================================================================
