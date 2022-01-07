@@ -69,7 +69,8 @@ class Job < ApplicationRecord
 
   # @return [String]
   def self.icon_css_class()
-    return "mdi mdi-hard-hat"
+    # return "mdi mdi-hard-hat"
+    return "ra ra-aura"
   end
 
   # =====================================================================
