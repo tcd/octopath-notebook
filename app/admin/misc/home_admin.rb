@@ -14,6 +14,7 @@ Trestle.admin(:home) do
     def index()
       @admins = [
         { model: Character,       admin: CharactersAdmin       },
+        { model: Equipment,       admin: EquipmentAdmin        },
         { model: Job,             admin: JobsAdmin             },
         { model: Region,          admin: RegionsAdmin          },
         { model: JobSupportSkill, admin: JobSupportSkillsAdmin },
