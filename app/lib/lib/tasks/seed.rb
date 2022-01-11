@@ -22,12 +22,12 @@ module Lib
 
       # @param json_key [String]
       # @param model_class [ApplicationRecord]
+      # @param search_key [Symbol]
       # @return [void]
-      def self.add_assets(json_key, model_class)
-        asset_file_path = Rails.root.join("db", "seed_data", "assets.json")
-        assets = Lib::FlatFile::Json.from_file(asset_file_path)
+      def self.add_assets(json_key, model_class, search_key: :name)
+        assets = encoded_assets()
         assets[json_key].each do |name, image|
-          record = model_class.find_by(name: name)
+          record = model_class.where('? = ? ', search_key, name).first
           next unless record
           record.update!(encoded_picture: image)
         end
@@ -38,6 +38,7 @@ module Lib
         invalid = {}
         invalid["stats"] = self.stats()
         invalid["damage_types"] = self.damage_types()
+        invalid["weapon_types"] = self.weapon_types()
         invalid["equipment_categories"] = self.equipment_categories()
         invalid["equipment"] = self.equipment()
         invalid["regions"] = self.regions()
@@ -323,6 +324,26 @@ module Lib
             job_id: job_id,
             stat_id: stat_id,
           }
+        end
+        return invalid
+      end
+
+      # @return [void]
+      def self.weapon_types()
+        invalid = self.from_fixture("weapon_types.yml", WeaponType) do |fx|
+          _args = {
+            id:            fx["id"],
+            singular_name: fx["singular_name"],
+            plural_name:   fx["plural_name"],
+          }
+        end
+        if invalid.blank?
+          assets = encoded_assets()
+          assets["DamageTypes"].each do |name, image|
+            record = WeaponType.find_by(plural_name: name)
+            next unless record
+            record.update!(encoded_picture: image)
+          end
         end
         return invalid
       end
