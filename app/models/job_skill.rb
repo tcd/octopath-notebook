@@ -24,13 +24,41 @@ class JobSkill < ApplicationRecord
   #   @return [String]
   validates(:in_game_description, presence: true)
 
+  # @!attribute job_order
+  #   @required
+  #   @return [Integer]
+  validates(:job_order, presence: true)
+
+  # @!attribute divine_skill
+  #   @required
+  #   @default_value false
+  #   @return [Boolean]
+  validates(:divine_skill, inclusion: { in: [true, false], message: "%{value} must be a boolean value ('true' or 'false')" })
+
   # @!attribute sp_cost
   #   @required
+  #   @default_value 0
   #   @return [Integer]
   validates(:sp_cost, presence: true)
 
+  # @!attribute target
+  #   @required
+  #   @return [String]
+  validates(:target, presence: true)
+
+  # @!attribute effect_type
+  #   @required
+  #   @return [String]
+  validates(:effect_type, presence: true)
+
   # @!attribute notes
   #   @return [String]
+
+  # @!attribute invocation_ratio
+  #   @return [Integer]
+
+  # @!attribute defense_modifier
+  #   @return [Decimal]
 
   # @!endgroup Attributes
 
@@ -61,6 +89,18 @@ class JobSkill < ApplicationRecord
   # @!method self.scope_for_trestle()
   #   @return [JobSkill::ActiveRecord_Relation]
   scope(:scope_for_trestle, -> { includes(:job) })
+
+  # ----------------------------------------------------------------------------
+
+  # @!method self.divine()
+  #   @return [JobSkill::ActiveRecord_Relation]
+  scope(:divine, -> { where(divine_skill: true) })
+
+  # ----------------------------------------------------------------------------
+
+  # @!method self.divine()
+  #   @return [JobSkill::ActiveRecord_Relation]
+  scope(:problems, -> { where.not(effect_type: DamageType.pluck(:name)) })
 
   # @!endgroup Scopes
 

@@ -45,7 +45,7 @@ class DamageType < ApplicationRecord
 
   # @!method self.scope_for_trestle()
   #   @return [DamageType::ActiveRecord_Relation]
-  scope(:scope_for_trestle, -> { all() })
+  scope(:scope_for_trestle, -> { order(game_order: :asc) })
 
   # ----------------------------------------------------------------------------
 
@@ -65,7 +65,8 @@ class DamageType < ApplicationRecord
 
   # @return [String]
   def self.icon_css_class()
-    return "mdi mdi-fire"
+    # return "mdi mdi-fire"
+    return "mdi mdi-sitemap"
   end
 
   # =====================================================================

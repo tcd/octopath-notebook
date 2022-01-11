@@ -14,4 +14,9 @@ Trestle.resource(:job_support_skills) do
     model.scope_for_trestle()
   end
 
+  scopes do
+    scope(:all, default: true)
+    scope(:one_per_party)
+  end
+
 end

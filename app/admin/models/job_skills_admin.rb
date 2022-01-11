@@ -14,4 +14,10 @@ Trestle.resource(:job_skills) do
     model.scope_for_trestle()
   end
 
+  scopes do
+    scope(:all, default: true)
+    scope(:divine)
+    scope(:problems)
+  end
+
 end

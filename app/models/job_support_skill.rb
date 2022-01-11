@@ -3,6 +3,15 @@ class JobSupportSkill < ApplicationRecord
 
   paginates_per(50)
 
+  COSTS = [
+    30,
+    100,
+    500,
+    1000,
+    3000,
+    5000,
+  ].freeze
+
   # =====================================================================
   # Attributes
   # =====================================================================
@@ -71,6 +80,16 @@ class JobSupportSkill < ApplicationRecord
   # @!method self.scope_for_trestle()
   #   @return [JobSupportSkill::ActiveRecord_Relation]
   scope(:scope_for_trestle, -> { includes(:job) })
+
+  # ----------------------------------------------------------------------------
+
+  # @!method self.one_per_party()
+  #   @return [JobSupportSkill::ActiveRecord_Relation]
+  scope(:one_per_party, -> { where(one_per_party: true) })
+
+  # @!method self.not_one_per_party()
+  #   @return [JobSupportSkill::ActiveRecord_Relation]
+  scope(:not_one_per_party, -> { where(one_per_party: false) })
 
   # @!endgroup Scopes
 
