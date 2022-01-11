@@ -16,9 +16,12 @@ Trestle.admin(:home) do
         { model: Character,       admin: CharactersAdmin       },
         { model: Equipment,       admin: EquipmentAdmin        },
         { model: Job,             admin: JobsAdmin             },
-        { model: Region,          admin: RegionsAdmin          },
+        { model: JobSkill,        admin: JobSkillsAdmin        },
         { model: JobSupportSkill, admin: JobSupportSkillsAdmin },
+        { model: Region,          admin: RegionsAdmin          },
         # { model: Hyperlink,  admin: HyperlinksAdmin  },
+        # { model: DamageType,    admin: DamageTypesAdmin    },
+        # { model: EquipmentType, admin: EquipmentTypesAdmin },
       ]
       @models = @admins.map do |a|
         {

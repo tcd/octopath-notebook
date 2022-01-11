@@ -5,7 +5,7 @@ Trestle.resource(:hyperlinks) do
       :links,
       icon: "mdi mdi-link-variant",
       # icon: "fas fa-link",
-      group: :configuration,
+      group: :other,
     )
   end
 
