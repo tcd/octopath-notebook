@@ -187,11 +187,12 @@ module Lib
       def self.damage_types()
         invalid = self.from_fixture("damage_types.yml", DamageType) do |fx|
           _args = {
-            id:         fx["id"],
-            name:       fx["name"],
-            physical:   fx["physical"],
-            elemental:  fx["elemental"],
-            game_order: fx["game_order"],
+            id:          fx["id"],
+            name:        fx["name"],
+            is_standard: fx["is_standard"],
+            physical:    fx["physical"],
+            elemental:   fx["elemental"],
+            game_order:  fx["game_order"],
           }
         end
         return invalid

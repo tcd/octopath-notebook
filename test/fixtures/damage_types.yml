@@ -1,18 +1,18 @@
-Sword:       { id:    1, name: "Sword",        physical: true,  elemental: false, game_order:    1 }
-Spear:       { id:    2, name: "Spear",        physical: true,  elemental: false, game_order:    2 }
-Dagger:      { id:    3, name: "Dagger",       physical: true,  elemental: false, game_order:    3 }
-Axe:         { id:    4, name: "Axe",          physical: true,  elemental: false, game_order:    4 }
-Bow:         { id:    5, name: "Bow",          physical: true,  elemental: false, game_order:    5 }
-Staff:       { id:    6, name: "Staff",        physical: true,  elemental: false, game_order:    6 }
-Fire:        { id:    7, name: "Fire",         physical: false, elemental: true,  game_order:    7 }
-Ice:         { id:    8, name: "Ice",          physical: false, elemental: true,  game_order:    8 }
-Lightning:   { id:    9, name: "Lightning",    physical: false, elemental: true,  game_order:    9 }
-Wind:        { id:   10, name: "Wind",         physical: false, elemental: true,  game_order:   10 }
-Light:       { id:   11, name: "Light",        physical: false, elemental: true,  game_order:   11 }
-Dark:        { id:   12, name: "Dark",         physical: false, elemental: true,  game_order:   12 }
-AllWeapons:  { id:  101, name: "All Weapons",  physical: true,  elemental: false, game_order:  101 }
-AllElements: { id:  102, name: "All Elements", physical: false, elemental: true,  game_order:  102 }
-Healing:     { id:  103, name: "Healing",      physical: false, elemental: false, game_order:  103 }
-Buff:        { id:  201, name: "Buff",         physical: false, elemental: false, game_order:  201 }
-Debuff:      { id:  202, name: "Debuff",       physical: false, elemental: false, game_order:  202 }
-Other:       { id: 1000, name: "Other",        physical: false, elemental: false, game_order: 1000 }
+Sword:       { id:    1, name: "Sword",        physical: true,  elemental: false, is_standard: true,  game_order:    1 }
+Spear:       { id:    2, name: "Spear",        physical: true,  elemental: false, is_standard: true,  game_order:    2 }
+Dagger:      { id:    3, name: "Dagger",       physical: true,  elemental: false, is_standard: true,  game_order:    3 }
+Axe:         { id:    4, name: "Axe",          physical: true,  elemental: false, is_standard: true,  game_order:    4 }
+Bow:         { id:    5, name: "Bow",          physical: true,  elemental: false, is_standard: true,  game_order:    5 }
+Staff:       { id:    6, name: "Staff",        physical: true,  elemental: false, is_standard: true,  game_order:    6 }
+Fire:        { id:    7, name: "Fire",         physical: false, elemental: true,  is_standard: true,  game_order:    7 }
+Ice:         { id:    8, name: "Ice",          physical: false, elemental: true,  is_standard: true,  game_order:    8 }
+Lightning:   { id:    9, name: "Lightning",    physical: false, elemental: true,  is_standard: true,  game_order:    9 }
+Wind:        { id:   10, name: "Wind",         physical: false, elemental: true,  is_standard: true,  game_order:   10 }
+Light:       { id:   11, name: "Light",        physical: false, elemental: true,  is_standard: true,  game_order:   11 }
+Dark:        { id:   12, name: "Dark",         physical: false, elemental: true,  is_standard: true,  game_order:   12 }
+AllWeapons:  { id:  101, name: "All Weapons",  physical: true,  elemental: false, is_standard: false, game_order:  101 }
+AllElements: { id:  102, name: "All Elements", physical: false, elemental: true,  is_standard: false, game_order:  102 }
+Healing:     { id:  103, name: "Healing",      physical: false, elemental: false, is_standard: false, game_order:  103 }
+Buff:        { id:  201, name: "Buff",         physical: false, elemental: false, is_standard: false, game_order:  201 }
+Debuff:      { id:  202, name: "Debuff",       physical: false, elemental: false, is_standard: false, game_order:  202 }
+Other:       { id: 1000, name: "Other",        physical: false, elemental: false, is_standard: false, game_order: 1000 }

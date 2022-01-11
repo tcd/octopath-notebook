@@ -23,6 +23,10 @@ class DamageType < ApplicationRecord
   #   @required
   #   @return [Integer]
 
+  # @!attribute is_standard
+  #   @required
+  #   @return [Boolean]
+
   # @!endgroup Attributes
 
   # =====================================================================
@@ -42,6 +46,16 @@ class DamageType < ApplicationRecord
   # @!method self.scope_for_trestle()
   #   @return [DamageType::ActiveRecord_Relation]
   scope(:scope_for_trestle, -> { all() })
+
+  # ----------------------------------------------------------------------------
+
+  # @!method self.standard()
+  #   @return [DamageType::ActiveRecord_Relation]
+  scope(:standard, -> { where(is_standard: true) })
+
+  # @!method self.standard()
+  #   @return [DamageType::ActiveRecord_Relation]
+  scope(:not_standard, -> { where(is_standard: false) })
 
   # @!endgroup Scopes
 
