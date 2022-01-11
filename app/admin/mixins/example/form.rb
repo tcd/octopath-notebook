@@ -4,12 +4,12 @@ module Mixins
       # @param builder [Trestle::Resource::Builder]
       def self.extended(builder)
         builder.instance_eval do
-          # @param record [Character]
-          form do |_record|
+          # @param record [ApplicationRecord]
+          form do |record|
 
             sidebar do
               row(class: "text-center") do
-                col { content_tag(:h1, instance.display_name) }
+                col { content_tag(:h1, record.display_name) }
               end
               # row do
               #   col do
@@ -20,7 +20,7 @@ module Mixins
               # end
             end
 
-            tab(:job) do
+            tab(:example) do
 
               row do
                 col(md: 6) do

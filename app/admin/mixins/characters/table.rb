@@ -7,8 +7,10 @@ module Mixins
           table do
 
             column(:id)
+
             column(:name, link: true)
             column(:primary_job, sort: :primary_job_name, link: true)
+
             column(:created_at, align: :center)
             column(:updated_at, align: :center)
 
