@@ -7,6 +7,7 @@ Trestle.resource(:characters) do
     item(
       @admin.model.display_name(),
       icon: @admin.model.icon_css_class(),
+      priority: -99,
     )
   end
 

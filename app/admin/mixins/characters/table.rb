@@ -6,7 +6,11 @@ module Mixins
         builder.instance_eval do
           table do
 
-            column(:id)
+            # column(:id)
+
+            column(:picture, sort: false, header: false, align: :center) do |record|
+              image_tag(record.encoded_picture, style: "") unless record.encoded_picture.blank?
+            end
 
             column(:name, link: true)
             column(:primary_job, sort: :primary_job_name, link: true)

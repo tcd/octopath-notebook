@@ -7,6 +7,7 @@ Trestle.resource(:job_skills) do
     item(
       @admin.model.display_name(),
       icon: @admin.model.icon_css_class(),
+      priority: -97,
     )
   end
 
