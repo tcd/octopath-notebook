@@ -86,3 +86,12 @@ $green-tag-bg: lighten($green-tag-color, 10%);
     font-weight: 700;
     margin-bottom: 0.5rem;
 }
+
+.form-control-static {
+    margin-bottom: 1rem;
+}
+
+// think this is for including icons in tables, don't remember
+.table-link * {
+    white-space: normal !important;
+}
