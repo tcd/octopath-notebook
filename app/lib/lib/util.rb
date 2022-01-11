@@ -10,7 +10,7 @@ module Lib
       return Rails.application.credentials.dig(Rails.env.to_sym, *params)
     end
 
-    # Write out data to a JSON file in `ActiveStorage::Blob` for the current `Rails.env`.
+    # Write out data to a JSON file in `{root}/`storage/saved_files/`.
     # Prepends a unique timestamp to the filename.
     #
     # @param data [Object]

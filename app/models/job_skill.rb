@@ -1,5 +1,7 @@
-# character classes
-class Job < ApplicationRecord
+# an active ability associated with a given job
+class JobSkill < ApplicationRecord
+
+  paginates_per(100)
 
   # =====================================================================
   # Attributes
@@ -12,17 +14,23 @@ class Job < ApplicationRecord
   #   @return [String]
   validates(:name, presence: true, uniqueness: true)
 
-  # @!attribute primary
+  # @!attribute job_name
   #   @required
-  #   @return [Boolean]
+  #   @return [String]
+  validates(:job_name, presence: true)
 
-  # @!attribute secret
+  # @!attribute in_game_description
   #   @required
-  #   @return [Boolean]
+  #   @return [String]
+  validates(:in_game_description, presence: true)
 
-  # @!attribute game_order
+  # @!attribute sp_cost
   #   @required
   #   @return [Integer]
+  validates(:sp_cost, presence: true)
+
+  # @!attribute notes
+  #   @return [String]
 
   # @!endgroup Attributes
 
@@ -32,31 +40,14 @@ class Job < ApplicationRecord
 
   # @!group Associations
 
-  # @!attribute primary_character [rw]
-  #   @return [Character]
-  has_one(
-    :primary_character,
-    class_name: "Character",
-    primary_key: "name",
-    foreign_key: "primary_job_name",
-  )
-
-  # @!attribute job_skills [rw]
-  #   @return [Array<JobSkill>]
-  has_many(
-    :job_skills,
-    class_name: "JobSkill",
-    primary_key: "name",
+  # @!attribute job
+  #   @return [Job]
+  belongs_to(
+    :job,
+    class_name: "Job",
     foreign_key: "job_name",
-  )
-
-  # @!attribute job_support_skills [rw]
-  #   @return [Array<JobSupportSkill>]
-  has_many(
-    :job_support_skills,
-    class_name: "JobSupportSkill",
     primary_key: "name",
-    foreign_key: "job_name",
+    required: true,
   )
 
   # @!endgroup Associations
@@ -68,7 +59,7 @@ class Job < ApplicationRecord
   # @!group Scopes
 
   # @!method self.scope_for_trestle()
-  #   @return [Job::ActiveRecord_Relation]
+  #   @return [JobSkill::ActiveRecord_Relation]
   scope(:scope_for_trestle, -> { all() })
 
   # @!endgroup Scopes
@@ -79,8 +70,7 @@ class Job < ApplicationRecord
 
   # @return [String]
   def self.icon_css_class()
-    # return "mdi mdi-hard-hat"
-    return "ra ra-aura"
+    return "mdi mdi-octagram"
   end
 
   # =====================================================================

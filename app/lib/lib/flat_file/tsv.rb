@@ -15,7 +15,8 @@ module Lib
           col_sep: delimiter,
           headers: true,
           quote_char: quote_char,
-        ).map(&:to_hash)
+          converters: :numeric,
+        ).map(&:to_hash).map(&:with_indifferent_access)
       end
 
       # Read a TSV stream and return its contents as an array of hashes.

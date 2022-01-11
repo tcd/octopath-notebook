@@ -127,23 +127,23 @@ Style/SymbolArray:
   EnforcedStyle: brackets
 
 Layout/SpaceInsideBlockBraces:
-  enabled: true
+  Enabled: true
   EnforcedStyleForEmptyBraces: space
   Exclude:
     - "test/factories/**/*.rb"
 
 Layout/MultilineBlockLayout:
-  enabled: true
+  Enabled: true
   Exclude:
     - "test/factories/**/*.rb"
 
 Style/BlockDelimiters:
-  enabled: true
+  Enabled: true
   Exclude:
     - "test/factories/**/*.rb"
 
 Layout/BlockEndNewline:
-  enabled: true
+  Enabled: true
   Exclude:
     - "test/factories/**/*.rb"
 
@@ -216,23 +216,26 @@ Style/RaiseArgs:
 # =====================================================================
 
 Style/MultilineIfModifier:
-  enabled: true
+  Enabled: true
   Exclude:
     - "app/admin/**/*.rb"
 
 Lint/UnusedMethodArgument:
-  enabled: true
+  Enabled: true
   Exclude:
     - "app/jobs/**/*.rb"
 
 Lint/MissingSuper:
-  enabled: true
+  Enabled: true
   Exclude:
     - "app/components/**/component.rb"
 
 # =====================================================================
 # Unsorted
 # =====================================================================
+
+Style/SingleArgumentDig:
+ Enabled: false
 
 Style/Lambda:
   EnforcedStyle: literal

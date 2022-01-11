@@ -24,6 +24,7 @@ module Lib
         invalid["towns"] = self.towns()
         invalid["jobs"] = self.jobs()
         invalid["job_support_skills"] = self.job_support_skills()
+        invalid["job_skills"] = self.job_skills()
         invalid["characters"] = self.characters()
         return invalid
       end
@@ -71,6 +72,38 @@ module Lib
         fixture_data.each do |fixture|
           fx = fixture[1]
           args = yield(fx)
+          args.compact!()
+          model = model_class.new(args)
+          model.save!()
+          pb.increment()
+        rescue StandardError => e
+          invalid << {
+            args:  args,
+            error: e,
+          }
+          pb.increment()
+          pb.newline()
+          pp(args)
+          puts(e)
+          pb.newline()
+        end
+        return invalid
+      end
+
+      # @param file_name [String] Name of the JSON file with data to import.
+      # @param model_class [Class] ActiveRecord model to create.
+      #
+      # @yieldparam [Hash] one fixture from the file
+      # @yieldreturn [Hash] arguments for creating the model instance from the fixture
+      #
+      # @return [Array<Hash>]
+      def self.from_json(file_name, model_class)
+        invalid = []
+        path = self.seeds_folder.join(file_name)
+        data = Lib::FlatFile::Json.from_file(path)
+        pb = Lib::ProgressBar.new(data.length, title: "seeding #{model_class.name} data")
+        data.each do |x|
+          args = yield(x)
           args.compact!()
           model = model_class.new(args)
           model.save!()
@@ -215,6 +248,28 @@ module Lib
             critical:          fx["critical"],
             evasion:           fx["evasion"],
             other_effects:     fx["other_effects"],
+          }
+        end
+        return invalid
+      end
+
+      # @return [void]
+      def self.job_skills()
+        invalid = self.from_json("JobSkills.json", JobSkill) do |fx|
+          _args = {
+            id:                  fx["original_order"],
+            name:                fx["name"],
+            job_name:            fx["job_name"],
+            job_order:           fx["job_order"],
+            in_game_description: fx["in_game_description"],
+            sp_cost:             fx["sp_cost"],
+            effect_type:         fx["effect_type"],
+            target:              fx["target"],
+            notes:               fx["notes"],
+            invocation_ratio:    fx["invocation_ratio"],
+            defense_modifier:    fx["defense_modifier"],
+            extra_data:          fx["extra_data"],
+            boost_data:          fx["boost_data"],
           }
         end
         return invalid
