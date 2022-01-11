@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_11_195621) do
+ActiveRecord::Schema.define(version: 2022_01_11_222447) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,6 +133,17 @@ ActiveRecord::Schema.define(version: 2022_01_11_195621) do
     t.index ["name"], name: "index_job_skills_on_name", unique: true
   end
 
+  create_table "job_stat_bonuses", force: :cascade do |t|
+    t.decimal "value", precision: 8, scale: 2, null: false
+    t.bigint "job_id"
+    t.bigint "stat_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["job_id", "stat_id"], name: "index_job_stat_bonuses_on_job_id_and_stat_id", unique: true
+    t.index ["job_id"], name: "index_job_stat_bonuses_on_job_id"
+    t.index ["stat_id"], name: "index_job_stat_bonuses_on_stat_id"
+  end
+
   create_table "job_support_skills", force: :cascade do |t|
     t.string "name", null: false
     t.string "job_name", null: false
@@ -175,6 +186,7 @@ ActiveRecord::Schema.define(version: 2022_01_11_195621) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "encoded_picture"
+    t.string "full_name", null: false
     t.index ["name"], name: "index_stats_on_name", unique: true
   end
 
@@ -221,6 +233,8 @@ ActiveRecord::Schema.define(version: 2022_01_11_195621) do
   add_foreign_key "characters", "towns", column: "starting_town_name", primary_key: "name"
   add_foreign_key "equipment", "equipment_categories", column: "category_name", primary_key: "name"
   add_foreign_key "job_skills", "jobs", column: "job_name", primary_key: "name"
+  add_foreign_key "job_stat_bonuses", "jobs"
+  add_foreign_key "job_stat_bonuses", "stats"
   add_foreign_key "job_support_skills", "jobs", column: "job_name", primary_key: "name"
   add_foreign_key "taggings", "tags"
   add_foreign_key "towns", "regions", column: "region_name", primary_key: "name"

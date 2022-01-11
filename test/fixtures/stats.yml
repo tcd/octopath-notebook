@@ -1,10 +1,10 @@
-HP:               { id:  1, name: "Max. HP",     description: "Dictates maximum hitpoints." }
-SP:               { id:  2, name: "Max. SP",     description: "Dictates maximum Spirit Points." }
-PhysicalAttack:   { id:  3, name: "Phys. Atk.",  description: "Dictates damage dealt with physical attacks." }
-PhysicalDefense.: { id:  4, name: "Phys. Def.",  description: "Dictates damage recieved from physical attacks." }
-ElementalAttack:  { id:  5, name: "Elem. Atk.",  description: "Dictates damage dealt with elemental attacks." }
-ElementalDefense: { id:  6, name: "Elem. Def.",  description: "Dictates damage recieved from elemental attacks; Dictates potency of healing skills." }
-Accuracy:         { id:  7, name: "Accuracy",    description: "Dictates chance of dealt attacks hitting or missing." }
-Speed:            { id:  8, name: "Speed",       description: "Dictates priority during a turn." }
-Critical:         { id:  9, name: "Critical",    description: "Dictates chance of dealing a critical hit." }
-Evasion:          { id: 10, name: "Evasion",     description: "Dictates whether received attacks will miss." }
+HP:               { id:  1, name: "Max. HP",     full_name: "Max HP",             description: "Dictates maximum hitpoints." }
+SP:               { id:  2, name: "Max. SP",     full_name: "Max SP",             description: "Dictates maximum Spirit Points." }
+PhysicalAttack:   { id:  3, name: "Phys. Atk.",  full_name: "Physical Attack",    description: "Dictates damage dealt with physical attacks." }
+PhysicalDefense.: { id:  4, name: "Phys. Def.",  full_name: "Physical Defense",   description: "Dictates damage recieved from physical attacks." }
+ElementalAttack:  { id:  5, name: "Elem. Atk.",  full_name: "Elemental Attack",   description: "Dictates damage dealt with elemental attacks." }
+ElementalDefense: { id:  6, name: "Elem. Def.",  full_name: "Elemental Defense",  description: "Dictates damage recieved from elemental attacks; Dictates potency of healing skills." }
+Accuracy:         { id:  7, name: "Accuracy",    full_name: "Accuracy",           description: "Dictates chance of dealt attacks hitting or missing." }
+Speed:            { id:  8, name: "Speed",       full_name: "Speed",              description: "Dictates priority during a turn." }
+Critical:         { id:  9, name: "Critical",    full_name: "Critical",           description: "Dictates chance of dealing a critical hit." }
+Evasion:          { id: 10, name: "Evasion",     full_name: "Evasion",            description: "Dictates whether received attacks will miss." }

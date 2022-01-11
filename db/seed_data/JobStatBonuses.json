@@ -1,0 +1,272 @@
+[
+    {
+        "job": "Warrior",
+        "stat": "Max HP",
+        "value": 0.18
+    },
+    {
+        "job": "Apothecary",
+        "stat": "Max HP",
+        "value": 0.2
+    },
+    {
+        "job": "Merchant",
+        "stat": "Max HP",
+        "value": 0.08
+    },
+    {
+        "job": "Starseer",
+        "stat": "Max HP",
+        "value": 0.15
+    },
+    {
+        "job": "Merchant",
+        "stat": "Max SP",
+        "value": 0.08
+    },
+    {
+        "job": "Cleric",
+        "stat": "Max SP",
+        "value": 0.18
+    },
+    {
+        "job": "Scholar",
+        "stat": "Max SP",
+        "value": 0.13
+    },
+    {
+        "job": "Sorcerer",
+        "stat": "Max SP",
+        "value": 0.2
+    },
+    {
+        "job": "Starseer",
+        "stat": "Max SP",
+        "value": 0.15
+    },
+    {
+        "job": "Warrior",
+        "stat": "Physical Attack",
+        "value": 0.05
+    },
+    {
+        "job": "Apothecary",
+        "stat": "Physical Attack",
+        "value": 0.015
+    },
+    {
+        "job": "Merchant",
+        "stat": "Physical Attack",
+        "value": 0.03
+    },
+    {
+        "job": "Hunter",
+        "stat": "Physical Attack",
+        "value": 0.08
+    },
+    {
+        "job": "Thief",
+        "stat": "Physical Attack",
+        "value": 0.02
+    },
+    {
+        "job": "Warmaster",
+        "stat": "Physical Attack",
+        "value": 0.12
+    },
+    {
+        "job": "Starseer",
+        "stat": "Physical Attack",
+        "value": 0.02
+    },
+    {
+        "job": "Runelord",
+        "stat": "Physical Attack",
+        "value": 0.07
+    },
+    {
+        "job": "Warrior",
+        "stat": "Physical Defense",
+        "value": 0.05
+    },
+    {
+        "job": "Apothecary",
+        "stat": "Physical Defense",
+        "value": 0.015
+    },
+    {
+        "job": "Merchant",
+        "stat": "Physical Defense",
+        "value": 0.03
+    },
+    {
+        "job": "Warmaster",
+        "stat": "Physical Defense",
+        "value": 0.12
+    },
+    {
+        "job": "Starseer",
+        "stat": "Physical Defense",
+        "value": 0.02
+    },
+    {
+        "job": "Runelord",
+        "stat": "Physical Defense",
+        "value": 0.07
+    },
+    {
+        "job": "Apothecary",
+        "stat": "Elemental Attack",
+        "value": 0.015
+    },
+    {
+        "job": "Merchant",
+        "stat": "Elemental Attack",
+        "value": 0.03
+    },
+    {
+        "job": "Cleric",
+        "stat": "Elemental Attack",
+        "value": 0.05
+    },
+    {
+        "job": "Scholar",
+        "stat": "Elemental Attack",
+        "value": 0.1
+    },
+    {
+        "job": "Dancer",
+        "stat": "Elemental Attack",
+        "value": 0.08
+    },
+    {
+        "job": "Sorcerer",
+        "stat": "Elemental Attack",
+        "value": 0.09
+    },
+    {
+        "job": "Starseer",
+        "stat": "Elemental Attack",
+        "value": 0.02
+    },
+    {
+        "job": "Runelord",
+        "stat": "Elemental Attack",
+        "value": 0.07
+    },
+    {
+        "job": "Merchant",
+        "stat": "Elemental Defense",
+        "value": 0.03
+    },
+    {
+        "job": "Cleric",
+        "stat": "Elemental Defense",
+        "value": 0.05
+    },
+    {
+        "job": "Scholar",
+        "stat": "Elemental Defense",
+        "value": 0.05
+    },
+    {
+        "job": "Sorcerer",
+        "stat": "Elemental Defense",
+        "value": 0.09
+    },
+    {
+        "job": "Starseer",
+        "stat": "Elemental Defense",
+        "value": 0.02
+    },
+    {
+        "job": "Runelord",
+        "stat": "Elemental Defense",
+        "value": 0.07
+    },
+    {
+        "job": "Hunter",
+        "stat": "Accuracy",
+        "value": 0.06
+    },
+    {
+        "job": "Thief",
+        "stat": "Accuracy",
+        "value": 0.05
+    },
+    {
+        "job": "Warmaster",
+        "stat": "Accuracy",
+        "value": 0.06
+    },
+    {
+        "job": "Runelord",
+        "stat": "Accuracy",
+        "value": 0.06
+    },
+    {
+        "job": "Dancer",
+        "stat": "Speed",
+        "value": 0.1
+    },
+    {
+        "job": "Hunter",
+        "stat": "Speed",
+        "value": 0.05
+    },
+    {
+        "job": "Thief",
+        "stat": "Speed",
+        "value": 0.08
+    },
+    {
+        "job": "Warmaster",
+        "stat": "Speed",
+        "value": 0.06
+    },
+    {
+        "job": "Apothecary",
+        "stat": "Critical",
+        "value": 0.015
+    },
+    {
+        "job": "Hunter",
+        "stat": "Critical",
+        "value": 0.06
+    },
+    {
+        "job": "Thief",
+        "stat": "Critical",
+        "value": 0.05
+    },
+    {
+        "job": "Sorcerer",
+        "stat": "Critical",
+        "value": 0.02
+    },
+    {
+        "job": "Runelord",
+        "stat": "Critical",
+        "value": 0.08
+    },
+    {
+        "job": "Dancer",
+        "stat": "Evasion",
+        "value": 0.1
+    },
+    {
+        "job": "Hunter",
+        "stat": "Evasion",
+        "value": 0.05
+    },
+    {
+        "job": "Thief",
+        "stat": "Evasion",
+        "value": 0.08
+    },
+    {
+        "job": "Warmaster",
+        "stat": "Evasion",
+        "value": 0.06
+    }
+]

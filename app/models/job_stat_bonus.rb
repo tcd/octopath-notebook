@@ -1,4 +1,4 @@
-class Stat < ApplicationRecord
+class JobStatBonus < ApplicationRecord
 
   # =====================================================================
   # Attributes
@@ -6,23 +6,10 @@ class Stat < ApplicationRecord
 
   # @!group Attributes
 
-  # @!attribute name
+  # @!attribute value
   #   @required
-  #   @return [String]
-  validates(:name, presence: true, uniqueness: true)
-
-  # @!attribute full_name
-  #   @required
-  #   @return [String]
-  validates(:full_name, presence: true, uniqueness: true)
-
-  # @!attribute description
-  #   @required
-  #   @return [String]
-  validates(:description, presence: true)
-
-  # @!attribute encoded_picture
-  #   @return [String]
+  #   @return [Decimal]
+  validates(:value, presence: true)
 
   # @!endgroup Attributes
 
@@ -32,9 +19,13 @@ class Stat < ApplicationRecord
 
   # @!group Associations
 
-  # @!attribute job_stat_bonuses
-  #   @return [Array<JobStatBonus>]
-  has_many(:job_stat_bonuses)
+  # @!attribute job
+  #   @return [Job]
+  belongs_to(:job, required: true)
+
+  # @!attribute stat
+  #   @return [Stat]
+  belongs_to(:stat, required: true)
 
   # @!endgroup Associations
 
@@ -45,7 +36,7 @@ class Stat < ApplicationRecord
   # @!group Scopes
 
   # @!method self.scope_for_trestle()
-  #   @return [Stat::ActiveRecord_Relation]
+  #   @return [JobStatBonus::ActiveRecord_Relation]
   scope(:scope_for_trestle, -> { all() })
 
   # @!endgroup Scopes
@@ -56,7 +47,7 @@ class Stat < ApplicationRecord
 
   # @return [String]
   def self.icon_css_class()
-    return "mdi mdi-chart-bar-stacked"
+    return "mdi mdi-set-all"
   end
 
   # =====================================================================
@@ -66,7 +57,6 @@ class Stat < ApplicationRecord
   # @return [String]
   def display_name()
     return " " unless self.persisted?()
-    return self.name
+    return "#{self.job.display_name} - #{self.stat.display_name}"
   end
-
 end

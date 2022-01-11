@@ -62,6 +62,10 @@ class Job < ApplicationRecord
     foreign_key: "job_name",
   )
 
+  # @!attribute job_stat_bonuses [rw]
+  #   @return [Array<JobStatBonus>]
+  has_many(:job_stat_bonuses)
+
   # @!endgroup Associations
 
   # ==========================================================================

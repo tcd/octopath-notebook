@@ -14,4 +14,6 @@
 ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym("HP")
   inflect.acronym("SP")
+  inflect.irregular("bonus", "bonuses")
+  inflect.irregular("staff", "staves")
 end

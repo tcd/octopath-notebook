@@ -26,6 +26,7 @@ module Lib
         invalid["characters"] = self.characters()
         invalid["job_support_skills"] = self.job_support_skills()
         invalid["job_skills"] = self.job_skills()
+        invalid["job_stat_bonuses"] = self.job_stat_bonuses()
         return invalid
       end
 
@@ -128,8 +129,17 @@ module Lib
           _args = {
             id:          fx["id"],
             name:        fx["name"],
+            full_name:   fx["full_name"],
             description: fx["description"],
           }
+        end
+        if invalid.blank?
+          assets = Lib::FlatFile::Json.from_file(Rails.root.join("db", "seed_data", "assets.json"))
+          assets["Stats"].each do |name, image|
+            record = Stat.find_by(name: name)
+            next unless record
+            record.update!(encoded_picture: image)
+          end
         end
         return invalid
       end
@@ -272,6 +282,22 @@ module Lib
             defense_modifier:    fx["defense_modifier"],
             extra_data:          fx["extra_data"],
             boost_data:          fx["boost_data"],
+          }
+        end
+        return invalid
+      end
+
+      # @return [void]
+      def self.job_stat_bonuses()
+        jobs  = Job.select(:name, :id)
+        stats = Stat.select(:full_name, :id)
+        invalid = self.from_json("JobStatBonuses.json", JobStatBonus) do |fx|
+          job_id  = jobs.find  { |x| x.name == fx["job"] }.id
+          stat_id = stats.find { |x| x.full_name == fx["stat"] }.id
+          _args = {
+            value: fx["value"],
+            job_id: job_id,
+            stat_id: stat_id,
           }
         end
         return invalid
