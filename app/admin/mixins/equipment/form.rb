@@ -20,7 +20,7 @@ module Mixins
               # end
             end
 
-            tab(:example) do
+            tab(:equipment) do
 
               row do
                 col(md: 6) do
@@ -31,6 +31,10 @@ module Mixins
                 end
               end
 
+            end
+
+            tab(:raw_data) do
+              render(Components::JsonCodeBlock::Component.new(data: record.as_json))
             end
 
           end

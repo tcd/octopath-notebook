@@ -60,6 +60,10 @@ module Mixins
 
             end
 
+            tab(:raw_data) do
+              render(Components::JsonCodeBlock::Component.new(data: record.as_json))
+            end
+
           end
         end
       end
