@@ -80,3 +80,9 @@ $green-tag-bg: lighten($green-tag-color, 10%);
     color: black;
     background-color: $green-tag-bg;
 }
+
+.static-form-label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
