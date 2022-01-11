@@ -1,5 +1,5 @@
 Sword:       { id:    1, name: "Sword",        physical: true,  elemental: false, is_standard: true,  game_order:    1 }
-Spear:       { id:    2, name: "Spear",        physical: true,  elemental: false, is_standard: true,  game_order:    2 }
+Polearm:     { id:    2, name: "Polearm",      physical: true,  elemental: false, is_standard: true,  game_order:    2 }
 Dagger:      { id:    3, name: "Dagger",       physical: true,  elemental: false, is_standard: true,  game_order:    3 }
 Axe:         { id:    4, name: "Axe",          physical: true,  elemental: false, is_standard: true,  game_order:    4 }
 Bow:         { id:    5, name: "Bow",          physical: true,  elemental: false, is_standard: true,  game_order:    5 }
