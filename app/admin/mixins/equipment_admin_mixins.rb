@@ -22,8 +22,12 @@ module Mixins
     # Form
     # ==========================================================================
     Form = -> do
-      # @param region [Region]
-      form do |region|
+      # @param record [Region]
+      form do |record|
+
+        tab(:equipment) do
+        end
+
       end
     end
 

@@ -22,8 +22,8 @@ module Mixins
     # Form
     # ==========================================================================
     Form = -> do
-      # @param job_support_skill [JobSupportSkill]
-      form do |job_support_skill|
+      # @param record [JobSupportSkill]
+      form do |record|
 
         tab(:job_support_skill) do
         end

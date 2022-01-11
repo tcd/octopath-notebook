@@ -22,8 +22,8 @@ module Mixins
     # Form
     # ==========================================================================
     Form = -> do
-      # @param character [Character]
-      form do |character|
+      # @param record [Character]
+      form do |record|
 
         tab(:character) do
         end
