@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_11_225400) do
+ActiveRecord::Schema.define(version: 2022_01_11_232917) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -226,6 +226,16 @@ ActiveRecord::Schema.define(version: 2022_01_11_225400) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_towns_on_name", unique: true
     t.index ["region_name"], name: "index_towns_on_region_name"
+  end
+
+  create_table "weapon_types", force: :cascade do |t|
+    t.string "singular_name", null: false
+    t.string "plural_name", null: false
+    t.string "encoded_picture"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["plural_name"], name: "index_weapon_types_on_plural_name", unique: true
+    t.index ["singular_name"], name: "index_weapon_types_on_singular_name", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

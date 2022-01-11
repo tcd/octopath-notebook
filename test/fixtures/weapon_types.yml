@@ -1,0 +1,6 @@
+Swords:   { id: 1, singular_name: "Sword",   plural_name: "Swords"   }
+Polearms: { id: 2, singular_name: "Polearm", plural_name: "Polearms" }
+Daggers:  { id: 3, singular_name: "Dagger",  plural_name: "Daggers"  }
+Axes:     { id: 4, singular_name: "Axe",     plural_name: "Axes"     }
+Bows:     { id: 5, singular_name: "Bow",     plural_name: "Bows"     }
+Staves:   { id: 6, singular_name: "Staff",   plural_name: "Staves"   }
