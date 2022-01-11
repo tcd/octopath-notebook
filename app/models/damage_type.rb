@@ -27,6 +27,9 @@ class DamageType < ApplicationRecord
   #   @required
   #   @return [Boolean]
 
+  # @!attribute encoded_picture
+  #   @return [String]
+
   # @!endgroup Attributes
 
   # =====================================================================

@@ -24,6 +24,9 @@ class Job < ApplicationRecord
   #   @required
   #   @return [Integer]
 
+  # @!attribute encoded_picture
+  #   @return [String]
+
   # @!endgroup Attributes
 
   # =====================================================================
