@@ -1,6 +1,7 @@
 Trestle.resource(:characters) do
 
-  instance_exec(&Mixins::CharactersAdminMixins::Table)
+  extend Mixins::Characters::Table
+  # extend Mixins::Characters::Form
 
   menu do
     item(

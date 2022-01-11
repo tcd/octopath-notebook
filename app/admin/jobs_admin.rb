@@ -1,7 +1,7 @@
 Trestle.resource(:jobs) do
 
-  instance_exec(&Mixins::JobsAdminMixins::Table)
-  # instance_exec(&Mixins::JobsAdminMixins::Form)
+  extend Mixins::Jobs::Table
+  extend Mixins::Jobs::Form
 
   menu do
     item(
