@@ -47,6 +47,16 @@ class EquipmentCategory < ApplicationRecord
   #   @return [EquipmentCategory::ActiveRecord_Relation]
   scope(:scope_for_trestle, -> { all() })
 
+  # ----------------------------------------------------------------------------
+
+  # @!method self.weapons()
+  #   @return [EquipmentCategory::ActiveRecord_Relation]
+  scope(:weapons, -> { where(weapon: true) })
+
+  # @!method self.armor()
+  #   @return [EquipmentCategory::ActiveRecord_Relation]
+  scope(:armor, -> { where(weapon: false) })
+
   # @!endgroup Scopes
 
   # ============================================================================

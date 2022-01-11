@@ -96,7 +96,7 @@ class Equipment < ApplicationRecord
   # @!attribute category
   #   @return [EquipmentCategory]
   belongs_to(
-    :equipment_category,
+    :category,
     class_name: "EquipmentCategory",
     foreign_key: "category_name",
     primary_key: "name",
@@ -113,7 +113,17 @@ class Equipment < ApplicationRecord
 
   # @!method self.scope_for_trestle()
   #   @return [Equipment::ActiveRecord_Relation]
-  scope(:scope_for_trestle, -> { all() })
+  scope(:scope_for_trestle, -> { includes(:category) })
+
+  # ----------------------------------------------------------------------------
+
+  # @!method self.weapons()
+  #   @return [Equipment::ActiveRecord_Relation]
+  scope(:weapons, -> { all.joins(:category).merge(EquipmentCategory.weapons) })
+
+  # @!method self.armor()
+  #   @return [Equipment::ActiveRecord_Relation]
+  scope(:armor, -> { all.joins(:category).merge(EquipmentCategory.armor) })
 
   # @!endgroup Scopes
 

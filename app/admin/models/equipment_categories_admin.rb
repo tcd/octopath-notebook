@@ -14,15 +14,11 @@ Trestle.resource(:equipment_categories) do
   end
 
   table do
-
     column(:picture, sort: false, header: false, align: :center) do |record|
       image_tag(record.encoded_picture, style: "max-width: 40px") unless record.encoded_picture.blank?
     end
-
     column(:name, link: true)
-
     column(:weapon)
-
   end
 
 end

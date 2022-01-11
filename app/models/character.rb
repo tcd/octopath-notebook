@@ -30,6 +30,9 @@ class Character < ApplicationRecord
   # @!attribute native_town_name
   #   @return [String]
 
+  # @!attribute encoded_picture
+  #   @return [String]
+
   # @!endgroup Attributes
 
   # =====================================================================
@@ -80,7 +83,7 @@ class Character < ApplicationRecord
 
   # @!method self.scope_for_trestle()
   #   @return [Character::ActiveRecord_Relation]
-  scope(:scope_for_trestle, -> { includes(:primary_job) })
+  scope(:scope_for_trestle, -> { includes(:primary_job).order(id: :asc) })
 
   # @!endgroup Scopes
 

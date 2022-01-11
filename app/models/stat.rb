@@ -16,6 +16,9 @@ class Stat < ApplicationRecord
   #   @return [String]
   validates(:description, presence: true)
 
+  # @!attribute encoded_picture
+  #   @return [String]
+
   # @!endgroup Attributes
 
   # =====================================================================

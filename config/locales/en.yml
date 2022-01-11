@@ -33,10 +33,24 @@ en:
   attributes:
     created_at: "Created At"
     updated: "Updated At"
+    physical_attack: "Phys. Atk."
+    physical_defense: "Phys. Def."
+    elemental_attack: "Elem. Atk."
+    elemental_defense: "Elem. Def."
   activerecord:
     attributes:
+      character:
+        primary_job: "Primary Job"
+      job_skill:
+        effect_type: "Effect Type"
+      job_support_skill:
+        one_per_party: "One Per Party"
       equipment:
         sell_price: "Sell Price"
+        physical_attack: "Phys. Atk."
+        physical_defense: "Phys. Def."
+        elemental_attack: "Elem. Atk."
+        elemental_defense: "Elem. Def."
   admin:
     equipment:
       breadcrumbs:

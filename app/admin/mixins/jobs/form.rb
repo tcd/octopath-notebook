@@ -11,13 +11,11 @@ module Mixins
               row(class: "text-center") do
                 col { content_tag(:h1, record.display_name) }
               end
-              # row do
-              #   col do
-              #     form_group(:_, label: false, class: "text-center") do
-              #       active_storage_field(:picture, label: false)
-              #     end
-              #   end
-              # end
+              row(class: "text-center") do
+                col do
+                  image_tag(record.encoded_picture, style: "") unless record.encoded_picture.blank?
+                end
+              end
             end
 
             tab(:job) do
@@ -58,6 +56,10 @@ module Mixins
                 end
               end
 
+            end
+
+            tab(:skills, badge: record.job_skills.count) do
+              table(JobSkillsAdmin.table, collection: record.job_skills)
             end
 
             tab(:raw_data) do

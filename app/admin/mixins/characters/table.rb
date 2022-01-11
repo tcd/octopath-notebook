@@ -9,7 +9,7 @@ module Mixins
             # column(:id)
 
             column(:picture, sort: false, header: false, align: :center) do |record|
-              image_tag(record.encoded_picture, style: "") unless record.encoded_picture.blank?
+              image_tag(record.encoded_picture, style: "height: 60px;") unless record.encoded_picture.blank?
             end
 
             column(:name, link: true)

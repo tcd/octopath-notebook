@@ -6,12 +6,24 @@ module Mixins
         builder.instance_eval do
           table do
 
-            column(:id)
+            # column(:id)
 
-            column(:name, sort: :name, link: true, class: "table-link", &:display_name)
+            column(:name, sort: :name, link: true, class: "table-link")
+            column(:category, sort: :category_name, link: true, class: "table-link")
 
-            column(:created_at, align: :center)
-            column(:updated_at, align: :center)
+            column(:physical_attack)
+            column(:physical_defense)
+            column(:elemental_attack)
+            column(:elemental_defense)
+            column(:max_hp)
+            column(:max_sp)
+            column(:accuracy)
+            column(:speed)
+            column(:critical)
+            column(:evasion)
+
+            # column(:created_at, align: :center)
+            # column(:updated_at, align: :center)
 
           end
         end
@@ -19,3 +31,8 @@ module Mixins
     end
   end
 end
+
+# "category_name"
+# "name"
+# "sell_price"
+# "other_effects"
