@@ -1,7 +1,7 @@
 # an active ability associated with a given job
 class JobSkill < ApplicationRecord
 
-  paginates_per(100)
+  paginates_per(150)
 
   # =====================================================================
   # Attributes
@@ -60,7 +60,7 @@ class JobSkill < ApplicationRecord
 
   # @!method self.scope_for_trestle()
   #   @return [JobSkill::ActiveRecord_Relation]
-  scope(:scope_for_trestle, -> { all() })
+  scope(:scope_for_trestle, -> { includes(:job) })
 
   # @!endgroup Scopes
 
