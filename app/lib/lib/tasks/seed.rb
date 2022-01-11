@@ -14,6 +14,26 @@ module Lib
       end
 
       # @return [Hash]
+      def self.encoded_assets()
+        asset_file_path = Rails.root.join("db", "seed_data", "assets.json")
+        assets = Lib::FlatFile::Json.from_file(asset_file_path)
+        return assets
+      end
+
+      # @param json_key [String]
+      # @param model_class [ApplicationRecord]
+      # @return [void]
+      def self.add_assets(json_key, model_class)
+        asset_file_path = Rails.root.join("db", "seed_data", "assets.json")
+        assets = Lib::FlatFile::Json.from_file(asset_file_path)
+        assets[json_key].each do |name, image|
+          record = model_class.find_by(name: name)
+          next unless record
+          record.update!(encoded_picture: image)
+        end
+      end
+
+      # @return [Hash]
       def self.all()
         invalid = {}
         invalid["stats"] = self.stats()
@@ -134,7 +154,7 @@ module Lib
           }
         end
         if invalid.blank?
-          assets = Lib::FlatFile::Json.from_file(Rails.root.join("db", "seed_data", "assets.json"))
+          assets = encoded_assets()
           assets["Stats"].each do |name, image|
             record = Stat.find_by(name: name)
             next unless record
@@ -153,6 +173,7 @@ module Lib
             weapon: fx["weapon"],
           }
         end
+        add_assets("DamageTypes", EquipmentCategory) if invalid.blank?
         return invalid
       end
 
@@ -188,8 +209,10 @@ module Lib
             primary:    fx["primary"],
             secret:     fx["secret"],
             game_order: fx["game_order"],
+            weapons:    fx["weapons"],
           }
         end
+        add_assets("Jobs", Job) if invalid.blank?
         return invalid
       end
 
@@ -237,6 +260,7 @@ module Lib
             native_town_name:   fx["native_town_name"],
           }
         end
+        add_assets("Characters", Character) if invalid.blank?
         return invalid
       end
 

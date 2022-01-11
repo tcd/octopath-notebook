@@ -1,12 +1,12 @@
-Hunter:     { "id":  1, "name": "Hunter",     "primary": true,  "secret": false, "game_order":  1 }
-Thief:      { "id":  2, "name": "Thief",      "primary": true,  "secret": false, "game_order":  2 }
-Apothecary: { "id":  3, "name": "Apothecary", "primary": true,  "secret": false, "game_order":  3 }
-Dancer:     { "id":  4, "name": "Dancer",     "primary": true,  "secret": false, "game_order":  4 }
-Warrior:    { "id":  5, "name": "Warrior",    "primary": true,  "secret": false, "game_order":  5 }
-Merchant:   { "id":  6, "name": "Merchant",   "primary": true,  "secret": false, "game_order":  6 }
-Scholar:    { "id":  7, "name": "Scholar",    "primary": true,  "secret": false, "game_order":  7 }
-Cleric:     { "id":  8, "name": "Cleric",     "primary": true,  "secret": false, "game_order":  8 }
-Sorcerer:   { "id":  9, "name": "Sorcerer",   "primary": false, "secret": true,  "game_order": 11 }
-Starseer:   { "id": 10, "name": "Starseer",   "primary": false, "secret": true,  "game_order": 10 }
-Runelord:   { "id": 11, "name": "Runelord",   "primary": false, "secret": true,  "game_order": 10 }
-Warmaster:  { "id": 12, "name": "Warmaster",  "primary": false, "secret": true,  "game_order": 10 }
+Hunter:     { "id":  1, "name": "Hunter",     "primary": true,  "secret": false, "game_order":  1, weapons: [Axes, Bows] }
+Thief:      { "id":  2, "name": "Thief",      "primary": true,  "secret": false, "game_order":  2, weapons: [Swords, Daggers] }
+Apothecary: { "id":  3, "name": "Apothecary", "primary": true,  "secret": false, "game_order":  3, weapons: [Axes] }
+Dancer:     { "id":  4, "name": "Dancer",     "primary": true,  "secret": false, "game_order":  4, weapons: [Daggers] }
+Warrior:    { "id":  5, "name": "Warrior",    "primary": true,  "secret": false, "game_order":  5, weapons: [Swords, Polearms] }
+Merchant:   { "id":  6, "name": "Merchant",   "primary": true,  "secret": false, "game_order":  6, weapons: [Bows, Polearms] }
+Scholar:    { "id":  7, "name": "Scholar",    "primary": true,  "secret": false, "game_order":  7, weapons: [Staves] }
+Cleric:     { "id":  8, "name": "Cleric",     "primary": true,  "secret": false, "game_order":  8, weapons: [Staves] }
+Sorcerer:   { "id":  9, "name": "Sorcerer",   "primary": false, "secret": true,  "game_order": 11, weapons: [Staves, Bows] }
+Starseer:   { "id": 10, "name": "Starseer",   "primary": false, "secret": true,  "game_order": 10, weapons: [Polearms, Daggers] }
+Runelord:   { "id": 11, "name": "Runelord",   "primary": false, "secret": true,  "game_order": 10, weapons: [Swords, Axes] }
+Warmaster:  { "id": 12, "name": "Warmaster",  "primary": false, "secret": true,  "game_order": 10, weapons: [Swords, Polearms, Daggers, Axes, Bows, Staves] }

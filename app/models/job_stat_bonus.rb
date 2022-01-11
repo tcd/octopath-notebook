@@ -57,6 +57,6 @@ class JobStatBonus < ApplicationRecord
   # @return [String]
   def display_name()
     return " " unless self.persisted?()
-    return "#{self.job.display_name} - #{self.stat.display_name}"
+    return "use strings as foreign keys bitch"
   end
 end
