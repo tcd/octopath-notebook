@@ -37,7 +37,7 @@ class Town < ApplicationRecord
 
   # ---------------------------------------------------------------------
 
-  # @!attribute starting_characters [rw]
+  # @!attribute starting_characters
   #   @return [Array<Character>]
   has_many(
     :starting_characters,
@@ -46,7 +46,7 @@ class Town < ApplicationRecord
     foreign_key: "starting_town_name",
   )
 
-  # @!attribute native_characters [rw]
+  # @!attribute native_characters
   #   @return [Array<Character>]
   has_many(
     :native_characters,

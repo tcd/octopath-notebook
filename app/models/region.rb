@@ -20,7 +20,7 @@ class Region < ApplicationRecord
 
   # @!group Associations
 
-  # @!attribute towns [rw]
+  # @!attribute towns
   #   @return [Array<Town>]
   has_many(
     :towns,

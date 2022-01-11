@@ -42,7 +42,7 @@ class Character < ApplicationRecord
   # @!group Associations
 
   # @!attribute primary_job
-  #   @return [Region]
+  #   @return [Job]
   belongs_to(
     :primary_job,
     class_name: "Job",

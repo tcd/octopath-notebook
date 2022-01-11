@@ -26,7 +26,7 @@ class EquipmentCategory < ApplicationRecord
 
   # @!group Associations
 
-  # @!attribute equipment [rw]
+  # @!attribute equipment
   #   @return [Array<Equipment>]
   has_many(
     :equipment,
