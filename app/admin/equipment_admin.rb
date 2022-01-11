@@ -1,7 +1,7 @@
 Trestle.resource(:equipment) do
 
-  # instance_exec(&Mixins::EquipmentAdminMixins::Table)
-  # instance_exec(&Mixins::EquipmentAdminMixins::Form)
+  # extend Mixins::Equipment::Table
+  # extend Mixins::Equipment::Form
 
   menu do
     item(

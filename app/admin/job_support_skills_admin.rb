@@ -1,7 +1,7 @@
 Trestle.resource(:job_support_skills) do
 
-  # instance_exec(&Mixins::JobSupportSkillsAdminMixins::Table)
-  # instance_exec(&Mixins::JobSupportSkillsAdminMixins::Form)
+  # extend Mixins::JobSupportSkills::Table
+  # extend Mixins::JobSupportSkills::Form
 
   menu do
     item(

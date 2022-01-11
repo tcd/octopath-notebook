@@ -7,6 +7,31 @@ module Mixins
           # @param record [Character]
           form do |record|
 
+            sidebar do
+              row(class: "text-center") do
+                col { content_tag(:h1, record.display_name) }
+              end
+              # row do
+              #   col do
+              #     form_group(:_, label: false, class: "text-center") do
+              #       active_storage_field(:picture, label: false)
+              #     end
+              #   end
+              # end
+            end
+
+            tab(:character) do
+
+              row do
+                col(md: 6) do
+                  static_timestamp(:created_at)
+                end
+                col(md: 6) do
+                  static_timestamp(:updated_at)
+                end
+              end
+
+            end
 
           end
         end

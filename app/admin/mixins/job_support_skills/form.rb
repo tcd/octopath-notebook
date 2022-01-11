@@ -1,10 +1,10 @@
 module Mixins
-  module Jobs
+  module JobSupportSkills
     module Form
       # @param builder [Trestle::Resource::Builder]
       def self.extended(builder)
         builder.instance_eval do
-          # @param record [Job]
+          # @param record [JobSupportSkill]
           form do |record|
 
             sidebar do
@@ -20,34 +20,7 @@ module Mixins
               # end
             end
 
-            tab(:job) do
-
-              row do
-                col(md: 6) do
-                  static_field(:name)
-                end
-              end
-
-              row do
-                col(md: 6) do
-                  form_group(class: "required") do
-                    static_field(:primary)
-                  end
-                end
-                col(md: 6) do
-                  form_group(class: "required") do
-                    static_field(:secret)
-                  end
-                end
-              end
-
-              row do
-                col(md: 6) do
-                  form_group(class: "required") do
-                    static_field(:game_order)
-                  end
-                end
-              end
+            tab(:job_support_skill) do
 
               row do
                 col(md: 6) do
