@@ -30,4 +30,18 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  attributes:
+    created_at: "Created At"
+    updated: "Updated At"
+  activerecord:
+    attributes:
+      equipment:
+        sell_price: "Sell Price"
+  admin:
+    equipment:
+      breadcrumbs:
+        index: "Equipment"
+        new: "New"
+      titles:
+        index: "Listing Equipment"
+        new: "New Equipment"

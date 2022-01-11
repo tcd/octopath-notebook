@@ -71,6 +71,15 @@ class ApplicationRecord < ActiveRecord::Base
     raise NotImplementedError
   end
 
+  # Override [human_attribute_name](https://api.rubyonrails.org/classes/ActiveModel/Translation.html#method-i-human_attribute_name)
+  #
+  # @param attribute [Symbol]
+  # @param _options [Hash]
+  # @return [String]
+  def self.human_attribute_name(attribute, _options = {})
+    return attribute.to_s.split(".").pop.titleize()
+  end
+
   # ============================================================================
   # Instance Methods
   # ============================================================================
