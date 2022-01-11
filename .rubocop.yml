@@ -14,6 +14,8 @@ Style/Documentation:
   Exclude:
     - 'test/**/*.rb'
     - 'db/**/*.rb'
+    - 'app/admin/mixins/**/form.rb'
+    - 'app/admin/mixins/**/table.rb'
 
 Style/DocumentationMethod:
   Enabled: true
@@ -229,6 +231,11 @@ Lint/MissingSuper:
   Enabled: true
   Exclude:
     - "app/components/**/component.rb"
+
+Lint/UnusedBlockArgument:
+  Enabled: true
+  Exclude:
+    - "app/admin/mixins/**/*.rb"
 
 # =====================================================================
 # Unsorted
