@@ -1,17 +1,3 @@
-# @param to [Hash] the object to add the value to
-# @param from [Hash] the object to get the value from
-# @param value [symbol] value to copy
-# @param new_key [symbol] key for the value in `to`
-# @return [void]
-def copy_value(to, from, value, new_key = nil)
-  if new_key
-    to[new_key] = from[value]
-  else
-    to[value] = from[value]
-  end
-  return nil
-end
-
 BOOST_DATA_KEYS = {
   "level_0" => "Boost: None",
   "level_1" => "Boost: Lv 2",
@@ -101,35 +87,37 @@ namespace(:misc) do
       pb.increment()
       result = {}
 
-      copy_value(result, row, "name")
-      copy_value(result, row, "original_order")
-      copy_value(result, row, "job_name")
-      copy_value(result, row, "job_order")
-      copy_value(result, row, "in_game_description")
-      copy_value(result, row, "sp_cost")
-      copy_value(result, row, "effect_type")
-      copy_value(result, row, "target")
-      copy_value(result, row, "notes")
+      result["name"]                = row["name"]
+      result["original_order"]      = row["original_order"]
+      result["job_name"]            = row["job_name"]
+      result["job_order"]           = row["job_order"]
+      result["divine_skill"]        = (row["divine_skill"] == "true")
+      result["in_game_description"] = row["in_game_description"]
+      result["sp_cost"]             = row["sp_cost"]
+      result["effect_type"]         = row["effect_type"]
+      result["target"]              = row["target"]
 
-      copy_value(result, row, "invocation_ratio")
-      copy_value(result, row, "defense_modifier")
+      result["invocation_ratio"] = row["invocation_ratio"]
+      result["defense_modifier"] = row["defense_modifier"]
 
       extra_data = {}
-      copy_value(extra_data, row, "skill_all")
-      copy_value(extra_data, row, "convergence")
-      copy_value(extra_data, row, "diffusion")
-      copy_value(extra_data, row, "reflection")
-      copy_value(extra_data, row, "counter")
-      copy_value(extra_data, row, "hide_out")
-      copy_value(extra_data, row, "repeat")
-      copy_value(extra_data, row, "cover")
-      copy_value(extra_data, row, "disable_magic")
-      copy_value(extra_data, row, "enchant")
-      copy_value(extra_data, row, "chase_attack")
+      extra_data["skill_all"]     = (row["skill_all"] == "true")
+      extra_data["convergence"]   = (row["convergence"] == "true")
+      extra_data["diffusion"]     = (row["diffusion"] == "true")
+      extra_data["reflection"]    = (row["reflection"] == "true")
+      extra_data["counter"]       = (row["counter"] == "true")
+      extra_data["hide_out"]      = (row["hide_out"] == "true")
+      extra_data["repeat"]        = (row["repeat"] == "true")
+      extra_data["cover"]         = (row["cover"] == "true")
+      extra_data["disable_magic"] = (row["disable_magic"] == "true")
+      extra_data["enchant"]       = (row["enchant"] == "true")
+      extra_data["chase_attack"]  = (row["chase_attack"] == "true")
 
-      row["extra_data"] = extra_data.compact
+      result["extra_data"] = extra_data.compact
 
       result["boost_data"] = parse_boost_data(row)
+
+      result["notes"] = row["notes"]
 
       results << result.compact
     end

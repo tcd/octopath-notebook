@@ -6,7 +6,7 @@ class CreateJobSkills < ActiveRecord::Migration[6.0]
 
       t.string(:in_game_description, null: false)
       t.string(:job_order, null: false)
-      t.string(:divine_skill, null: false, default: false)
+      t.boolean(:divine_skill, null: false, default: false)
       t.integer(:sp_cost, null: false, default: 0)
       t.string(:target, null: false)
       t.string(:effect_type, null: false)

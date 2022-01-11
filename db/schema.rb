@@ -113,7 +113,7 @@ ActiveRecord::Schema.define(version: 2022_01_07_144553) do
     t.string "job_name", null: false
     t.string "in_game_description", null: false
     t.string "job_order", null: false
-    t.string "divine_skill", default: "f", null: false
+    t.boolean "divine_skill", default: false, null: false
     t.integer "sp_cost", default: 0, null: false
     t.string "target", null: false
     t.string "effect_type", null: false

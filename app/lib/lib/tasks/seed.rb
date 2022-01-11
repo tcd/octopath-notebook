@@ -23,9 +23,9 @@ module Lib
         invalid["regions"] = self.regions()
         invalid["towns"] = self.towns()
         invalid["jobs"] = self.jobs()
+        invalid["characters"] = self.characters()
         invalid["job_support_skills"] = self.job_support_skills()
         invalid["job_skills"] = self.job_skills()
-        invalid["characters"] = self.characters()
         return invalid
       end
 
@@ -261,6 +261,7 @@ module Lib
             name:                fx["name"],
             job_name:            fx["job_name"],
             job_order:           fx["job_order"],
+            divine_skill:        fx["divine_skill"],
             in_game_description: fx["in_game_description"],
             sp_cost:             fx["sp_cost"],
             effect_type:         fx["effect_type"],
