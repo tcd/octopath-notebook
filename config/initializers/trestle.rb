@@ -252,22 +252,24 @@ end
 # https://github.com/TrestleAdmin/trestle/wiki/Has-Many-Relationship-Tab-(with-reordering)
 # ==============================================================================
 
+# forgot where we got this from
 class SortableColumn < Trestle::Table
-  attr_reader :table
-  attr_reader :field
-  attr_reader :options
+  attr_reader :table, :field, :options
 
   # @return [void]
-  def initialize(table, field, options)
+  def initialize(table, field, options = {})
+    # super(options)
     @table   = table
     @field   = field
     @options = options
   end
 
+  # @return [Renderer]
   def renderer(template)
     return Renderer.new(self, template)
   end
 
+  # forgot where we got this from
   class Renderer < Trestle::Table::Column::Renderer
     include ActionView::Helpers::TagHelper
     include ActionView::Helpers::FormTagHelper
@@ -278,6 +280,7 @@ class SortableColumn < Trestle::Table
       return ""
     end
 
+    # @return [Unknown]
     def content(instance)
       model      = options[:collection][0]
       collection = options[:collection][1]
