@@ -14,7 +14,7 @@
 <% end %>
 
 <% content_for(:utilities) do %>
-    <%= render "scopes" %>
+    <%= render("scopes") %>
 <% end if admin.scopes.any? %>
 
 <%= render layout: "layout" do %>
@@ -24,11 +24,10 @@
         </header>
     <% end %>
 
-    <%= render "trestle/table/table", table: admin.table, collection: collection %>
+    <%= render("trestle/table/table", table: admin.table, collection: collection) %>
 
     <footer class="main-content-footer">
         <%= hook("resource.index.footer") %>
-
-        <%= pagination collection: collection, entry_name: admin.model_name, remote: admin.pagination_options[:ajax] %>
+        <%= pagination(collection: collection, entry_name: admin.model_name, remote: admin.pagination_options[:ajax]) %>
     </footer>
 <% end %>
