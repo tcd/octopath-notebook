@@ -1,2 +1,3 @@
-class ApplicationController < ActionController::API
+# Base class for controllers.
+class ApplicationController < ActionController::Base
 end
