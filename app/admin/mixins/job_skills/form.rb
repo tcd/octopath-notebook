@@ -33,6 +33,14 @@ module Mixins
 
             end
 
+            tab(:boost_data) do
+              render(Components::JsonCodeBlock::Component.new(data: record.boost_data.as_json))
+            end
+
+            tab(:extra_data) do
+              render(Components::JsonCodeBlock::Component.new(data: record.boost_data.as_json))
+            end
+
             tab(:raw_data) do
               render(Components::JsonCodeBlock::Component.new(data: record.as_json))
             end

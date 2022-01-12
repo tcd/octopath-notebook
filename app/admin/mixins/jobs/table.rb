@@ -19,6 +19,8 @@ module Mixins
 
             # column(:game_order)
 
+            column(:weapons, format: :tags, class: "hidden-xs")
+
             column(:created_at, align: :center)
             column(:updated_at, align: :center)
 
