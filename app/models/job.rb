@@ -35,7 +35,7 @@ class Job < ApplicationRecord
 
   # @!group Associations
 
-  # @!attribute primary_character [rw]
+  # @!attribute primary_character
   #   @return [Character]
   has_one(
     :primary_character,
@@ -44,7 +44,7 @@ class Job < ApplicationRecord
     foreign_key: "primary_job_name",
   )
 
-  # @!attribute job_skills [rw]
+  # @!attribute job_skills
   #   @return [Array<JobSkill>]
   has_many(
     :job_skills,
@@ -53,7 +53,7 @@ class Job < ApplicationRecord
     foreign_key: "job_name",
   )
 
-  # @!attribute job_support_skills [rw]
+  # @!attribute job_support_skills
   #   @return [Array<JobSupportSkill>]
   has_many(
     :job_support_skills,
@@ -62,7 +62,7 @@ class Job < ApplicationRecord
     foreign_key: "job_name",
   )
 
-  # @!attribute job_stat_bonuses [rw]
+  # @!attribute job_stat_bonuses
   #   @return [Array<JobStatBonus>]
   has_many(:job_stat_bonuses)
 
