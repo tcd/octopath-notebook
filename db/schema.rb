@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_13_002247) do
+ActiveRecord::Schema.define(version: 2022_01_13_155057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -189,6 +189,17 @@ ActiveRecord::Schema.define(version: 2022_01_13_002247) do
     t.index ["name"], name: "index_parties_on_name", unique: true
   end
 
+  create_table "party_characters", force: :cascade do |t|
+    t.bigint "party_id"
+    t.bigint "character_id"
+    t.jsonb "metadata", default: {}
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["character_id"], name: "index_party_characters_on_character_id"
+    t.index ["party_id", "character_id"], name: "index_party_characters_on_party_id_and_character_id", unique: true
+    t.index ["party_id"], name: "index_party_characters_on_party_id"
+  end
+
   create_table "regions", force: :cascade do |t|
     t.string "name", null: false
     t.jsonb "metadata", default: {}
@@ -264,6 +275,8 @@ ActiveRecord::Schema.define(version: 2022_01_13_002247) do
   add_foreign_key "job_stat_bonuses", "jobs"
   add_foreign_key "job_stat_bonuses", "stats"
   add_foreign_key "job_support_skills", "jobs", column: "job_name", primary_key: "name"
+  add_foreign_key "party_characters", "characters"
+  add_foreign_key "party_characters", "parties"
   add_foreign_key "taggings", "tags"
   add_foreign_key "towns", "regions", column: "region_name", primary_key: "name"
 end

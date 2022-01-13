@@ -1,21 +1,10 @@
-class Party < ApplicationRecord
+class PartyCharacter < ApplicationRecord
 
   # =====================================================================
   # Attributes
   # =====================================================================
 
   # @!group Attributes
-
-  # @!attribute name
-  #   @required
-  #   @return [String]
-  validates(:name, presence: true, uniqueness: true)
-
-  # @!attribute description
-  #   @return [String]
-
-  # @!attribute notes
-  #   @return [String]
 
   # @!endgroup Attributes
 
@@ -25,10 +14,24 @@ class Party < ApplicationRecord
 
   # @!group Associations
 
-  # @!attribute party_characters
-  #   @return [Array<PartyCharacter>]
-  has_many(:party_characters)
-  validates_length_of(:party_characters, maximum: 4)
+  # @!attribute party
+  #   @return [Party]
+  belongs_to(:party, required: true)
+  validates_associated(:party)
+
+  # @!attribute character
+  #   @return [Character]
+  belongs_to(:character, required: true)
+
+  # ----------------------------------------------------------------------------
+
+  # @!attribute primary_job
+  #   @return [Job]
+  has_one(
+    :primary_job,
+    class_name: "Job",
+    through: :character,
+  )
 
   # @!endgroup Associations
 
@@ -39,7 +42,7 @@ class Party < ApplicationRecord
   # @!group Scopes
 
   # @!method self.scope_for_trestle()
-  #   @return [Party::ActiveRecord_Relation]
+  #   @return [PartyCharacter::ActiveRecord_Relation]
   scope(:scope_for_trestle, -> { all() })
 
   # @!endgroup Scopes
@@ -50,7 +53,7 @@ class Party < ApplicationRecord
 
   # @return [String]
   def self.icon_css_class()
-    return "mdi mdi-account-group"
+    return "mdi mdi-set-all"
   end
 
   # =====================================================================
@@ -60,7 +63,6 @@ class Party < ApplicationRecord
   # @return [String]
   def display_name()
     return " " unless self.persisted?()
-    return self.name
+    return "#{party&.display_name} - #{character&.display_name}"
   end
-
 end
