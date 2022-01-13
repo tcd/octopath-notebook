@@ -64,6 +64,11 @@ class ApplicationRecord < ActiveRecord::Base
     return self.name.pluralize.gsub(/\B(?=[A-Z])/, " ")
   end
 
+  # @return [Symbol]
+  def self.custom_instance_name()
+    return self.name.underscore.to_sym
+  end
+
   # @return [String]
   def self.kind()
     return self.name
