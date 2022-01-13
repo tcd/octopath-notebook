@@ -1,6 +1,6 @@
 Trestle.resource(:job_support_skills) do
 
-  # extend Mixins::JobSupportSkills::Table
+  extend Mixins::JobSupportSkills::Table
   # extend Mixins::JobSupportSkills::Form
 
   menu do

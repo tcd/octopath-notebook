@@ -11,8 +11,11 @@ module Mixins
             column(:name, link: true)
             column(:job, sort: :job_name, link: true)
 
-            column(:created_at, align: :center)
-            column(:updated_at, align: :center)
+            column(:one_per_party)
+            column(:short_description, sort: false, truncate: false)
+
+            # column(:created_at, align: :center)
+            # column(:updated_at, align: :center)
 
           end
         end
