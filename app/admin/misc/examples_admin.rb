@@ -1,6 +1,6 @@
 Trestle.resource(:examples) do
 
-  extend Mixins::Shared
+  # extend Mixins::Shared
 
   table do
     column :name

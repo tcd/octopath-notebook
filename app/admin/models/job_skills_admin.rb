@@ -1,5 +1,7 @@
 Trestle.resource(:job_skills) do
 
+  extend Mixins::Shared
+
   extend Mixins::JobSkills::Table
   # extend Mixins::JobSkills::Form
 
@@ -9,10 +11,6 @@ Trestle.resource(:job_skills) do
       icon: @admin.model.icon_css_class(),
       priority: -97,
     )
-  end
-
-  collection do
-    model.scope_for_trestle()
   end
 
   scopes do

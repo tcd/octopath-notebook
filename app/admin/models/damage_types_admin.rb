@@ -1,5 +1,7 @@
 Trestle.resource(:damage_types) do
 
+  extend Mixins::Shared
+
   menu do
     item(
       @admin.model.display_name(),
@@ -7,10 +9,6 @@ Trestle.resource(:damage_types) do
       priority: :last,
       group: :stats,
     )
-  end
-
-  collection do
-    model.scope_for_trestle()
   end
 
   scopes do

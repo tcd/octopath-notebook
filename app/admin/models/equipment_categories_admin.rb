@@ -1,5 +1,7 @@
 Trestle.resource(:equipment_categories) do
 
+  extend Mixins::Shared
+
   menu do
     item(
       @admin.model.display_name(),
@@ -7,10 +9,6 @@ Trestle.resource(:equipment_categories) do
       priority: :last,
       group: :stats,
     )
-  end
-
-  collection do
-    model.scope_for_trestle()
   end
 
   table do

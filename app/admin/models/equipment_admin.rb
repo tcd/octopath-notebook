@@ -1,5 +1,7 @@
 Trestle.resource(:equipment) do
 
+  extend Mixins::Shared
+
   extend Mixins::Equipment::Table
   # extend Mixins::Equipment::Form
 
@@ -7,12 +9,8 @@ Trestle.resource(:equipment) do
     item(
       @admin.model.display_name(),
       icon: @admin.model.icon_css_class(),
-      priority: -100,
+      priority: -95,
     )
-  end
-
-  collection do
-    model.scope_for_trestle()
   end
 
   scopes do
