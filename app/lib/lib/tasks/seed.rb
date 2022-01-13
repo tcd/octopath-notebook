@@ -24,13 +24,22 @@ module Lib
       # @param model_class [ApplicationRecord]
       # @param search_key [Symbol]
       # @return [void]
-      def self.add_assets(json_key, model_class, search_key: :name)
-        assets = encoded_assets()
-        assets[json_key].each do |name, image|
-          record = model_class.where('? = ? ', search_key, name).first
+      def self.add_assets(json_key, model_class)
+        assets = encoded_assets().dig(json_key)
+        assets.each do |name, image|
+          record = model_class.find_by(name: name)
           next unless record
           record.update!(encoded_picture: image)
         end
+      end
+
+      # @return [void]
+      def self.add_all_assets()
+        add_assets("Stats", Stat)
+        add_assets("Jobs", Job)
+        add_assets("Characters", Character)
+        add_assets("DamageTypes", DamageType)
+        add_assets("DamageTypes", EquipmentCategory)
       end
 
       # @return [Hash]
@@ -154,14 +163,14 @@ module Lib
             description: fx["description"],
           }
         end
-        if invalid.blank?
-          assets = encoded_assets()
-          assets["Stats"].each do |name, image|
-            record = Stat.find_by(name: name)
-            next unless record
-            record.update!(encoded_picture: image)
-          end
-        end
+        # if invalid.blank?
+        #   assets = encoded_assets()
+        #   assets["Stats"].each do |name, image|
+        #     record = Stat.find_by(name: name)
+        #     next unless record
+        #     record.update!(encoded_picture: image)
+        #   end
+        # end
         return invalid
       end
 
@@ -174,7 +183,7 @@ module Lib
             weapon: fx["weapon"],
           }
         end
-        add_assets("DamageTypes", EquipmentCategory) if invalid.blank?
+        # add_assets("DamageTypes", EquipmentCategory) if invalid.blank?
         return invalid
       end
 
@@ -213,7 +222,7 @@ module Lib
             weapons:    fx["weapons"],
           }
         end
-        add_assets("Jobs", Job) if invalid.blank?
+        # add_assets("Jobs", Job) if invalid.blank?
         return invalid
       end
 
@@ -261,8 +270,8 @@ module Lib
             native_town_name:   fx["native_town_name"],
           }
         end
-        add_assets("Characters", Character) if invalid.blank?
-        return invalid
+        # add_assets("Characters", Character) if invalid.blank?
+        return
       end
 
       # @return [void]
