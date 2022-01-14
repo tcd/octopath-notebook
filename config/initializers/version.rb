@@ -2,7 +2,7 @@ module OctopathNotebook
   class Application < Rails::Application
 
     # @return [String]
-    VERSION = "1.6.0".freeze()
+    VERSION = "0.1.0".freeze()
 
     # @return [String]
     def version()
