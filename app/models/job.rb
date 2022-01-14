@@ -66,6 +66,10 @@ class Job < ApplicationRecord
   #   @return [Array<JobStatBonus>]
   has_many(:job_stat_bonuses)
 
+  # @!attribute :party_characters
+  #   @return [Array<PartyCharacter>]
+  has_many(:party_characters)
+
   # @!endgroup Associations
 
   # ==========================================================================

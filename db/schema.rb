@@ -192,11 +192,27 @@ ActiveRecord::Schema.define(version: 2022_01_13_155057) do
   create_table "party_characters", force: :cascade do |t|
     t.bigint "party_id"
     t.bigint "character_id"
+    t.integer "secondary_job_id"
+    t.string "name", null: false
+    t.string "description"
+    t.string "notes"
+    t.integer "shield_id"
+    t.integer "headgear_id"
+    t.integer "body_armor_id"
+    t.integer "accessory_1_id"
+    t.integer "accessory_2_id"
+    t.integer "sword_id"
+    t.integer "polearm_id"
+    t.integer "dagger_id"
+    t.integer "axe_id"
+    t.integer "bow_id"
+    t.integer "staff_id"
     t.jsonb "metadata", default: {}
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["character_id"], name: "index_party_characters_on_character_id"
     t.index ["party_id", "character_id"], name: "index_party_characters_on_party_id_and_character_id", unique: true
+    t.index ["party_id", "secondary_job_id"], name: "index_party_characters_on_party_id_and_secondary_job_id", unique: true
     t.index ["party_id"], name: "index_party_characters_on_party_id"
   end
 
@@ -276,6 +292,18 @@ ActiveRecord::Schema.define(version: 2022_01_13_155057) do
   add_foreign_key "job_stat_bonuses", "stats"
   add_foreign_key "job_support_skills", "jobs", column: "job_name", primary_key: "name"
   add_foreign_key "party_characters", "characters"
+  add_foreign_key "party_characters", "equipment", column: "accessory_1_id"
+  add_foreign_key "party_characters", "equipment", column: "accessory_2_id"
+  add_foreign_key "party_characters", "equipment", column: "axe_id"
+  add_foreign_key "party_characters", "equipment", column: "body_armor_id"
+  add_foreign_key "party_characters", "equipment", column: "bow_id"
+  add_foreign_key "party_characters", "equipment", column: "dagger_id"
+  add_foreign_key "party_characters", "equipment", column: "headgear_id"
+  add_foreign_key "party_characters", "equipment", column: "polearm_id"
+  add_foreign_key "party_characters", "equipment", column: "shield_id"
+  add_foreign_key "party_characters", "equipment", column: "staff_id"
+  add_foreign_key "party_characters", "equipment", column: "sword_id"
+  add_foreign_key "party_characters", "jobs", column: "secondary_job_id"
   add_foreign_key "party_characters", "parties"
   add_foreign_key "taggings", "tags"
   add_foreign_key "towns", "regions", column: "region_name", primary_key: "name"

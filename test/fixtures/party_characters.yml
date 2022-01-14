@@ -1,3 +1,5 @@
 one:
-  party: Alfyn
+  party: example
   character: Alfyn
+  secondary_job: Starseer (Job)
+  name: "Example Party - Alfyn"

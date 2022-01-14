@@ -22,6 +22,14 @@ module Tests
         refute_nil(entity.display_name())
       end
 
+      test "#generate_name" do
+        party = Party.first()
+        character = characters(:Primrose)
+        record = PartyCharacter.new(party: party, character: character)
+        record.save!()
+        assert_equal("Example Party - Primrose", record.name)
+      end
+
     end
   end
 end
