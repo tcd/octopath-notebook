@@ -17,7 +17,7 @@ GIT
 
 GIT
   remote: https://github.com/tcd/trestle.git
-  revision: 5b9de30687cb045cf29373bf9d9a4e2b1ed7e8c6
+  revision: a5682a3dc786501b5a953bddf5961839451b4985
   branch: master
   specs:
     trestle (0.9.5)
@@ -158,18 +158,18 @@ GEM
       ruby-vips (>= 2.0.17, < 3)
     jaro_winkler (1.5.4)
     jmespath (1.4.0)
-    kaminari (1.2.1)
+    kaminari (1.2.2)
       activesupport (>= 4.1.0)
-      kaminari-actionview (= 1.2.1)
-      kaminari-activerecord (= 1.2.1)
-      kaminari-core (= 1.2.1)
-    kaminari-actionview (1.2.1)
+      kaminari-actionview (= 1.2.2)
+      kaminari-activerecord (= 1.2.2)
+      kaminari-core (= 1.2.2)
+    kaminari-actionview (1.2.2)
       actionview
-      kaminari-core (= 1.2.1)
-    kaminari-activerecord (1.2.1)
+      kaminari-core (= 1.2.2)
+    kaminari-activerecord (1.2.2)
       activerecord
-      kaminari-core (= 1.2.1)
-    kaminari-core (1.2.1)
+      kaminari-core (= 1.2.2)
+    kaminari-core (1.2.2)
     kramdown (2.3.1)
       rexml
     kramdown-parser-gfm (1.1.0)
@@ -189,15 +189,15 @@ GEM
     method_source (1.0.0)
     mini_magick (4.11.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.6.1)
+    mini_portile2 (2.7.1)
     minitest (5.15.0)
     multi_json (1.15.0)
     nilify_blanks (1.4.0)
       activerecord (>= 4.0.0)
       activesupport (>= 4.0.0)
     nio4r (2.5.8)
-    nokogiri (1.12.5)
-      mini_portile2 (~> 2.6.1)
+    nokogiri (1.13.1)
+      mini_portile2 (~> 2.7.0)
       racc (~> 1.4)
     numerizer (0.1.1)
     parallel (1.21.0)
@@ -319,7 +319,7 @@ GEM
     streamio-ffmpeg (3.0.2)
       multi_json (~> 1.8)
     strings-ansi (0.2.0)
-    thor (1.1.0)
+    thor (1.2.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
     trestle-jsoneditor (0.1.0)
@@ -358,7 +358,7 @@ GEM
     xpath (3.2.0)
       nokogiri (~> 1.8)
     yard (0.9.26)
-    zeitwerk (2.5.1)
+    zeitwerk (2.5.3)
 
 PLATFORMS
   ruby
