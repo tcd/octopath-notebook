@@ -10,10 +10,10 @@ default: &default
 
 test:
   <<: *default
-  hostname: "localhost"
+  # hostname: "localhost"
   database: "octopath_notebook_test"
-  username: "postgres"
-  password: "postgres"
+  # username: "postgres"
+  # password: "postgres"
 
 development:
   <<: *default
