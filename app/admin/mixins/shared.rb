@@ -20,7 +20,7 @@ module Mixins
 
         table(exclude: [:created_at, :updated_at, :metadata, :encoded_picture])
 
-        form(exclude: [:created_at, :updated_at, :metadata, :encoded_picture])
+        form(exclude: [:created_at, :updated_at, :metadata])
 
         # By default, all parameters passed to the update and create actions will be
         # permitted. If you do not have full trust in your users, you should explicitly
