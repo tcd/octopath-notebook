@@ -6,7 +6,7 @@ Trestle.resource(:equipment_categories) do
     item(
       @admin.model.display_name(),
       icon: @admin.model.icon_css_class(),
-      priority: :last,
+      priority: 200,
       group: :stats,
     )
   end

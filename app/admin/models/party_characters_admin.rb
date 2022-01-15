@@ -1,4 +1,4 @@
-Trestle.resource(:weapon_types) do
+Trestle.resource(:party_characters) do
 
   extend Mixins::Shared
 
@@ -6,9 +6,11 @@ Trestle.resource(:weapon_types) do
     item(
       @admin.model.display_name(),
       icon: @admin.model.icon_css_class(),
-      priority: 200,
+      priority: 300,
       group: :stats,
     )
   end
+
+  form(dialog: true, exclude: [:created_at, :updated_at, :metadata])
 
 end
