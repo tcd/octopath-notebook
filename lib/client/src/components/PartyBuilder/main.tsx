@@ -1,4 +1,4 @@
 import { renderOne } from "@app/util"
-import { PartyBuilder } from "."
+import { App } from "."
 
-renderOne("react-party-builder", PartyBuilder)
+renderOne("react-party-builder", App)
