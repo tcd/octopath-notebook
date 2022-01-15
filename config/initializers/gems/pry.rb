@@ -14,4 +14,9 @@ if defined?(Pry)
     return str
   end
 
+  # @return [Array<String>]
+  def clean_call_stack(filter = "/gems/")
+    caller.reject { |line| line.include?(filter) }
+  end
+
 end
