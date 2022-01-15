@@ -24,12 +24,12 @@
         "target": "es5",
         "baseUrl": "./",
         "paths": {
-            "@app/*":  ["./src/*"],
-            "@util":   ["./src/util/index.ts"],
-            "@config": ["./src/util/config.ts"],
+            "@app/*": ["./src/*"],
+            "@util":  ["./src/util/index.ts"],
+            "@types": ["./src/@types/index.ts"],
         },
         // "typeRoots": [
-        //     "./src/ts/@types"
+        //     "./src/@types"
         // ]
     },
     "include": [
