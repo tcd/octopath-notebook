@@ -10,11 +10,11 @@ Trestle.configure do |config|
   # asset paths, e.g. app/assets/images.
   #
   # config.site_logo = "favicon.ico"
-  # config.site_logo = "pixel-heart.png"
+  # config.site_logo = "database-151207.png"
 
   # Specify a custom image to be used for the collapsed/tablet navigation.
   #
-  # config.site_logo_small = "pixel-heart.png"
+  config.site_logo_small = "database-151207.png"
 
   # Speficy a favicon to be used within the admin.
   #
@@ -124,6 +124,10 @@ Trestle.configure do |config|
   # Enable debugging of form errors. Defaults to true in development mode.
   #
   # config.debug_form_errors = true
+
+  # ============================================================================
+  # [trestle-auth](https://github.com/TrestleAdmin/trestle-auth)
+  # ============================================================================
 
   # == Authentication Options
   #
