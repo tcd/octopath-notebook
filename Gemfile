@@ -9,6 +9,7 @@ gem "chronic", "~> 0.10.2" # A natural language date parser
 gem "chronic_duration", "~> 0.10.6" # A natural language duration parser
 gem "counter_culture", "~> 2.9" # Counter caches for faster queries
 gem "lograge", "~> 0.11.2" # Tame Rails' multi-line logging into a single line per request
+gem "lograge-sql", "~> 2.0" # A Lograge extension to include SQL queries in your requests log
 gem "nilify_blanks", "~> 1.4" # Automatically convert blank values to nil (So we don"t junk up our DB)
 gem "pg", ">= 0.18", "< 2.0" # Use postgresql as the database for Active Record
 gem "pg_search", "~> 2.3" # Define ActiveRecord scopes that take advantage of PostgreSQL's full text search
@@ -52,6 +53,8 @@ group(:development, :test) do
 end
 
 group(:development) do
+  gem "better_errors" # Provides a better error page for Rails
+  gem "binding_of_caller" # Retrieve the binding of a method's caller as well as bindings even further up the stack
   gem "colorize", "~> 0.8.1"
   gem "pry-rails" # Better rails console
   gem "rails-erd", "~> 1.6" # Generate an entity-relationship diagram (ERD) from Rails models

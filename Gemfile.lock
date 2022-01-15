@@ -17,7 +17,7 @@ GIT
 
 GIT
   remote: https://github.com/tcd/trestle.git
-  revision: a5682a3dc786501b5a953bddf5961839451b4985
+  revision: 27e0d9506d3607f16c3610f77dcba0a289e2fc86
   branch: master
   specs:
     trestle (0.9.5)
@@ -110,6 +110,12 @@ GEM
       aws-eventstream (~> 1, >= 1.0.2)
     backport (1.2.0)
     benchmark (0.2.0)
+    better_errors (2.9.1)
+      coderay (>= 1.0.0)
+      erubi (>= 1.0.0)
+      rack (>= 0.9.0)
+    binding_of_caller (1.0.0)
+      debug_inspector (>= 0.0.1)
     builder (3.2.4)
     bullet (6.1.5)
       activesupport (>= 3.0.0)
@@ -136,6 +142,7 @@ GEM
       activerecord (>= 4.2)
       activesupport (>= 4.2)
     crass (1.0.6)
+    debug_inspector (1.1.0)
     diff-lcs (1.4.4)
     dotenv (2.7.6)
     dotenv-rails (2.7.6)
@@ -179,6 +186,9 @@ GEM
       activesupport (>= 4)
       railties (>= 4)
       request_store (~> 1.0)
+    lograge-sql (2.0.0)
+      activerecord (>= 5, < 7.1)
+      lograge (~> 0.11)
     loofah (2.13.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -368,6 +378,8 @@ DEPENDENCIES
   acts_as_favoritor (~> 5.0)
   awesome_print
   aws-sdk-s3 (~> 1.104)
+  better_errors
+  binding_of_caller
   bullet (~> 6.1)
   capybara (~> 3.34)
   chronic (~> 0.10.2)
@@ -379,6 +391,7 @@ DEPENDENCIES
   gon (~> 6.4)
   image_processing (~> 1.2)
   lograge (~> 0.11.2)
+  lograge-sql (~> 2.0)
   nilify_blanks (~> 1.4)
   pg (>= 0.18, < 2.0)
   pg_search (~> 2.3)
