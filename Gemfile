@@ -70,3 +70,5 @@ end
 group(:test) do
   gem "capybara", "~> 3.34" # Helpers for testing views & view components
 end
+
+gem "blueprinter", "~> 0.25.3"
