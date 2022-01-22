@@ -57,6 +57,7 @@ module Lib
         invalid["job_support_skills"] = self.job_support_skills()
         invalid["job_skills"] = self.job_skills()
         invalid["job_stat_bonuses"] = self.job_stat_bonuses()
+        invalid["job_equipment_categories"] = self.job_equipment_categories()
         return invalid
       end
 
@@ -153,7 +154,7 @@ module Lib
         return invalid
       end
 
-      # @return [void]
+      # @return [Array<Hash>]
       def self.stats()
         invalid = self.from_fixture("stats.yml", Stat) do |fx|
           _args = {
@@ -174,7 +175,7 @@ module Lib
         return invalid
       end
 
-      # @return [void]
+      # @return [Array<Hash>]
       def self.equipment_categories()
         invalid = self.from_fixture("equipment_categories.yml", EquipmentCategory) do |fx|
           _args = {
@@ -187,7 +188,7 @@ module Lib
         return invalid
       end
 
-      # @return [void]
+      # @return [Array<Hash>]
       def self.regions()
         invalid = self.from_fixture("regions.yml", Region) do |fx|
           _args = {
@@ -198,7 +199,7 @@ module Lib
         return invalid
       end
 
-      # @return [void]
+      # @return [Array<Hash>]
       def self.towns()
         invalid = self.from_fixture("towns.yml", Town) do |fx|
           _args = {
@@ -210,7 +211,7 @@ module Lib
         return invalid
       end
 
-      # @return [void]
+      # @return [Array<Hash>]
       def self.jobs()
         invalid = self.from_fixture("jobs.yml", Job) do |fx|
           _args = {
@@ -226,7 +227,7 @@ module Lib
         return invalid
       end
 
-      # @return [void]
+      # @return [Array<Hash>]
       def self.damage_types()
         invalid = self.from_fixture("damage_types.yml", DamageType) do |fx|
           _args = {
@@ -241,7 +242,7 @@ module Lib
         return invalid
       end
 
-      # @return [void]
+      # @return [Array<Hash>]
       def self.job_support_skills()
         invalid = self.from_fixture("job_support_skills.yml", JobSupportSkill) do |fx|
           _args = {
@@ -258,7 +259,7 @@ module Lib
         return invalid
       end
 
-      # @return [void]
+      # @return [Array<Hash>]
       def self.characters()
         invalid = self.from_fixture("characters.yml", Character) do |fx|
           _args = {
@@ -274,7 +275,7 @@ module Lib
         return
       end
 
-      # @return [void]
+      # @return [Array<Hash>]
       def self.equipment()
         invalid = self.from_tsv("Equipment.tsv", Equipment) do |fx|
           _args = {
@@ -298,7 +299,7 @@ module Lib
         return invalid
       end
 
-      # @return [void]
+      # @return [Array<Hash>]
       def self.job_skills()
         invalid = self.from_json("JobSkills.json", JobSkill) do |fx|
           _args = {
@@ -321,10 +322,11 @@ module Lib
         return invalid
       end
 
-      # @return [void]
+      # @return [Array<Hash>]
       def self.job_stat_bonuses()
         jobs  = Job.select(:name, :id)
         stats = Stat.select(:full_name, :id)
+
         invalid = self.from_json("JobStatBonuses.json", JobStatBonus) do |fx|
           job_id  = jobs.find  { |x| x.name == fx["job"] }.id
           stat_id = stats.find { |x| x.full_name == fx["stat"] }.id
@@ -334,10 +336,28 @@ module Lib
             stat_id: stat_id,
           }
         end
+
         return invalid
       end
 
-      # @return [void]
+      # @return [Array<Hash>]
+      def self.job_equipment_categories()
+        jobs       = Job.select(:name, :id)
+        categories = EquipmentCategory.select(:name, :id)
+
+        invalid = self.from_fixture("job_equipment_categories.yml", JobEquipmentCategory) do |fx|
+          job_id                = jobs.find       { |x| x.name == fx["job"]                }.id
+          equipment_category_id = categories.find { |x| x.name == fx["equipment_category"] }.id
+          _args = {
+            job_id:                job_id,
+            equipment_category_id: equipment_category_id,
+          }
+        end
+
+        return invalid
+      end
+
+      # @return [Array<Hash>]
       def self.weapon_types()
         invalid = self.from_fixture("weapon_types.yml", WeaponType) do |fx|
           _args = {

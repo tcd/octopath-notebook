@@ -19,7 +19,10 @@ module Mixins
 
             # column(:game_order)
 
-            column(:weapons, format: :tags, class: "hidden-xs")
+            # TODO: replace with `job_equipment_categories
+            column(:weapons, format: :tags, class: "hidden-xs") do |record|
+              record.equipment_categories.map(&:display_name)
+            end
 
             column(:created_at, align: :center)
             column(:updated_at, align: :center)
