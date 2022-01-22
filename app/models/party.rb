@@ -40,7 +40,7 @@ class Party < ApplicationRecord
 
   # @!method self.scope_for_trestle()
   #   @return [Party::ActiveRecord_Relation]
-  scope(:scope_for_trestle, -> { all() })
+  scope(:scope_for_trestle, -> { includes(:party_characters) })
 
   # @!endgroup Scopes
 
