@@ -1,3 +1,14 @@
+##
+# - Shields
+# - Headgear
+# - Body Armor
+# - Accessories
+# - Swords
+# - Spears
+# - Daggers
+# - Axes
+# - Bows
+# - Staves
 class EquipmentCategory < ApplicationRecord
 
   # =====================================================================
@@ -34,6 +45,16 @@ class EquipmentCategory < ApplicationRecord
     primary_key: "name",
     foreign_key: "category_name",
   )
+
+  # ----------------------------------------------------------------------------
+
+  # @!attribute job_equipment_categories
+  #   @return [Array<JobEquipmentCategory>]
+  has_many(:job_equipment_categories, inverse_of: :equipment_category)
+
+  # @!attribute jobs
+  #   @return [Array<Job>]
+  has_many(:jobs, through: :job_equipment_categories)
 
   # @!endgroup Associations
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_13_155057) do
+ActiveRecord::Schema.define(version: 2022_01_22_210044) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,6 +117,16 @@ ActiveRecord::Schema.define(version: 2022_01_13_155057) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["linkable_type", "linkable_id"], name: "index_hyperlinks_on_linkable_type_and_linkable_id"
     t.index ["url"], name: "index_hyperlinks_on_url", unique: true
+  end
+
+  create_table "job_equipment_categories", force: :cascade do |t|
+    t.bigint "job_id"
+    t.bigint "equipment_category_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["equipment_category_id"], name: "index_job_equipment_categories_on_equipment_category_id"
+    t.index ["job_id", "equipment_category_id"], name: "index_job_equipment_categories_as_junction_table", unique: true
+    t.index ["job_id"], name: "index_job_equipment_categories_on_job_id"
   end
 
   create_table "job_skills", force: :cascade do |t|
@@ -287,6 +297,8 @@ ActiveRecord::Schema.define(version: 2022_01_13_155057) do
   add_foreign_key "characters", "towns", column: "native_town_name", primary_key: "name"
   add_foreign_key "characters", "towns", column: "starting_town_name", primary_key: "name"
   add_foreign_key "equipment", "equipment_categories", column: "category_name", primary_key: "name"
+  add_foreign_key "job_equipment_categories", "equipment_categories"
+  add_foreign_key "job_equipment_categories", "jobs"
   add_foreign_key "job_skills", "jobs", column: "job_name", primary_key: "name"
   add_foreign_key "job_stat_bonuses", "jobs"
   add_foreign_key "job_stat_bonuses", "stats"

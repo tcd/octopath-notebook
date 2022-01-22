@@ -1,5 +1,9 @@
 one:
+  name: "Example Party - Alfyn"
   party: example
   character: Alfyn
   secondary_job: Starseer (Job)
-  name: "Example Party - Alfyn"
+  shield: Buckler (Equipment)
+  headgear: OrdinaryHat (Equipment)
+  body_armor: Robe (Equipment)
+  axe: Handaxe (Equipment)

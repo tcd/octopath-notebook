@@ -62,9 +62,27 @@ class Job < ApplicationRecord
     foreign_key: "job_name",
   )
 
+  # ----------------------------------------------------------------------------
+
   # @!attribute job_stat_bonuses
   #   @return [Array<JobStatBonus>]
-  has_many(:job_stat_bonuses)
+  has_many(:job_stat_bonuses, inverse_of: :job)
+
+  # @!attribute stats
+  #   @return [Array<Stat>]
+  has_many(:stats, through: :job_stat_bonuses)
+
+  # ----------------------------------------------------------------------------
+
+  # @!attribute job_equipment_categories
+  #   @return [Array<JobEquipmentCategory>]
+  has_many(:job_equipment_categories, inverse_of: :job)
+
+  # @!attribute equipment_categories
+  #   @return [Array<EquipmentCategory>]
+  has_many(:equipment_categories, through: :job_equipment_categories)
+
+  # ----------------------------------------------------------------------------
 
   # @!attribute :party_characters
   #   @return [Array<PartyCharacter>]

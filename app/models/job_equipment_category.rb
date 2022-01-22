@@ -1,30 +1,5 @@
-class Stat < ApplicationRecord
-
-  # =====================================================================
-  # Attributes
-  # =====================================================================
-
-  # @!group Attributes
-
-  # @!attribute name
-  #   @required
-  #   @return [String]
-  validates(:name, presence: true, uniqueness: true)
-
-  # @!attribute full_name
-  #   @required
-  #   @return [String]
-  validates(:full_name, presence: true, uniqueness: true)
-
-  # @!attribute description
-  #   @required
-  #   @return [String]
-  validates(:description, presence: true)
-
-  # @!attribute encoded_picture
-  #   @return [String]
-
-  # @!endgroup Attributes
+# The type(s) of equipment a given Job can use.
+class JobEquipmentCategory < ApplicationRecord
 
   # =====================================================================
   # Associations
@@ -32,13 +7,13 @@ class Stat < ApplicationRecord
 
   # @!group Associations
 
-  # @!attribute job_stat_bonuses
-  #   @return [Array<JobStatBonus>]
-  has_many(:job_stat_bonuses, inverse_of: :stat)
+  # @!attribute job
+  #   @return [Job]
+  belongs_to(:job, required: true)
 
-  # @!attribute jobs
-  #   @return [Array<Job>]
-  has_many(:jobs, through: :job_stat_bonuses)
+  # @!attribute equipment_category
+  #   @return [EquipmentCategory]
+  belongs_to(:equipment_category, required: true)
 
   # @!endgroup Associations
 
@@ -49,7 +24,7 @@ class Stat < ApplicationRecord
   # @!group Scopes
 
   # @!method self.scope_for_trestle()
-  #   @return [Stat::ActiveRecord_Relation]
+  #   @return [JobEquipmentCategory::ActiveRecord_Relation]
   scope(:scope_for_trestle, -> { all() })
 
   # @!endgroup Scopes
@@ -60,7 +35,7 @@ class Stat < ApplicationRecord
 
   # @return [String]
   def self.icon_css_class()
-    return "mdi mdi-chart-bar-stacked"
+    return "mdi mdi-set-all"
   end
 
   # =====================================================================
@@ -70,7 +45,6 @@ class Stat < ApplicationRecord
   # @return [String]
   def display_name()
     return " " unless self.persisted?()
-    return self.name
+    return "use strings as foreign keys bitch"
   end
-
 end
