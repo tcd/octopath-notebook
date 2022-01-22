@@ -24,7 +24,7 @@ module Lib
       # @param model_class [ApplicationRecord]
       # @param search_key [Symbol]
       # @return [void]
-      def self.add_assets(json_key, model_class)
+      def self.add_assets(json_key, model_class, search_key)
         assets = encoded_assets().dig(json_key)
         assets.each do |name, image|
           record = model_class.find_by(name: name)
