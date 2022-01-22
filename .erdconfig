@@ -1,4 +1,4 @@
-warn: true
+warn: false
 filetype: png
 filename: docs/entity-relationship-diagram
 title: "Octopath Notebook"
@@ -42,14 +42,18 @@ sort: true
 # - inheritance
 attributes: false
 # Filter to only include listed models in diagram.
-only: null
+# only: null
 # Filter to exclude listed models in diagram.
-# exclude: "
-#   ActiveStorage::Attachment,
-#   ActiveStorage::Blob,
-#   ActionText::RichText,
-#   ActionMailbox::InboundEmail,
-#   PaperTrail::Version,
-#   ActsAsTaggableOn::Tagging,
-#   ActsAsTaggableOn::Tag,
-# "
+exclude: "
+    ActiveStorage::Attachment,\
+    ActiveStorage::Blob,\
+    ActionText::RichText,\
+    ActionMailbox::InboundEmail,\
+    PaperTrail::Version,\
+    ActsAsTaggableOn::Tagging,\
+    ActsAsTaggableOn::Tag,\
+    Hyperlink,
+    Example,\
+    JobEquipmentCategory,\
+    JobStatBonus,\
+  "
