@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "2.7.4"
 
 gem "acts_as_favoritor", "~> 5.0" # Adds Favorite, Follow, Vote, etc. functionality to ActiveRecord models
-gem "acts-as-taggable-on", "~> 6.5" # Simplifies dealing with *tags*
+gem "acts-as-taggable-on", "~> 9.0" # Simplifies dealing with *tags*
 gem "chronic", "~> 0.10.2" # A natural language date parser
 gem "chronic_duration", "~> 0.10.6" # A natural language duration parser
 gem "counter_culture", "~> 2.9" # Counter caches for faster queries
