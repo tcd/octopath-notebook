@@ -30,6 +30,13 @@ module Tests
         assert_equal("Example Party - Primrose", record.name)
       end
 
+      test "#equipment" do
+        skip()
+        # entity = @model.first()
+        entity = @model.includes(:equipment).first()
+        assert_equal(4, entity.equipment.count)
+      end
+
     end
   end
 end
