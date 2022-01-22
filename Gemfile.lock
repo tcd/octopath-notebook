@@ -17,7 +17,7 @@ GIT
 
 GIT
   remote: https://github.com/tcd/trestle.git
-  revision: 27e0d9506d3607f16c3610f77dcba0a289e2fc86
+  revision: 9f82cb620102dd1e1d1af039159d8ebf271f715e
   branch: master
   specs:
     trestle (0.9.5)
