@@ -30,9 +30,9 @@ cluster: true
 # - polyline
 splines: spline
 # Ensure primary key is at start of attribute list.
-prepend_primary: true
+# prepend_primary: true
 # Sort attribute list alphabetically.
-sort: true
+# sort: true
 # Attribute groups to display:
 # - false
 # - content
@@ -45,15 +45,17 @@ attributes: false
 # only: null
 # Filter to exclude listed models in diagram.
 exclude: "
-    ActiveStorage::Attachment,\
-    ActiveStorage::Blob,\
-    ActionText::RichText,\
-    ActionMailbox::InboundEmail,\
-    PaperTrail::Version,\
-    ActsAsTaggableOn::Tagging,\
-    ActsAsTaggableOn::Tag,\
-    Hyperlink,
+    Hyperlink,\
     Example,\
+    Region,\
+    Town,\
     JobEquipmentCategory,\
     JobStatBonus,\
+    ActiveStorage::Attachment,\
+    ActiveStorage::Blob,\
+    ActsAsTaggableOn::Tagging,\
+    ActsAsTaggableOn::Tag,\
+    ActionMailbox::InboundEmail,\
+    ActionText::RichText,\
+    PaperTrail::Version\
   "
