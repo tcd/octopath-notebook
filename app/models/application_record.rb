@@ -98,4 +98,9 @@ class ApplicationRecord < ActiveRecord::Base
     return self&.name || " "
   end
 
+  # @return [String]
+  def kind()
+    return self.class.kind()
+  end
+
 end

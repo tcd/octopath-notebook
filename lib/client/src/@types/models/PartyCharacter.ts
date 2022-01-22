@@ -1,4 +1,4 @@
-import { ApplicationRecord } from "."
+import { ApplicationRecord, Character } from "."
 
 export class PartyCharacter extends ApplicationRecord {
     public name: string
@@ -21,4 +21,9 @@ export class PartyCharacter extends ApplicationRecord {
     public axe_id: number
     public bow_id: number
     public staff_id: number
+
+    // =========================================================================
+    // Associations
+    // =========================================================================
+    public character?: Character
 }

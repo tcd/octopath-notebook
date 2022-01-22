@@ -5,13 +5,11 @@ import { store } from "@app/state"
 import {
     PartyBuilder,
 } from "."
-import { ReduxCounterPage } from "@app/features"
 
 export const App = () => {
     return (
         <Provider store={store}>
-            {/* <PartyBuilder /> */}
-            <ReduxCounterPage />
+            <PartyBuilder />
         </Provider>
     )
 }

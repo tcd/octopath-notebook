@@ -29,7 +29,7 @@
             "@types": ["./src/@types/index.ts"],
         },
         // "typeRoots": [
-        //     "./src/@types"
+        //     "src/@types"
         // ]
     },
     "include": [

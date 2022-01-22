@@ -1,0 +1,9 @@
+<%= Gon::Base.render_data %>
+
+<% content_for(:title, "Viewing Party") %>
+
+<%= render(layout: "layout", locals: { wrapper: true, sidebar: false, hide_breadcrumbs: false }) do %>
+    <div id="react-party-builder">react party builder</div>
+<% end %>
+
+<%= javascript_include_tag("partyBuilder.bundle.js") %>
