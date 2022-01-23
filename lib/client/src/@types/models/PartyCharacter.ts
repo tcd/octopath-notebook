@@ -1,6 +1,11 @@
 import { ApplicationRecord, Character } from "."
 
 export class PartyCharacter extends ApplicationRecord {
+
+    // =========================================================================
+    // Attributes
+    // =========================================================================
+
     public name: string
     public description: string
     public notes: string
@@ -25,5 +30,7 @@ export class PartyCharacter extends ApplicationRecord {
     // =========================================================================
     // Associations
     // =========================================================================
+
     public character?: Character
+
 }

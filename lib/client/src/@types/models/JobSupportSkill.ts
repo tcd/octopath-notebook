@@ -1,6 +1,9 @@
 import { ApplicationRecord } from "."
 
 export class JobSupportSkill extends ApplicationRecord {
+    // =========================================================================
+    // Attributes
+    // =========================================================================
     public name: string
     public job_name: string
     public unlock_order: number

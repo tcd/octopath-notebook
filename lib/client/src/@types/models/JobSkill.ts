@@ -1,6 +1,9 @@
 import { ApplicationRecord } from "."
 
 export class JobSkill extends ApplicationRecord {
+    // =========================================================================
+    // Attributes
+    // =========================================================================
     public name: string
     public job_name: string
     public in_game_description: string

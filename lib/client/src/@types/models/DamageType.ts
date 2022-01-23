@@ -1,6 +1,11 @@
 import { ApplicationRecord } from "."
 
 export class DamageType extends ApplicationRecord {
+
+    // =========================================================================
+    // Attributes
+    // =========================================================================
+
     public name: string
     public physical: boolean
     public elemental: boolean

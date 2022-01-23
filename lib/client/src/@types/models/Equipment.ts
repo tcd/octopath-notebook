@@ -2,6 +2,10 @@ import { ApplicationRecord } from "."
 
 export class Equipment extends ApplicationRecord {
 
+    // =========================================================================
+    // Attributes
+    // =========================================================================
+
     public name: string
     public category_name: string
     public sell_price: number
