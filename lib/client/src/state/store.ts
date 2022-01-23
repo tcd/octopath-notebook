@@ -4,6 +4,7 @@ import {
     counterSlice,
     partyBuilderSlice,
     damageTypesSlice,
+    allEntitiesSlice,
 } from "@app/features"
 
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
         counter: counterSlice.reducer,
         partyBuilder: partyBuilderSlice.reducer,
         damageTypes: damageTypesSlice.reducer,
+        allEntities: allEntitiesSlice.reducer,
     },
     devTools: true,
 })

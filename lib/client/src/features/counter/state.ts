@@ -7,7 +7,7 @@ export interface CounterState {
 }
 
 // Define the initial state using that type
-export const initialState: CounterState = {
+const initialState: CounterState = {
     value: 0,
 }
 
@@ -30,8 +30,8 @@ export const counterSlice = createSlice({
 })
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectCount = (state: RootState) => state.counter.value
+const selectCount = (state: RootState) => state.counter.value
 
 export const CountSelectors = {
-    value: selectCount
+    value: selectCount,
 }

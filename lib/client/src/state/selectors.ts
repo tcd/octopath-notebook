@@ -4,14 +4,16 @@ import {
     CountSelectors,
     PartyBuilderSelectors,
     damageTypesAdapter,
+    AllEntitiesSelectors,
 } from "@app/features"
 
 const damageTypeSelectors = damageTypesAdapter.getSelectors((state: RootState) => state.damageTypes)
 
 export const AppSelectors = {
-    Counter: { ...CountSelectors },
+    Counter:      { ...CountSelectors },
     PartyBuilder: { ...PartyBuilderSelectors },
-    DamageTypes: {
+    Entities:     { ...AllEntitiesSelectors },
+    DamageTypes:  {
         ...damageTypeSelectors,
     },
 }
