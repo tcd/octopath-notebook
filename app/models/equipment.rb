@@ -109,6 +109,20 @@ class Equipment < ApplicationRecord
   #   @return [Array<PartyCharacter>]
   has_many(:party_characters)
 
+  # ------------------------------------------------------------------------------
+
+  # has_many(:party_character_shields,      foreign_key: :shield_id,      class_name: "PartyCharacter")
+  # has_many(:party_character_headgears,    foreign_key: :headgear_id,    class_name: "PartyCharacter")
+  # has_many(:party_character_body_armors,  foreign_key: :body_armor_id,  class_name: "PartyCharacter")
+  # has_many(:party_character_accessory_1s, foreign_key: :accessory_1_id, class_name: "PartyCharacter")
+  # has_many(:party_character_accessory_2s, foreign_key: :accessory_1_id, class_name: "PartyCharacter")
+  # has_many(:party_character_swords,       foreign_key: :sword_id,       class_name: "PartyCharacter")
+  # has_many(:party_character_polearms,     foreign_key: :polearm_id,     class_name: "PartyCharacter")
+  # has_many(:party_character_daggers,      foreign_key: :dagger_id,      class_name: "PartyCharacter")
+  # has_many(:party_character_axes,         foreign_key: :axe_id,         class_name: "PartyCharacter")
+  # has_many(:party_character_bows,         foreign_key: :bow_id,         class_name: "PartyCharacter")
+  # has_many(:party_character_staffs,       foreign_key: :staff_id,       class_name: "PartyCharacter")
+
   # @!endgroup Associations
 
   # ==========================================================================

@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 
 import { GonData, Party, PartyCharacter } from "@types"
-import { AppSelectors, DamageTypesActions, PartyBuilderActions } from "@app/state"
+import { AppSelectors, DamageTypesActions, PartyBuilderActions, AllEntitiesActions } from "@app/state"
 import { Base64Image } from "@app/components"
 import { PartyCharacterDetail } from "."
 
@@ -19,6 +19,7 @@ export const PartyBuilder = (): JSX.Element => {
         // dispatch(PartyBuilderActions.setParty(party))
         // dispatch(DamageTypesActions.setAll(damage_types))
         dispatch(PartyBuilderActions.setGonData(gonData))
+        dispatch(AllEntitiesActions.setAll(gonData))
     })
 
     return (

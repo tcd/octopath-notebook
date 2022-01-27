@@ -1,10 +1,10 @@
-Shields:     { id: 101, name: "Shields",     weapon: false }
-Headgear:    { id: 102, name: "Headgear",    weapon: false }
-Body Armor:  { id: 103, name: "Body Armor",  weapon: false }
-Accessories: { id: 104, name: "Accessories", weapon: false }
-Swords:      { id: 201, name: "Swords",      weapon: true  }
-Spears:      { id: 202, name: "Polearms",    weapon: true  }
-Daggers:     { id: 203, name: "Daggers",     weapon: true  }
-Axes:        { id: 204, name: "Axes",        weapon: true  }
-Bows:        { id: 205, name: "Bows",        weapon: true  }
-Staves:      { id: 206, name: "Staves",      weapon: true  }
+Shields:     { "id": 101, "name": "Shields",     "weapon": false }
+Headgear:    { "id": 102, "name": "Headgear",    "weapon": false }
+Body Armor:  { "id": 103, "name": "Body Armor",  "weapon": false }
+Accessories: { "id": 104, "name": "Accessories", "weapon": false }
+Swords:      { "id": 201, "name": "Swords",      "weapon": true  }
+Spears:      { "id": 202, "name": "Polearms",    "weapon": true  }
+Daggers:     { "id": 203, "name": "Daggers",     "weapon": true  }
+Axes:        { "id": 204, "name": "Axes",        "weapon": true  }
+Bows:        { "id": 205, "name": "Bows",        "weapon": true  }
+Staves:      { "id": 206, "name": "Staves",      "weapon": true  }

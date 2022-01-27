@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 
-import { Party, PartyCharacter } from "@types"
+import { EquipmentCategory, Party, PartyCharacter } from "@types"
 import { AppSelectors, DamageTypesActions, PartyBuilderActions } from "@app/state"
 
 export const PartyCharacterDetail = (): JSX.Element => {
@@ -9,6 +9,8 @@ export const PartyCharacterDetail = (): JSX.Element => {
     const dispatch = useDispatch()
 
     const partyCharacter: PartyCharacter = useSelector(AppSelectors.PartyBuilder.currentPartyCharacter)
+
+    const equipmentCategories: EquipmentCategory[] = useSelector(AppSelectors.Entities.equipmentCategories)
 
     // useEffect(() => {
     //     const damage_types = window["gon"]?.damage_types
